@@ -1,6 +1,7 @@
 package ai.prime.visualization;
 
 import ai.prime.agent.Agent;
+import ai.prime.knowledge.data.Data;
 import ai.prime.visualization.models.AgentModel;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,18 @@ public class Controller {
 
     public Controller() {
         agents = new HashMap<>();
-        agents.put(DEFAULT_AGENT, new Agent(DEFAULT_AGENT));
+        var agent = new Agent(DEFAULT_AGENT);
+        agents.put(DEFAULT_AGENT, agent);
     }
     @GetMapping("/agent")
-    public AgentModel getAgent(@RequestParam(value = "name") String name) throws ServerException{
+    public Agent getAgent(@RequestParam(value = "name") String name) throws ServerException{
         if (!agents.containsKey(name)) {
             throw new ServerException("Missing agent name");
         }
 
         Agent selected = agents.get(name);
 
-        var response = new AgentModel(selected.getName());
-
-        return response;
+        return selected;
     }
 
     @PostMapping("/agent")

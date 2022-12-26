@@ -1,5 +1,7 @@
 package ai.prime.visualization.models;
 
+import java.util.Collection;
+
 public class AgentModel {
 
     private String name;
