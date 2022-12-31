@@ -4,21 +4,21 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 public class Data {
-    private String type;
+    private DataType type;
     private Expression[] expressions;
     private String displayName = null;
     private int hashCode = 0;
 
-    public Data(String type, Expression[] expressions) {
+    public Data(DataType type, Expression[] expressions) {
         this.type = type;
         this.expressions = expressions;
     }
 
-    public Data(String type) {
+    public Data(DataType type) {
         this(type, new Expression[0]);
     }
 
-    public String getType() {
+    public DataType getType() {
         return type;
     }
 
@@ -27,7 +27,7 @@ public class Data {
     }
 
     private String buildDisplayName() {
-        String value = type;
+        String value = type.getPredicate();
 
         StringJoiner stringJoiner = new StringJoiner(NamingUtil.LIST_SEPARATOR, NamingUtil.START_COMPLEX_EXPRESSION, NamingUtil.END_COMPLEX_EXPRESSION);
         Arrays.stream(expressions).forEach(expression -> stringJoiner.add(expression.getDisplayName()));

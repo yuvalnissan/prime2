@@ -47,7 +47,7 @@ export const DataView = ({expression, className }: DataViewProps) => {
   const DataNode = ({ expression }: DataViewProps) => {
     return <StyledTreeItem
       nodeId={expression.id}
-      label={`${expression.negative ? 'not ' : ''} ${expression.val} (${expression.type})`}>
+      label={`${expression.negative ? 'not ' : ''} ${(expression.type === 'value') ? expression.id : expression.type}`}>
         {expression.expressions?.map((subExpression: Expression) => <DataNode expression={subExpression} key={subExpression.id}/>)}
     </StyledTreeItem>
   }

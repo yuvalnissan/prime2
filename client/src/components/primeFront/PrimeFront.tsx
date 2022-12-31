@@ -11,61 +11,57 @@ export interface PrimeFrontProps {
     className?: string
 }
 
-const defaultExpressions = {
-    'Ford ISA (something otherThanA Car)': {
-        id: 'Ford ISA (something otherThanA Car)',
-        type: 'rel',
-        val: 'isa',
-        expressions: [
-            {
-                id: '2',
-                type: 'obj',
-                val: 'Ford'
-            },
-            {
-                id: '3',
-                type: 'rel',
-                val: 'otherThanA',
-                expressions: [
-                    {
-                        id: '7',
-                        type: 'obj',
-                        val: 'something'
-                    },
-                    {
-                        id: '6',
-                        type: 'obj',
-                        val: 'Car'
-                    }
-                ]
-            }
-        ]
-    },
-    'Ford ISA not Horse': {
-        id: 'Ford ISA not Horse',
-        type: 'rel',
-        val: 'isa',
-        expressions: [
-            {
-                id: '4',
-                type: 'obj',
-                val: 'Ford'
-            },
-            {
-                id: '5',
-                type: 'obj',
-                val: 'Horse',
-                negative: true
-            }
-        ]
+const geDataFromNeuron = (neuronData: any): Expression => {
+    const expression = {
+        id: neuronData.displayName as string,
+        type: neuronData.type.predicate as string,
+        val: neuronData.displayName as string,
+        expressions: neuronData.expressions?.map((exp: any) => {
+            const data = geDataFromNeuron(exp.data)
+            const negative = exp.modifier === 'NEGATIVE'
+
+            return {...data, negative}
+        })
     }
+
+    return expression
 }
 
 export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const searchParams = new URLSearchParams(document.location.search)
     const scenario = searchParams.get('scenario') || 'Missing scenario'
-    const [expressions, setExpressions] = React.useState<Record<string, Expression>>(defaultExpressions)
+    const [expressions, setExpressions] = React.useState<Record<string, Expression>>({})
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
+
+    const setData = (agent: any) => {
+        console.log(agent)
+
+        const memory = agent.memory
+        const keys: string[] = Object.keys(agent.memory)
+        const expressions = {} as Record<string, Expression>
+        keys.forEach(key => {
+            expressions[key] = geDataFromNeuron(memory[key].data)
+        })
+
+        console.log(expressions)
+        setExpressions(expressions)
+    }
+
+
+    React.useEffect(() => {
+        fetch('http://localhost:8080/agent?name=default')
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+            })
+            .then(data => {
+                setData(data)
+            })
+            .catch(err => {
+                console.error('Failed to fetch', err)
+            })
+    }, [])
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>

@@ -1,7 +1,5 @@
 package ai.prime.knowledge.data;
 
-import ai.prime.knowledge.data.DataModifier;
-
 public class Expression {
     private Data data;
     private DataModifier modifier;
@@ -11,6 +9,10 @@ public class Expression {
     public Expression(Data data, DataModifier modifier) {
         this.data = data;
         this.modifier = modifier;
+    }
+
+    public Expression(Data data) {
+        this(data, DataModifier.POSITIVE);
     }
 
     public Data getData() {
