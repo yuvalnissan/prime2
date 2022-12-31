@@ -1,0 +1,32 @@
+{
+  "agents": {
+    "smith": {
+      "expressions": [
+        {
+          "type": "rel",
+          "expressions": [
+            {"value": "Ford"},
+            {"value": "isa"},
+            {
+              "type": "rel",
+              "expressions": [
+                {"value": "Something"},
+                {"value": "thatIs"},
+                {"negative": true, "value": "else"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rel",
+          "expressions": [
+            {"value": "Ford"},
+            {"value": "isa"},
+            {"value": "Vehicle"}
+          ]
+        }
+      ]
+    }
+  }
+}
+

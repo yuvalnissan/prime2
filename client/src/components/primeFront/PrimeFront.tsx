@@ -2,6 +2,7 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import {DataView} from '../data/Data'
 import styles from './PrimeFront.module.scss'
 import { Expression } from '../../businessLogic/data'
@@ -29,13 +30,12 @@ const geDataFromNeuron = (neuronData: any): Expression => {
 
 export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const searchParams = new URLSearchParams(document.location.search)
-    const scenario = searchParams.get('scenario') || 'Missing scenario'
+    const scenario = searchParams.get('scenario')
+    const agent = searchParams.get('agent')
     const [expressions, setExpressions] = React.useState<Record<string, Expression>>({})
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
 
     const setData = (agent: any) => {
-        console.log(agent)
-
         const memory = agent.memory
         const keys: string[] = Object.keys(agent.memory)
         const expressions = {} as Record<string, Expression>
@@ -43,13 +43,12 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
             expressions[key] = geDataFromNeuron(memory[key].data)
         })
 
-        console.log(expressions)
         setExpressions(expressions)
     }
 
 
     React.useEffect(() => {
-        fetch('http://localhost:8080/agent?name=default')
+        fetch(`http://localhost:8080/scenario?name=${scenario}&agent=${agent}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -65,8 +64,18 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>
-            <TextField id="outlined-basic" label={scenario} variant="outlined" />
-            <Button>Refresh</Button>
+            <Box className={styles['controls']}>
+                    <Typography variant="subtitle1" display="inline">
+                    {scenario}
+                </Typography>
+                <Typography variant="subtitle1" display="inline">
+                    {agent}
+                </Typography>
+        
+                <TextField id="outlined-basic" label={scenario} variant="outlined" />
+                <TextField id="outlined-basic" label={agent} variant="outlined" />
+                <Button>Refresh</Button>
+            </Box>
             <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
         </Box>
         <Box className={styles['right-panel']}>
