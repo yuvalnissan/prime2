@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import {DataView} from '../data/Data'
 import styles from './PrimeFront.module.scss'
@@ -65,15 +64,16 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>
             <Box className={styles['controls']}>
+                <Box className={styles['context']}>
                     <Typography variant="subtitle1" display="inline">
-                    {scenario}
-                </Typography>
-                <Typography variant="subtitle1" display="inline">
-                    {agent}
-                </Typography>
-        
-                <TextField id="outlined-basic" label={scenario} variant="outlined" />
-                <TextField id="outlined-basic" label={agent} variant="outlined" />
+                        Scenario: {scenario}
+                    </Typography>
+                </Box>
+                <Box className={styles['context']}>
+                    <Typography variant="subtitle1" display="inline">
+                        Agent: {agent}
+                    </Typography>
+                </Box>
                 <Button>Refresh</Button>
             </Box>
             <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>

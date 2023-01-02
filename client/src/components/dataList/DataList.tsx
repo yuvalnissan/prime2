@@ -31,7 +31,7 @@ export const DataList = ({expressions, selectedExpressionId, setSelectedExpressi
     <ListItemIcon>
       <InboxIcon />
     </ListItemIcon>
-    <ListItemText primary={expression.id} />
+    <ListItemText primary={expression.id.replaceAll(',', ', ')} />
   </ListItemButton>
   }
 

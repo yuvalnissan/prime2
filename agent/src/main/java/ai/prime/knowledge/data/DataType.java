@@ -1,13 +1,14 @@
 package ai.prime.knowledge.data;
 
-public class DataType {
-    private String predicate;
+import ai.prime.common.type.Type;
+
+public class DataType extends Type {
 
     public DataType(String predicate) {
-        this.predicate = predicate;
+        super(predicate);
     }
 
     public String getPredicate() {
-        return predicate;
+        return super.getName();
     }
 }

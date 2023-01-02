@@ -51,4 +51,9 @@ public class Data {
 
         return hashCode;
     }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 }

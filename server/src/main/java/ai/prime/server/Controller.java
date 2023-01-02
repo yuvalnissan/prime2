@@ -17,7 +17,7 @@ public class Controller {
     }
 
     @GetMapping("/scenario")
-    public AgentModel getAgent(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
+    public AgentModel getScenario(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
         if (!scenarios.containsKey(scenarioName)) {
             scenarios.put(scenarioName, Scenario.loadScenario(scenarioName));
         }
@@ -31,12 +31,4 @@ public class Controller {
 
         return model;
     }
-
-//    @PostMapping("/agent")
-//    public void postAgent(@RequestParam(value = "name") String name, @RequestBody AgentModel agentModel) throws ServerException {
-//        if (agents.containsKey(name)) {
-//            throw new ServerException("Agent already exists");
-//        }
-//        agents.put(name, new Agent(name));
-//    }
 }
