@@ -16,11 +16,14 @@ public class Agent {
     private final Memory memory;
     private final QueueManager queueManager;
 
+    private final NodeMapping nodeMapping;
+
 
     public Agent(String name) {
         this.name = name;
         this.memory = new Memory(this);
         this.queueManager = new QueueManager();
+        this.nodeMapping = new NodeMapping();
 
         MessageQueue<QueueMessage> neuronQueue = this.queueManager.addQueue(FIRE_QUEUE);
         IntStream.range(0, FIRE_QUEUE_SIZE).forEach(i -> neuronQueue.registerConsumer(message -> {
@@ -35,6 +38,10 @@ public class Agent {
 
     public Memory getMemory() {
         return memory;
+    }
+
+    public NodeMapping getNodeMapping() {
+        return nodeMapping;
     }
 
     public void sendMessageToNeuron(NeuralMessage message) {

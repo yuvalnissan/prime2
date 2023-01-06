@@ -3,13 +3,16 @@ package ai.prime.knowledge.memory;
 import ai.prime.agent.Agent;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Neuron;
+import ai.prime.knowledge.neuron.Node;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 public class Memory {
 
-    private Agent agent;
-    private NeuralMap neuralMap;
+    private final Agent agent;
+    private final NeuralMap neuralMap;
 
     public Memory(Agent agent) {
         this.agent = agent;
@@ -20,6 +23,18 @@ public class Memory {
         synchronized (data.getDisplayName()){
             Neuron neuron = new Neuron(agent, data);
             neuralMap.addNeuron(neuron);
+
+            Collection<Class<Node>> nodeClasses = agent.getNodeMapping().getNodesForType(data.getType());
+            nodeClasses.forEach(nodeClass -> {
+                try {
+                    Constructor<Node> ctor = nodeClass.getConstructor(Neuron.class);
+                    Node node = ctor.newInstance(neuron);
+                    neuron.addNode(node);
+                    node.init();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 

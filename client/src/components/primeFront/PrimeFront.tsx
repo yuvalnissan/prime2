@@ -2,10 +2,11 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import {DataView} from '../data/Data'
+import { NeuronView } from '../neuron/NeuronView'
 import styles from './PrimeFront.module.scss'
 import { Expression } from '../../businessLogic/data'
 import { DataList } from '../dataList/DataList'
+import { Neuron } from '../../businessLogic/neuron'
 
 export interface PrimeFrontProps {
     className?: string
@@ -27,21 +28,33 @@ const geDataFromNeuron = (neuronData: any): Expression => {
     return expression
 }
 
+const getNeuron =  (neuron: any): Neuron => {
+    const data = geDataFromNeuron(neuron.data)
+    const nodes = neuron.nodes
+
+    return {data, nodes}
+}
+
 export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const searchParams = new URLSearchParams(document.location.search)
     const scenario = searchParams.get('scenario')
     const agent = searchParams.get('agent')
     const [expressions, setExpressions] = React.useState<Record<string, Expression>>({})
+    const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
 
     const setData = (agent: any) => {
         const memory = agent.memory
         const keys: string[] = Object.keys(agent.memory)
+        const neurons = {} as Record<string, Neuron>
         const expressions = {} as Record<string, Expression>
         keys.forEach(key => {
-            expressions[key] = geDataFromNeuron(memory[key].data)
+            const neuron = getNeuron(memory[key])
+            neurons[key] = neuron
+            expressions[key] = neuron.data
         })
 
+        setNeurons(neurons)
         setExpressions(expressions)
     }
 
@@ -79,7 +92,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
             <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
         </Box>
         <Box className={styles['right-panel']}>
-            {(expressions[selectedExpressionId]) ? <DataView expression={expressions[selectedExpressionId]} /> : null}
+            {(expressions[selectedExpressionId]) ? <NeuronView neuron={neurons[selectedExpressionId]} /> : null}
         </Box>
     </Box>
 }

@@ -1,6 +1,6 @@
 package ai.prime.knowledge.data;
 
-import ai.prime.common.type.Type;
+import ai.prime.common.utils.Type;
 
 public class DataType extends Type {
 

@@ -19,6 +19,5 @@ public abstract class NeuralMessage {
         return to;
     }
 
-    abstract String getType();
-
+    public abstract String getType();
 }

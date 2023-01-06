@@ -19,6 +19,7 @@
     <modules>
         <module>server</module>
         <module>agent</module>
+        <module>scenarios</module>
     </modules>
 
     <properties>

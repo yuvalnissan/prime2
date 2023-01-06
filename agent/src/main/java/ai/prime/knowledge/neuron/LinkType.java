@@ -1,6 +1,6 @@
 package ai.prime.knowledge.neuron;
 
-import ai.prime.common.type.Type;
+import ai.prime.common.utils.Type;
 
 public class LinkType extends Type {
 

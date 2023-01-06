@@ -1,16 +1,13 @@
 package ai.prime.server.models;
 
-import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Neuron;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AgentModel {
-
-    private String name;
-    private Map<String, NeuronModel> memory;
-
+    private final String name;
+    private final Map<String, NeuronModel> memory;
 
     public AgentModel(String name) {
         this.name = name;

@@ -1,0 +1,76 @@
+package ai.prime.scenario.experimental.connotation;
+
+import ai.prime.agent.NeuralMessage;
+import ai.prime.knowledge.data.Data;
+import ai.prime.knowledge.data.Expression;
+import ai.prime.knowledge.neuron.Neuron;
+import ai.prime.knowledge.neuron.Node;
+
+import java.util.*;
+
+
+public class ConnotationNode extends Node {
+    public static final String NAME = "connotationNode";
+    public static List<String> MESSAGE_TYPES = List.of(new String[]{ConnotationConnectMessage.TYPE});
+    private static final double DEFAULT_LINK_STRENGTH = 0.5;
+
+    private double strength = 0;
+
+    public ConnotationNode(Neuron neuron) {
+        super(neuron);
+    }
+
+    private void connectWith(Data data) {
+        if (!getNeuron().getLinks().hasLink(ConnotationLink.TYPE, data)) {
+            getNeuron().getLinks().addLink(new ConnotationLink(this.getData(), data, DEFAULT_LINK_STRENGTH));
+            ConnotationConnectMessage message = new ConnotationConnectMessage(this.getData(), data);
+            getNeuron().getAgent().sendMessageToNeuron(message);
+        }
+    }
+
+    public double getStrength() {
+        return strength;
+    }
+
+    @Override
+    public void init() {
+        Expression[] expressions = getData().getExpressions();
+        for (Expression expression : expressions) {
+            connectWith(expression.getData());
+        }
+    }
+
+    private void handleConnectMessages(Collection<NeuralMessage> messages) {
+        messages.forEach(message -> {
+            ConnotationConnectMessage connectMessage = (ConnotationConnectMessage)message;
+            connectWith(connectMessage.getFrom());
+        });
+    }
+
+    @Override
+    public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
+        if (Objects.equals(messageType, ConnotationConnectMessage.TYPE)) {
+            handleConnectMessages(messages);
+        } else {
+            throw new RuntimeException("Wrong message type " + messageType);
+        }
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public List<String> getMessageTypes() {
+        return MESSAGE_TYPES;
+    }
+
+    @Override
+    public Map<String, String> getDisplayProps() {
+        Map<String, String> props = new HashMap<>();
+        props.put("strength", String.valueOf(getStrength()));
+
+        return props;
+    }
+}

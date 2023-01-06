@@ -1,6 +1,7 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
+import ai.prime.scenario.Scenario;
 import ai.prime.server.models.AgentModel;
 import org.springframework.web.bind.annotation.*;
 

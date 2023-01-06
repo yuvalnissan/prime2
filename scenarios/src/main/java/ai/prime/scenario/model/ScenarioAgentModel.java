@@ -1,4 +1,4 @@
-package ai.prime.server.models;
+package ai.prime.scenario.model;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import { alpha, styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem';
-import styles from './Data.module.scss';
+import styles from './DataView.module.scss';
 import { Expression } from '../../businessLogic/data';
 
 

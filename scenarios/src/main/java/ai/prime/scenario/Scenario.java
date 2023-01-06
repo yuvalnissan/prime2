@@ -1,4 +1,4 @@
-package ai.prime.server;
+package ai.prime.scenario;
 
 import ai.prime.agent.Agent;
 import ai.prime.knowledge.data.Data;
@@ -6,8 +6,8 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
-import ai.prime.server.models.DataModel;
-import ai.prime.server.models.ScenarioModel;
+import ai.prime.scenario.model.DataModel;
+import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
@@ -60,17 +60,27 @@ public class Scenario {
             Gson gson = new Gson();
             Reader reader = new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
             ScenarioModel scenarioModel = gson.fromJson(reader, ScenarioModel.class);
+            List<String> defaultNodes = scenarioModel.getDefaultNodes();
+            Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
 
             scenarioModel.getAgents().forEach((agentName, agentModel) -> {
                 System.out.println("*** loading agent: " + agentName);
                 Agent agent = new Agent(agentName);
-                scenario.addAgent(agentName, agent);
+
+                defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));
+
+                nodeMapping.forEach((dataTypeName, nodeClassNames) -> {
+                    DataType dataType = new DataType(dataTypeName);
+                    nodeClassNames.forEach(nodeClassName -> agent.getNodeMapping().registerDataToNode(dataType, nodeClassName));
+                });
 
                 List<DataModel> expressions = agentModel.getExpressions();
                 expressions.forEach(expressionModel -> {
                     Expression expression = getExpression(expressionModel);
                     agent.getMemory().addData(expression.getData());
                 });
+
+                scenario.addAgent(agentName, agent);
             });
 
             reader.close();
