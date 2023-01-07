@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ConnotationNode extends Node {
     public static final String NAME = "connotationNode";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{ConnotationConnectMessage.TYPE});
+    public static List<String> MESSAGE_TYPES = List.of(new String[]{ConnotationConnectMessage.TYPE, IgniteMessage.TYPE});
     private static final double DEFAULT_LINK_STRENGTH = 0.5;
 
     private double strength = 0;
@@ -20,8 +20,16 @@ public class ConnotationNode extends Node {
         super(neuron);
     }
 
+    private boolean isSelf(Data data) {
+        return data.equals(this.getData());
+    }
+
+    private boolean isConnected(Data data) {
+        return getNeuron().getLinks().hasLink(ConnotationLink.TYPE, data);
+    }
+
     private void connectWith(Data data) {
-        if (!getNeuron().getLinks().hasLink(ConnotationLink.TYPE, data)) {
+        if (!isConnected(data) && !isSelf(data)) {
             getNeuron().getLinks().addLink(new ConnotationLink(this.getData(), data, DEFAULT_LINK_STRENGTH));
             ConnotationConnectMessage message = new ConnotationConnectMessage(this.getData(), data);
             getNeuron().getAgent().sendMessageToNeuron(message);
@@ -47,10 +55,19 @@ public class ConnotationNode extends Node {
         });
     }
 
+    private void handleIgniteMessages(Collection<NeuralMessage> messages) {
+        messages.forEach(message -> {
+            IgniteMessage igniteMessage = (IgniteMessage)message;
+            strength += igniteMessage.getStrength(); //TODO still doesn't do anything
+        });
+    }
+
     @Override
     public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
         if (Objects.equals(messageType, ConnotationConnectMessage.TYPE)) {
             handleConnectMessages(messages);
+        } else if (Objects.equals(messageType, IgniteMessage.TYPE)) {
+            handleIgniteMessages(messages);
         } else {
             throw new RuntimeException("Wrong message type " + messageType);
         }

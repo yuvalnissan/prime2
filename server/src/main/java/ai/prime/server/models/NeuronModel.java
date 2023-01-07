@@ -1,26 +1,17 @@
 package ai.prime.server.models;
 
-import ai.prime.knowledge.data.Data;
-import ai.prime.knowledge.neuron.Neuron;
-import ai.prime.knowledge.neuron.Node;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class NeuronModel {
-    private final Data data;
+    private final DataModel data;
     private final Map<String, NodeModel> nodes;
 
-    public NeuronModel(Neuron neuron) {
-        this.data = neuron.getData();
-        this.nodes = new HashMap<>();
-        neuron.getNodeNames().forEach(nodeName -> {
-            Node node = neuron.getNode(nodeName);
-            this.nodes.put(nodeName, new NodeModel(node.getDisplayProps())) ;
-        });
+    public NeuronModel(DataModel data, Map<String, NodeModel> nodes) {
+        this.data = data;
+        this.nodes = nodes;
     }
 
-    public Data getData() {
+    public DataModel getData() {
         return data;
     }
 

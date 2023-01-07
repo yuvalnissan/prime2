@@ -1,0 +1,14 @@
+{
+  "defaultNodes": ["ai.prime.scenario.experimental.connotation.ConnotationNode"],
+  "nodeMapping": {
+    "rel": []
+  },
+  "agents": {
+    "smith": {
+      "expressions": [
+        {"value": "Something"}
+      ]
+    }
+  }
+}
+

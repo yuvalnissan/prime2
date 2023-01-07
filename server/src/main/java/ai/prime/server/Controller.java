@@ -1,20 +1,26 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
+import ai.prime.knowledge.data.Data;
+import ai.prime.knowledge.data.Expression;
 import ai.prime.scenario.Scenario;
 import ai.prime.server.models.AgentModel;
+import ai.prime.server.models.DataModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class Controller {
     private final Map<String, Scenario> scenarios;
+    private final ModelConversion modelConversion;
 
     public Controller() {
         scenarios = new HashMap<>();
+        modelConversion = new ModelConversion();
     }
 
     @GetMapping("/scenario")
@@ -27,9 +33,18 @@ public class Controller {
         if (agent == null) {
             throw new RuntimeException("Agent " + agentName + " is not in scenario " + scenarioName);
         }
-        AgentModel model = new AgentModel(agent.getName());
-        agent.getMemory().getAllData().forEach(data -> model.addNeuron(agent.getMemory().getNeuron(data)));
+        AgentModel agentModel = modelConversion.getAgentModel(agent);
 
-        return model;
+        return agentModel;
+    }
+
+    @PostMapping("/message")
+    public void sendMessage(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName, @RequestBody AgentMessageBody messageBody) {
+        Scenario scenario = scenarios.get(scenarioName);
+        Expression expression = modelConversion.getExpressionFromModel(messageBody.getData());
+
+        if (Objects.equals(messageBody.getType(), "ignite")) {
+            scenario.igniteNeuron(agentName, expression.getData());
+        }
     }
 }

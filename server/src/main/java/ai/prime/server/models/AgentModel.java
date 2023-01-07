@@ -1,21 +1,14 @@
 package ai.prime.server.models;
 
-import ai.prime.knowledge.neuron.Neuron;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class AgentModel {
     private final String name;
     private final Map<String, NeuronModel> memory;
 
-    public AgentModel(String name) {
+    public AgentModel(String name, Map<String, NeuronModel> memory) {
         this.name = name;
-        this.memory = new HashMap<>();
-    }
-
-    public void addNeuron(Neuron neuron) {
-        memory.put(neuron.getData().getDisplayName(), new NeuronModel(neuron));
+        this.memory = memory;
     }
 
     public String getName() {

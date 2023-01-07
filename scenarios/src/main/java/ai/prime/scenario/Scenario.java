@@ -6,6 +6,7 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
+import ai.prime.scenario.experimental.connotation.IgniteMessage;
 import ai.prime.scenario.model.DataModel;
 import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Scenario {
+    private static final double DEFAULT_IGNITE_STRENGTH = 10.0;
 
     private final String name;
     private final Map<String, Agent> agents;
@@ -51,6 +53,12 @@ public class Scenario {
         DataModifier modifier = dataModel.isNegative() ? DataModifier.NEGATIVE : DataModifier.POSITIVE;
 
         return new Expression(data, modifier);
+    }
+
+    public void igniteNeuron(String agentName, Data data) {
+        IgniteMessage igniteMessage = new IgniteMessage(data, data, DEFAULT_IGNITE_STRENGTH);
+        Agent agent = getAgent(agentName);
+        agent.sendMessageToNeuron(igniteMessage);
     }
 
     public static Scenario loadScenario(String name) {

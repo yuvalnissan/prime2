@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 public class Data {
-    private DataType type;
-    private Expression[] expressions;
+    private final DataType type;
+    private final Expression[] expressions;
     private String displayName = null;
     private int hashCode = 0;
 
@@ -44,12 +44,23 @@ public class Data {
         return displayName;
     }
 
+    @Override
     public int hashCode(){
         if (hashCode == 0){
             hashCode = getDisplayName().hashCode();
         }
 
         return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (!(obj instanceof Data))
+            return false;
+
+        Data other = (Data)obj;
+
+        return (getDisplayName().equals(other.getDisplayName()));
     }
 
     @Override
