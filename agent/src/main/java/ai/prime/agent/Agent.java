@@ -3,6 +3,7 @@ package ai.prime.agent;
 import ai.prime.common.queue.MessageQueue;
 import ai.prime.common.queue.QueueMessage;
 import ai.prime.common.utils.Logger;
+import ai.prime.common.utils.Settings;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.memory.Memory;
 
@@ -11,7 +12,7 @@ import java.util.stream.IntStream;
 
 public class Agent {
     private static final String FIRE_QUEUE = "fire";
-    private static final int FIRE_QUEUE_SIZE = 1;
+    private static final int FIRE_QUEUE_SIZE = Settings.getIntProperty("neuron.fire.queue.size");
 
     private final String name;
     private final Memory memory;
@@ -46,7 +47,7 @@ public class Agent {
     }
 
     public void sendMessageToNeuron(NeuralMessage message) {
-        Logger.log("agent", "sending message to " + message.getTo().getDisplayName());
+        Logger.info("agent", "sending message to " + message.getTo().getDisplayName());
         Data to = message.getTo();
         getMemory().getNeuron(to).addMessage(message);
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));

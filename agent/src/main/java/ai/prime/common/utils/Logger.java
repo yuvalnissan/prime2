@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class Logger {
-    private static final String ALL = "all";
+    private static final String INFO = "info";
+    private static final String DEBUG = "debug";
     private static HashSet<String> keysToLog;
 
     static {
@@ -36,10 +37,18 @@ public class Logger {
         return getTime() + "\t" + key + ":\t" + message;
     }
 
-    public static void log(String key, String message) {
-        if (keysToLog.contains(key) || keysToLog.contains(ALL)) {
+    private static void print(String key, String message, String type) {
+        if (keysToLog.contains(key) || keysToLog.contains(type)) {
             System.out.println(getFormattedMessage(key, message));
         }
+    }
+
+    public static void info(String key, String message) {
+        print(key, message, INFO);
+    }
+
+    public static void debug(String key, String message) {
+        print(key, message, DEBUG);
     }
 
     public static void error(String message) {

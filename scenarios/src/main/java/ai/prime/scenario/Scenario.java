@@ -63,7 +63,7 @@ public class Scenario {
     }
 
     public static Scenario loadScenario(String name) {
-        Logger.log("scenarioLoaded", "*** loading scenario: " + name);
+        Logger.info("scenarioLoaded", "*** loading scenario: " + name);
         try{
             Scenario scenario = new Scenario(name);
             Gson gson = new Gson();
@@ -73,7 +73,7 @@ public class Scenario {
             Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
 
             scenarioModel.getAgents().forEach((agentName, agentModel) -> {
-                Logger.log("scenarioLoaded", "*** loading agent: " + agentName);
+                Logger.info("scenarioLoaded", "*** loading agent: " + agentName);
                 Agent agent = new Agent(agentName);
 
                 defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));
