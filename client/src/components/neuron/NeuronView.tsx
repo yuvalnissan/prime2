@@ -35,7 +35,7 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-      });
+      })
   
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
@@ -47,7 +47,7 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
       window.alert('Failed sending message')
     }
   }
-  
+
   return <Box className={`${styles.root} ${className} ${styles.all}`}>
     <Button onClick={handleIgniteClick} >Ignite</Button>
     <DataView expression={neuron.data} />

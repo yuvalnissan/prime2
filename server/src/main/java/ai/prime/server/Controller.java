@@ -1,11 +1,9 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
-import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.scenario.Scenario;
 import ai.prime.server.models.AgentModel;
-import ai.prime.server.models.DataModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,10 +21,14 @@ public class Controller {
         modelConversion = new ModelConversion();
     }
 
+    private void loadScenario(String scenarioName) {
+        scenarios.put(scenarioName, Scenario.loadScenario(scenarioName));
+    }
+
     @GetMapping("/scenario")
     public AgentModel getScenario(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
         if (!scenarios.containsKey(scenarioName)) {
-            scenarios.put(scenarioName, Scenario.loadScenario(scenarioName));
+            loadScenario(scenarioName);
         }
         Scenario scenario = scenarios.get(scenarioName);
         Agent agent = scenario.getAgent(agentName);
@@ -46,5 +48,10 @@ public class Controller {
         if (Objects.equals(messageBody.getType(), "ignite")) {
             scenario.igniteNeuron(agentName, expression.getData());
         }
+    }
+
+    @PostMapping("/reset")
+    public void resetScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+        loadScenario(scenarioName);
     }
 }

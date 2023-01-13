@@ -7,7 +7,7 @@ import styles from './PrimeFront.module.scss'
 import { Expression } from '../../businessLogic/data'
 import { DataList } from '../dataList/DataList'
 import { Neuron } from '../../businessLogic/neuron'
-import { getScenarioURL } from '../../communication/urls'
+import { getScenarioURL, getResetURL } from '../../communication/urls'
 
 export interface PrimeFrontProps {
     className?: string
@@ -68,6 +68,31 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
         }
     }
 
+    const resetScenario = async () => {
+        console.log(`Resetting scenario ${scenarioName}`)
+        try {
+            const body = {}
+            const response = await fetch(getResetURL(scenarioName), {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            })
+      
+            if (!response.ok) {
+                throw new Error(`Error! status: ${response.status}`);
+            }
+    
+            setShouldRefresh(true)
+
+        } catch (err) {
+          console.error(err)
+          window.alert('Failed resetting scenario')
+        }
+    }
+
     React.useEffect(() => {
         refreshData()
         const interval = setInterval(() => {
@@ -92,6 +117,9 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
                 </Box>
                 <Button onClick={toggleRefresh}>
                     Refreshing: {shouldRefresh + ''}
+                </Button>
+                <Button onClick={resetScenario}>
+                    Reset scenario
                 </Button>
             </Box>
             <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
