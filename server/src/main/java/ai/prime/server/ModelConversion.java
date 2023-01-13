@@ -1,6 +1,7 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
+import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
@@ -9,15 +10,9 @@ import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.neuron.Node;
 import ai.prime.scenario.Scenario;
-import ai.prime.server.models.AgentModel;
-import ai.prime.server.models.DataModel;
-import ai.prime.server.models.NeuronModel;
-import ai.prime.server.models.NodeModel;
+import ai.prime.server.models.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModelConversion {
 
@@ -54,7 +49,7 @@ public class ModelConversion {
         return new Expression(data, modifier);
     }
 
-    public Map<String, NodeModel> getNodeModels(Neuron neuron) {
+    private Map<String, NodeModel> getNodeModels(Neuron neuron) {
         Map<String, NodeModel> nodeModels = new HashMap<>();
 
         neuron.getNodeNames().forEach(nodeName -> {
@@ -65,11 +60,27 @@ public class ModelConversion {
         return nodeModels;
     }
 
-    public NeuronModel getNeuronModel(Neuron neuron) {
-        DataModel dataModel = getDataModel(neuron.getData());
-        Map<String, NodeModel> nodeModels = getNodeModels(neuron);
+    private Set<LinkModel> getLinkModels(Neuron neuron) {
+        var linkModels = new HashSet<LinkModel>();
+        neuron.getLinks().getTypes().forEach(type -> {
+            var links = neuron.getLinks().getLinks(type);
+            links.forEach(link -> {
+                var fromModel = getDataModel(link.getFrom());
+                var toModel = getDataModel(link.getTo());
+                var linkModel = new LinkModel(type.getName(), fromModel, toModel, link.getStrength());
+                linkModels.add(linkModel);
+            });
+        });
 
-        return new NeuronModel(dataModel, nodeModels);
+        return linkModels;
+    }
+
+    public NeuronModel getNeuronModel(Neuron neuron) {
+        var dataModel = getDataModel(neuron.getData());
+        var nodeModels = getNodeModels(neuron);
+        var linkModels = getLinkModels(neuron);
+
+        return new NeuronModel(dataModel, nodeModels, linkModels);
     }
 
     public AgentModel getAgentModel(Agent agent) {
@@ -80,7 +91,7 @@ public class ModelConversion {
             memory.put(neuron.getData().getDisplayName(), neuronModel);
         });
 
-        AgentModel agentModel = new AgentModel(agent.getName(), memory);
+        AgentModel agentModel = new AgentModel(agent.getName(), agent.isStable(), memory);
 
         return agentModel;
     }

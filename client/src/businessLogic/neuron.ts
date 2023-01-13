@@ -4,7 +4,15 @@ export interface Node {
     props: Record<string, string>
 }
 
+export interface Link {
+    type: string
+    strength: number
+    from: Data
+    to: Data
+}
+
 export interface Neuron {
     data: Data,
     nodes: Record<string, Node>
+    links: Link[]
 }

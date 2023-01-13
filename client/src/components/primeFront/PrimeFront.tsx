@@ -21,6 +21,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const [expressions, setExpressions] = React.useState<Record<string, Expression>>({})
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
+    const [isStable, setIsStable] = React.useState<boolean>(false)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
 
     const setData = (agent: any) => {
@@ -34,6 +35,13 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
             expressions[key] = neuron.data
         })
 
+        setIsStable(agent.stable)
+        if (agent.stable) {
+            console.log('Stable, stopping refresh')
+            setShouldRefresh(false)
+        } else {
+            console.log('Still not stable', isStable)
+        }
         setNeurons(neurons)
         setExpressions(expressions)
     }
@@ -61,13 +69,12 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
     }
 
     React.useEffect(() => {
-        if (shouldRefresh) {
-            const interval = setInterval(() => {
-                refreshData()
-            },1000)
-           
-            return () => clearInterval(interval)
-        }
+        refreshData()
+        const interval = setInterval(() => {
+            refreshData()
+        },1000)
+       
+        return () => clearInterval(interval)
     }, [shouldRefresh])
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
@@ -80,7 +87,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
                 </Box>
                 <Box className={styles['context']}>
                     <Typography variant="subtitle1" display="inline">
-                        Agent: {agentName}
+                        Agent: {agentName} ({isStable ? 'Stable' : 'Not stable'})
                     </Typography>
                 </Box>
                 <Button onClick={toggleRefresh}>
@@ -90,7 +97,14 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
             <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
         </Box>
         <Box className={styles['right-panel']}>
-            {(expressions[selectedExpressionId]) ? <NeuronView neuron={neurons[selectedExpressionId]} scenarioName={scenarioName} agentName={agentName} /> : null}
+            {(expressions[selectedExpressionId]) ? 
+                <NeuronView
+                    neuron={neurons[selectedExpressionId]}
+                    scenarioName={scenarioName}
+                    agentName={agentName}
+                    setSelectedExpressionId={setSelectedExpressionId}
+                    setShouldRefresh={setShouldRefresh}
+                /> : null}
         </Box>
     </Box>
 }

@@ -50,13 +50,17 @@ public class Agent {
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));
     }
 
+    public boolean isStable() {
+        return !queueManager.hasPendingMessages();
+    }
+
     public boolean waitForStability(int timeout){
         long startTime = (new Date()).getTime();
         long passed = 0;
 
         try {
             while (passed < timeout) {
-                if (!queueManager.hasPendingMessages()) {
+                if (isStable()) {
                     return true;
                 }
 

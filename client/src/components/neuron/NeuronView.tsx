@@ -2,22 +2,27 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import styles from './NeuronView.module.scss'
-import { Neuron } from '../../businessLogic/neuron'
+import { Link, Neuron } from '../../businessLogic/neuron'
 import { DataView } from '../data/DataView'
 import { NodeList } from '../nodeList/NodeList'
+import { LinkList } from '../linkList/LinkList'
 import { getMessageURL } from '../../communication/urls'
 
 
 export interface NeuronViewProps {
-  className?: string;
-  neuron: Neuron,
-  scenarioName: string,
+  className?: string
+  neuron: Neuron
+  scenarioName: string
   agentName: string
+  setSelectedExpressionId: Function
+  setShouldRefresh: Function
 }
 
-export const NeuronView = ({neuron, scenarioName, agentName, className}: NeuronViewProps) => {
-  const handleClick = async () => {
-    console.log('Trying')
+const compare = (a: Link, b: Link) => (a.to.id > b.to.id) ? 1 : ((b.to.id > a.to.id) ? -1 : 0)
+
+export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressionId, setShouldRefresh, className}: NeuronViewProps) => {
+  const handleIgniteClick = async () => {
+    console.log('Sending Ignite')
     try {
       const body = {
         data: neuron.data,
@@ -35,14 +40,18 @@ export const NeuronView = ({neuron, scenarioName, agentName, className}: NeuronV
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
+
+      setShouldRefresh(true)
     } catch (err) {
       console.error(err)
       window.alert('Failed sending message')
     }
   }
+  
   return <Box className={`${styles.root} ${className} ${styles.all}`}>
-    <Button onClick={handleClick} >Ignite</Button>
+    <Button onClick={handleIgniteClick} >Ignite</Button>
     <DataView expression={neuron.data} />
     <NodeList nodes={neuron.nodes} />
+    <LinkList links={neuron.links.sort(compare)} setSelectedExpressionId={setSelectedExpressionId} />
   </Box>
 }

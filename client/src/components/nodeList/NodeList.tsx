@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
+import Adjust from '@mui/icons-material/Adjust'
 import Typography from '@mui/material/Typography'
 import styles from './NodeList.module.scss'
 import { Node } from '../../businessLogic/neuron'
@@ -23,8 +24,9 @@ export const NodeList = ({nodes, className }: NodeListProps) => {
     return (
       <Box className={styles['node']} key={name}>
         <Divider />
+        <Adjust />
         <Typography variant="subtitle1" display="inline">
-          Node: {name}
+          {name}
         </Typography>
         <Box>
           {Object.entries(node.props).map(([prop, value]) => {
