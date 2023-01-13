@@ -1,12 +1,13 @@
 package ai.prime.scenario;
 
 import ai.prime.agent.Agent;
+import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
-import ai.prime.scenario.experimental.connotation.IgniteMessage;
+import ai.prime.knowledge.nodes.connotation.IgniteMessage;
 import ai.prime.scenario.model.DataModel;
 import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
@@ -62,7 +63,7 @@ public class Scenario {
     }
 
     public static Scenario loadScenario(String name) {
-        System.out.println("*** loading scenario: " + name);
+        Logger.log("scenarioLoaded", "*** loading scenario: " + name);
         try{
             Scenario scenario = new Scenario(name);
             Gson gson = new Gson();
@@ -72,7 +73,7 @@ public class Scenario {
             Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
 
             scenarioModel.getAgents().forEach((agentName, agentModel) -> {
-                System.out.println("*** loading agent: " + agentName);
+                Logger.log("scenarioLoaded", "*** loading agent: " + agentName);
                 Agent agent = new Agent(agentName);
 
                 defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));

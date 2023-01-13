@@ -1,7 +1,8 @@
-package ai.prime.knowledge.neuron;
+package ai.prime.knowledge.nodes;
 
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
+import ai.prime.knowledge.neuron.Neuron;
 
 import java.util.Collection;
 import java.util.Map;

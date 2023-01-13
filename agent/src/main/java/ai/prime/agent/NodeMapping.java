@@ -2,14 +2,11 @@ package ai.prime.agent;
 
 import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.DataType;
-import ai.prime.knowledge.neuron.Node;
+import ai.prime.knowledge.nodes.Node;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class NodeMapping {
     private final SetMap<DataType, Class<Node>> dataToNodes;

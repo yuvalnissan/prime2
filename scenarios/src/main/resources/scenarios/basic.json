@@ -1,5 +1,5 @@
 {
-  "defaultNodes": ["ai.prime.scenario.experimental.connotation.ConnotationNode"],
+  "defaultNodes": ["ai.prime.knowledge.nodes.connotation.ConnotationNode"],
   "nodeMapping": {
     "rel": []
   },

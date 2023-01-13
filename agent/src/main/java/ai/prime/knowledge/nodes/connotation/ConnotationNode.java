@@ -1,10 +1,10 @@
-package ai.prime.scenario.experimental.connotation;
+package ai.prime.knowledge.nodes.connotation;
 
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.neuron.Neuron;
-import ai.prime.knowledge.neuron.Node;
+import ai.prime.knowledge.nodes.Node;
 
 import java.util.*;
 

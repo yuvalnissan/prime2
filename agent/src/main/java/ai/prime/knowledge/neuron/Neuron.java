@@ -5,6 +5,7 @@ import ai.prime.agent.NeuralMessage;
 import ai.prime.common.utils.Lock;
 import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
+import ai.prime.knowledge.nodes.Node;
 
 import java.util.HashMap;
 import java.util.Map;

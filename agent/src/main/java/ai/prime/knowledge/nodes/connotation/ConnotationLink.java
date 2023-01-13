@@ -1,4 +1,4 @@
-package ai.prime.scenario.experimental.connotation;
+package ai.prime.knowledge.nodes.connotation;
 
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Link;

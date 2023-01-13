@@ -1,15 +1,13 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
-import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.neuron.Neuron;
-import ai.prime.knowledge.neuron.Node;
-import ai.prime.scenario.Scenario;
+import ai.prime.knowledge.nodes.Node;
 import ai.prime.server.models.*;
 
 import java.util.*;

@@ -47,6 +47,5 @@ public class AgentTests {
         agent.sendMessageToNeuron(new TestMessage(dummy, dummy, "four"));
 
         assertTrue(agent.waitForStability(10000));
-        System.out.println("Done");
     }
 }

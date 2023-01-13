@@ -3,10 +3,9 @@ package ai.prime.knowledge.memory;
 import ai.prime.agent.Agent;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Neuron;
-import ai.prime.knowledge.neuron.Node;
+import ai.prime.knowledge.nodes.Node;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 public class Memory {

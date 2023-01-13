@@ -1,7 +1,8 @@
 package ai.prime.agent;
 
-import ai.prime.common.queue.QueueMessage;
 import ai.prime.common.queue.MessageQueue;
+import ai.prime.common.queue.QueueMessage;
+import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.memory.Memory;
 
@@ -45,6 +46,7 @@ public class Agent {
     }
 
     public void sendMessageToNeuron(NeuralMessage message) {
+        Logger.log("agent", "sending message to " + message.getTo().getDisplayName());
         Data to = message.getTo();
         getMemory().getNeuron(to).addMessage(message);
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));
@@ -68,9 +70,10 @@ public class Agent {
                 passed = (new Date()).getTime() - startTime;
             }
 
-            System.out.println("Failed to stabilize");
+            Logger.error("Failed to stabilize");
             return false;
         } catch (InterruptedException e) {
+            Logger.error("Agent interrupted", e);
             throw new RuntimeException(e);
         }
     }

@@ -1,5 +1,7 @@
 package ai.prime.common.queue;
 
+import ai.prime.common.utils.Logger;
+
 import java.util.function.Consumer;
 
 public class MessageConsumer<T extends QueueMessage> implements Runnable {
@@ -34,9 +36,9 @@ public class MessageConsumer<T extends QueueMessage> implements Runnable {
                 }
             }
         } catch(InterruptedException e) {
-            System.out.println("Interrupted");
+            Logger.error("Interrupted");
         } catch(Exception e){
-            System.err.println("Failure getting message from queue");
+            Logger.error("Failure getting message from queue", e);
         }
     }
 }

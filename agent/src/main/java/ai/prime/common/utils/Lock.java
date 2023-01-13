@@ -11,7 +11,7 @@ public class Lock {
 	public void lock(){
 		try{
 			if (!lock.tryLock(TIMEOUT, TimeUnit.MILLISECONDS)) {
-				System.out.println("Deadlock!");
+				Logger.error("Deadlock!");
 			}
 		} catch(Exception e) {
 			throw new RuntimeException("Failed to acquire lock!", e);

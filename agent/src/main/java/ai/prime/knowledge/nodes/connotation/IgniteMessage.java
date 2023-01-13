@@ -1,4 +1,4 @@
-package ai.prime.scenario.experimental.connotation;
+package ai.prime.knowledge.nodes.connotation;
 
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
