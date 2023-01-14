@@ -94,11 +94,11 @@ public class ConfidenceNode extends Node {
         double changeSum = 0.0;
         double factor = 0.0;
 
-        for (PullMessage message : pullMessages.values()){
-            for (PullValue pullValue : message.getPullValues()){
+        for (PullMessage message : pullMessages.values()) {
+            for (PullValue pullValue : message.getPullValues()) {
                 double resistance = pullValue.getPotentialResistance();
                 double delta = resistance * pullValue.getPull();
-                if (!pullValue.isPositive()){
+                if (!pullValue.isPositive()) {
                     delta = (-1.0) * delta;
                 }
                 changeSum += delta;
@@ -117,17 +117,17 @@ public class ConfidenceNode extends Node {
         return balancedChange;
     }
 
-    private Confidence getUpdatedConfidence(double balancedChange){
+    private Confidence getUpdatedConfidence(double balancedChange) {
         double maxPositiveResistance = 0;
         double maxNegativeResistance = 0;
 
         for (PullMessage message : pullMessages.values()){
 
-            for (PullValue pullValue : message.getPullValues()){
+            for (PullValue pullValue : message.getPullValues()) {
                 double messagePotentialResistance = pullValue.getPotentialResistance();
-                if (pullValue.isPositive()){
+                if (pullValue.isPositive()) {
                     maxPositiveResistance = Math.max(maxPositiveResistance, messagePotentialResistance);
-                }else{
+                } else {
                     maxNegativeResistance = Math.max(maxNegativeResistance, messagePotentialResistance);
                 }
             }
@@ -142,7 +142,7 @@ public class ConfidenceNode extends Node {
         return new InferredConfidence(updatedConfidenceValue, positiveResistance, negativeResistance);
     }
 
-    private Confidence lowPullAdjustment(Confidence confidence){
+    private Confidence lowPullAdjustment(Confidence confidence) {
         if (confidence.getStrength() != 0.0 &&
                 confidence.getResistance(true) == 0.0 &&
                 confidence.getResistance(false) == 0.0) {
@@ -160,15 +160,14 @@ public class ConfidenceNode extends Node {
 
         Confidence current = confidence;
 
-        if (!isSense){
+        if (!isSense) {
             double balancedChange = getBalancedChange();
             confidence = getUpdatedConfidence(balancedChange);
 
             // Resetting if no support
             confidence = lowPullAdjustment(confidence);
 
-            if (confidence.isSignificantlyDifferent(current)){
-
+            if (confidence.isSignificantlyDifferent(current)) {
                 Logger.info("confidenceNode", "Neuron " + getNeuron().getData().getDisplayName() + " changed from " + current.toString() + " to: " + confidence.toString());
                 for (PullMessage message : pullMessages.values()){
                     Logger.debug("confidenceNode", "\tPull " + message.getFrom() + ": " + message.getPullValues());
@@ -179,17 +178,15 @@ public class ConfidenceNode extends Node {
             }
         }
 
-        for (Data source : pullMessages.keySet()){
-
+        for (Data source : pullMessages.keySet()) {
             Confidence lastSentToNeuron = lastSentConfidence.get(source);
-            if (lastSentToNeuron==null || confidence.isSignificantlyDifferent(lastSentToNeuron)){
+            if (lastSentToNeuron==null || confidence.isSignificantlyDifferent(lastSentToNeuron)) {
 
                 sendStatus(source);
                 pullMessageWaitingList.add(source);
-            }else if (newSources.contains(source)){
+            } else if (newSources.contains(source)) {
                 sendStatus(source);
             }
-
         }
 
         //Resetting the new sources
