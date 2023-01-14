@@ -1,5 +1,8 @@
 {
-  "defaultNodes": ["ai.prime.knowledge.nodes.connotation.ConnotationNode"],
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode"
+  ],
   "nodeMapping": {
     "rel": []
   },

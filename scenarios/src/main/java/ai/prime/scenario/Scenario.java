@@ -7,6 +7,8 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
+import ai.prime.knowledge.nodes.confidence.SenseConfidence;
+import ai.prime.knowledge.nodes.confidence.SenseMessage;
 import ai.prime.knowledge.nodes.connotation.IgniteMessage;
 import ai.prime.scenario.model.DataModel;
 import ai.prime.scenario.model.ScenarioModel;
@@ -60,6 +62,13 @@ public class Scenario {
         IgniteMessage igniteMessage = new IgniteMessage(data, data, DEFAULT_IGNITE_STRENGTH);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(igniteMessage);
+    }
+
+    public void setSense(String agentName, Data data, boolean isPositive) {
+        SenseConfidence confidence = isPositive ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
+        SenseMessage message = new SenseMessage(data, data, confidence);
+        Agent agent = getAgent(agentName);
+        agent.sendMessageToNeuron(message);
     }
 
     public static Scenario loadScenario(String name) {

@@ -1,0 +1,4 @@
+#agent
+scenarioLoaded
+settings
+confidenceNode

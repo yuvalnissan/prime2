@@ -20,12 +20,13 @@ public class Settings {
         Logger.info("settings", "Finished loading settings");
     }
 
-    public static String getStringProperty(String key){
+    public static String getStringProperty(String key) {
         String value = settings.getProperty(key);
-        if (value==null)
+        if (value == null) {
             throw new RuntimeException("Failed getting property for key " + key);
-        else
-            return value;
+        }
+
+        return value;
     }
 
     public static double getDoubleProperty(String key){

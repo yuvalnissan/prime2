@@ -1,6 +1,7 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
+import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.scenario.Scenario;
 import ai.prime.server.models.AgentModel;
@@ -47,6 +48,12 @@ public class Controller {
 
         if (Objects.equals(messageBody.getType(), "ignite")) {
             scenario.igniteNeuron(agentName, expression.getData());
+        } else if (Objects.equals(messageBody.getType(), "sense-positive")) {
+            scenario.setSense(agentName, expression.getData(), true);
+        } else if (Objects.equals(messageBody.getType(), "sense-negative")) {
+            scenario.setSense(agentName, expression.getData(), false);
+        } else {
+            Logger.error("Invalid scenario message type: " + messageBody.getType());
         }
     }
 

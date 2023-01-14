@@ -69,7 +69,10 @@ public class Neuron {
         messages = new SetMap<>();
         nodes.values().forEach(node -> {
             node.getMessageTypes().forEach(messageType -> {
-                node.handleMessage(messageType, currentMessages.getValues(messageType));
+                var messagesForType = currentMessages.getValues(messageType);
+                if (messagesForType.size() > 0) {
+                    node.handleMessage(messageType, messagesForType);
+                }
             });
         });
         messageLock.unlock();

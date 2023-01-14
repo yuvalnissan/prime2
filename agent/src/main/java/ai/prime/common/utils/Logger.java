@@ -13,7 +13,7 @@ public class Logger {
     private static HashSet<String> keysToLog;
 
     static {
-        var inputStream = Logger.class.getResourceAsStream("/keys.txt");
+        var inputStream = Logger.class.getResourceAsStream("/logKeys.txt");
         var inputStreamReader = new InputStreamReader(inputStream);
         try (BufferedReader br = new BufferedReader(inputStreamReader)) {
             keysToLog = new HashSet<>();
