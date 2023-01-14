@@ -10,7 +10,7 @@ import java.util.*;
 
 
 public class ConnotationNode extends Node {
-    public static final String NAME = "connotationNode";
+    public static final String NAME = "connotation";
     public static List<String> MESSAGE_TYPES = List.of(new String[]{ConnotationConnectMessage.TYPE, IgniteMessage.TYPE});
     private static final double DEFAULT_LINK_STRENGTH = 0.5;
 

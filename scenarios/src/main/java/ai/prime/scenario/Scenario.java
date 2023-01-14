@@ -92,13 +92,14 @@ public class Scenario {
                     nodeClassNames.forEach(nodeClassName -> agent.getNodeMapping().registerDataToNode(dataType, nodeClassName));
                 });
 
+                scenario.addAgent(agentName, agent);
+
                 List<DataModel> expressions = agentModel.getExpressions();
                 expressions.forEach(expressionModel -> {
                     Expression expression = getExpression(expressionModel);
-                    agent.getMemory().addData(expression.getData());
+//                    agent.getMemory().addData(expression.getData());
+                    scenario.setSense(agentName, expression.getData(), expression.getModifier() == DataModifier.POSITIVE);
                 });
-
-                scenario.addAgent(agentName, agent);
             });
 
             reader.close();

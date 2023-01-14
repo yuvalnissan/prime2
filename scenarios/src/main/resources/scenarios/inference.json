@@ -10,27 +10,19 @@
   "agents": {
     "smith": {
       "expressions": [
+        {"value": "D", "negative": true},
         {
-          "type": "rel",
+          "type": "infer",
           "expressions": [
-            {"value": "Ford"},
-            {"value": "isa"},
-            {
-              "type": "rel",
-              "expressions": [
-                {"value": "Something"},
-                {"value": "thatIs"},
-                {"negative": true, "value": "else"}
-              ]
-            }
+            {"value": "A"},
+            {"value": "B"}
           ]
         },
         {
-          "type": "rel",
+          "type": "infer",
           "expressions": [
-            {"value": "Ford"},
-            {"value": "isa"},
-            {"value": "Vehicle"}
+            {"value": "B"},
+            {"value": "C"}
           ]
         }
       ]

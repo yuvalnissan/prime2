@@ -15,14 +15,10 @@ public abstract class Confidence {
     private final double negativeResistance;
     private String cachedDisplayName;
 
-    private double capped(double value) {
-        return Math.max(Math.min(strength, 1.0), -1.0);
-    }
-
     public Confidence(double strength, double positiveResistance, double negativeResistance) {
-        this.strength = capped(strength);
-        this.positiveResistance = capped(positiveResistance);
-        this.negativeResistance = capped(negativeResistance);
+        this.strength =  Math.max(Math.min(strength, 1.0), -1.0);
+        this.positiveResistance = positiveResistance < RESISTANCE_MINIMUM ? 0.0 : positiveResistance;
+        this.negativeResistance = negativeResistance < RESISTANCE_MINIMUM ? 0.0 : negativeResistance;
     }
 
     public double getStrength() {
@@ -55,17 +51,31 @@ public abstract class Confidence {
     protected abstract String getDisplayedName();
 
     public boolean isSignificantlyDifferent(Confidence other) {
-        boolean significant = false;
-
-        if (Math.abs((other.getStrength() / this.getStrength()) - 1.0) > CONFIDENCE_SIGNIFICANT_DIFF){
-            significant = true;
-        } else if (Math.abs((other.getResistance(true) / this.getResistance(true)) - 1.0) > CONFIDENCE_RESISTANCE_DIFF){
-            significant = true;
-        } else if (Math.abs((other.getResistance(false) / this.getResistance(false)) - 1.0) > CONFIDENCE_RESISTANCE_DIFF){
-            significant = true;
+        if (this.getStrength() == 0.0 && other.getStrength() != 0) {
+            return true;
         }
 
-        return significant;
+        if (Math.abs((other.getStrength() / this.getStrength()) - 1.0) > CONFIDENCE_SIGNIFICANT_DIFF) {
+            return true;
+        }
+
+        if (this.getResistance(true) == 0.0 && other.getResistance(true) != 0.0) {
+            return true;
+        }
+
+        if (Math.abs((other.getResistance(true) / this.getResistance(true)) - 1.0) > CONFIDENCE_RESISTANCE_DIFF){
+            return true;
+        }
+
+        if (this.getResistance(false) == 0.0 && other.getResistance(false) != 0.0) {
+            return true;
+        }
+
+        if (Math.abs((other.getResistance(false) / this.getResistance(false)) - 1.0) > CONFIDENCE_RESISTANCE_DIFF){
+            return true;
+        }
+
+        return false;
     }
 
     public int hashCode(){

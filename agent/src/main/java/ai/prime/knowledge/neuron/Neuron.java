@@ -67,6 +67,8 @@ public class Neuron {
         messageLock.lock();
         SetMap<String, NeuralMessage> currentMessages = messages;
         messages = new SetMap<>();
+        messageLock.unlock();
+
         nodes.values().forEach(node -> {
             node.getMessageTypes().forEach(messageType -> {
                 var messagesForType = currentMessages.getValues(messageType);
@@ -75,7 +77,6 @@ public class Neuron {
                 }
             });
         });
-        messageLock.unlock();
 
         fireLock.unlock();
     }

@@ -24,9 +24,9 @@ public class SetMap <K, V> {
         return Collections.unmodifiableCollection(values.keySet());
     }
 
-    public Collection<V> getValues(K key){
+    public Set<V> getValues(K key){
         ensureKey(key);
 
-        return Collections.unmodifiableCollection(values.get(key));
+        return Set.copyOf(values.get(key));
     }
 }

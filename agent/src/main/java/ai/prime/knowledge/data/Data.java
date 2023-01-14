@@ -36,6 +36,11 @@ public class Data {
         return value;
     }
 
+    public Data normalize() {
+        //TODO deal with variable normalization
+        return this;
+    }
+
     public String getDisplayName() {
         if (displayName == null) {
             displayName = buildDisplayName();

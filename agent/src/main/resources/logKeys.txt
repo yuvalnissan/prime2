@@ -1,4 +1,9 @@
 #agent
 scenarioLoaded
 settings
+
+memory
+
 confidenceNode
+factorNode
+inferNode

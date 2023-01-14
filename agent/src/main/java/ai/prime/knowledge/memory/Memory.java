@@ -1,6 +1,7 @@
 package ai.prime.knowledge.memory;
 
 import ai.prime.agent.Agent;
+import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.nodes.Node;
@@ -20,20 +21,23 @@ public class Memory {
 
     public void addData(Data data) {
         synchronized (data.getDisplayName()){
-            Neuron neuron = new Neuron(agent, data);
-            neuralMap.addNeuron(neuron);
+            if (!neuralMap.hasNeuron(data)) {
+                Logger.info("memory", "Adding neuron: " + data.getDisplayName());
+                Neuron neuron = new Neuron(agent, data);
+                neuralMap.addNeuron(neuron);
 
-            Collection<Class<Node>> nodeClasses = agent.getNodeMapping().getNodesForType(data.getType());
-            nodeClasses.forEach(nodeClass -> {
-                try {
-                    Constructor<Node> ctor = nodeClass.getConstructor(Neuron.class);
-                    Node node = ctor.newInstance(neuron);
-                    neuron.addNode(node);
-                    node.init();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+                Collection<Class<Node>> nodeClasses = agent.getNodeMapping().getNodesForType(data.getType());
+                nodeClasses.forEach(nodeClass -> {
+                    try {
+                        Constructor<Node> ctor = nodeClass.getConstructor(Neuron.class);
+                        Node node = ctor.newInstance(neuron);
+                        neuron.addNode(node);
+                        node.init();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
         }
     }
 

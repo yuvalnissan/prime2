@@ -22,7 +22,7 @@ public class InferredConfidence extends Confidence {
         double negative = getResistance(false);
         String strengthStr = format.format(getStrength());
         String positiveStr = format.format(positive);
-        String negativeStr = format.format(positive);
+        String negativeStr = format.format(negative);
 
         return strengthStr + "|" + positiveStr + "|" + negativeStr;
     }

@@ -8,7 +8,7 @@ public class SenseConfidence extends Confidence {
 
     public static final SenseConfidence SENSE_EMPTY = new SenseConfidence(0.0, true);
     public static final SenseConfidence SENSE_POSITIVE = new SenseConfidence(1.0, true);
-    public static final SenseConfidence SENSE_NEGATIVE = new SenseConfidence(1.0, false);
+    public static final SenseConfidence SENSE_NEGATIVE = new SenseConfidence(-1.0, false);
 
     private final boolean isPositive;
 
@@ -23,13 +23,11 @@ public class SenseConfidence extends Confidence {
 
     @Override
     public Confidence invert() {
-        return new SenseConfidence(getStrength(), !isPositive);
+        return new SenseConfidence((-1.0) * getStrength(), !isPositive);
     }
 
     @Override
     protected String getDisplayedName() {
-        double positive = getResistance(true);
-        double negative = getResistance(false);
         String strengthStr = format.format(getStrength());
 
         return strengthStr + "|SENSE_" + (isPositive ? "POSITIVE" : "NEGATIVE");

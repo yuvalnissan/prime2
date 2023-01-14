@@ -10,7 +10,7 @@ import ai.prime.knowledge.nodes.Node;
 import java.util.*;
 
 public class ConfidenceNode extends Node {
-    public static final String NAME = "confidenceNode";
+    public static final String NAME = "confidence";
     public static List<String> MESSAGE_TYPES = List.of(new String[]{PullMessage.TYPE, SenseMessage.TYPE});
     private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("confidence.convergence.factor");
 
@@ -63,6 +63,7 @@ public class ConfidenceNode extends Node {
     private void processPullMessage(Collection<NeuralMessage> messages) {
         messages.forEach(message -> {
             PullMessage pullMessage = (PullMessage) message;
+            Logger.info("confidenceNode", "Pull message: " + pullMessage);
             pullMessages.put(pullMessage.getFrom(), pullMessage);
             newSources.add(message.getFrom());
             pullMessageWaitingList.remove(message.getFrom());
@@ -121,8 +122,7 @@ public class ConfidenceNode extends Node {
         double maxPositiveResistance = 0;
         double maxNegativeResistance = 0;
 
-        for (PullMessage message : pullMessages.values()){
-
+        for (PullMessage message : pullMessages.values()) {
             for (PullValue pullValue : message.getPullValues()) {
                 double messagePotentialResistance = pullValue.getPotentialResistance();
                 if (pullValue.isPositive()) {
@@ -180,7 +180,7 @@ public class ConfidenceNode extends Node {
 
         for (Data source : pullMessages.keySet()) {
             Confidence lastSentToNeuron = lastSentConfidence.get(source);
-            if (lastSentToNeuron==null || confidence.isSignificantlyDifferent(lastSentToNeuron)) {
+            if (lastSentToNeuron == null || confidence.isSignificantlyDifferent(lastSentToNeuron)) {
 
                 sendStatus(source);
                 pullMessageWaitingList.add(source);

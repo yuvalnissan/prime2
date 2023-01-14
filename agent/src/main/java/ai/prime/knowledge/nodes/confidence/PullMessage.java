@@ -3,19 +3,19 @@ package ai.prime.knowledge.nodes.confidence;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
 
-import java.util.List;
+import java.util.Set;
 
 public class PullMessage extends NeuralMessage {
     public static final String TYPE = "pullMessage";
 
-    private final List<PullValue> pullValues;
+    private final Set<PullValue> pullValues;
 
-    public PullMessage(Data from, Data to, List<PullValue> pullValues) {
+    public PullMessage(Data from, Data to, Set<PullValue> pullValues) {
         super(from, to);
         this.pullValues = pullValues;
     }
 
-    public List<PullValue> getPullValues() {
+    public Set<PullValue> getPullValues() {
         return pullValues;
     }
 
@@ -26,7 +26,7 @@ public class PullMessage extends NeuralMessage {
 
     @Override
     public String toString(){
-        return super.toString() + " " + getPullValues().toString();
+        return getFrom().getDisplayName() + " " + getTo() + " " + getPullValues().toString();
     }
 
     @Override
