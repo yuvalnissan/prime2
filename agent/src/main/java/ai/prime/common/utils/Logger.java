@@ -12,7 +12,8 @@ public class Logger {
     private static final String DEBUG = "debug";
     private static HashSet<String> keysToLog;
 
-    static {
+    //TODO support refreshing at runtime
+    private static void load() {
         var inputStream = Logger.class.getResourceAsStream("/logKeys.txt");
         var inputStreamReader = new InputStreamReader(inputStream);
         try (BufferedReader br = new BufferedReader(inputStreamReader)) {
@@ -24,6 +25,10 @@ public class Logger {
         } catch (IOException e) {
             System.err.println("Error reading keys from file: " + e.getMessage());
         }
+    }
+
+    static {
+        load();
     }
 
     private static String getTime() {
@@ -38,7 +43,7 @@ public class Logger {
     }
 
     private static void print(String key, String message, String type) {
-        if (keysToLog.contains(key) || keysToLog.contains(type)) {
+        if (keysToLog.contains(key) && keysToLog.contains(type)) {
             System.out.println(getFormattedMessage(key, message));
         }
     }

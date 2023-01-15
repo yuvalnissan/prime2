@@ -31,6 +31,10 @@ public class MessageQueue<T extends QueueMessage> {
         thread.start();
     }
 
+    public boolean isProcessing() {
+        return queue.isProcessing();
+    }
+
     public void stop(){
         threads.forEach(Thread::interrupt);
     }

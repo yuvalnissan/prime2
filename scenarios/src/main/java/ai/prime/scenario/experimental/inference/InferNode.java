@@ -67,22 +67,19 @@ public class InferNode extends FactorNode {
         boolean targetIsPositive = target.getModifier() == DataModifier.NEGATIVE ? !isPositive : isPositive;
 
         double effectConflict = inferConfidence.getStrength() - expected;
-        if (effectConflict >= RELAX_THRESHOLD) {
-            double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
-
-            double effectResistance = Math.min(conditionConfidence.getResistance(true), targetConfidence.getResistance(false));
-            double fromResistance = Math.min(targetConfidence.getResistance(false), inferConfidence.getResistance(true));
-            double toResistance = Math.min(conditionConfidence.getResistance(true), inferConfidence.getResistance(true));
-
-            inferPullValue = new PullValue(!isPositive, pull, effectResistance, getData());
-            confidencePullValue = new PullValue(conditionIsPositive, pull, fromResistance, getData());
-
-            targetPullValue = new PullValue(targetIsPositive, pull, toResistance, getData());
-        } else {
-            inferPullValue = new PullValue(!isPositive, 0, 0, getData());
-            confidencePullValue = new PullValue(conditionIsPositive, 0, 0, getData());
-            targetPullValue = new PullValue(targetIsPositive, 0, 0, getData());
+        double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
+        if (pull <= RELAX_THRESHOLD) {
+            pull = 0.0;
         }
+
+        double effectResistance = Math.min(conditionConfidence.getResistance(true), targetConfidence.getResistance(false));
+        double fromResistance = Math.min(targetConfidence.getResistance(false), inferConfidence.getResistance(true));
+        double toResistance = Math.min(conditionConfidence.getResistance(true), inferConfidence.getResistance(true));
+
+        inferPullValue = new PullValue(!isPositive, pull, effectResistance, getData());
+        confidencePullValue = new PullValue(conditionIsPositive, pull, fromResistance, getData());
+
+        targetPullValue = new PullValue(targetIsPositive, pull, toResistance, getData());
 
         results.add(getData(), inferPullValue);
         results.add(condition.getData(), confidencePullValue);

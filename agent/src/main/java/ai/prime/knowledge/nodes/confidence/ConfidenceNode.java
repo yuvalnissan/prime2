@@ -12,7 +12,8 @@ import java.util.*;
 public class ConfidenceNode extends Node {
     public static final String NAME = "confidence";
     public static List<String> MESSAGE_TYPES = List.of(new String[]{PullMessage.TYPE, SenseMessage.TYPE});
-    private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("confidence.convergence.factor");
+    private static final double CONVERGENCE_FACTOR_STRENGTH = Settings.getDoubleProperty("confidence.convergence.factor.strength");
+    private static final double CONVERGENCE_FACTOR_RESISTANCE = Settings.getDoubleProperty("confidence.convergence.factor.resistance");
 
     private Confidence confidence;
     private boolean isSense;
@@ -134,10 +135,10 @@ public class ConfidenceNode extends Node {
         }
 
         double oldConfidence = confidence.getStrength();
-        double updatedConfidenceValue = (balancedChange * CONVERGENCE_FACTOR) + oldConfidence;
+        double updatedConfidenceValue = (balancedChange * CONVERGENCE_FACTOR_STRENGTH) + oldConfidence;
 
-        double positiveResistance = confidence.getResistance(true) + CONVERGENCE_FACTOR * (maxPositiveResistance - confidence.getResistance(true));
-        double negativeResistance = confidence.getResistance(false) + CONVERGENCE_FACTOR * (maxNegativeResistance - confidence.getResistance(false));
+        double positiveResistance = confidence.getResistance(true) + CONVERGENCE_FACTOR_RESISTANCE * (maxPositiveResistance - confidence.getResistance(true));
+        double negativeResistance = confidence.getResistance(false) + CONVERGENCE_FACTOR_RESISTANCE * (maxNegativeResistance - confidence.getResistance(false));
 
         return new InferredConfidence(updatedConfidenceValue, positiveResistance, negativeResistance);
     }

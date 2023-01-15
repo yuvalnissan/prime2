@@ -65,6 +65,7 @@ public class Scenario {
     }
 
     public void setSense(String agentName, Data data, boolean isPositive) {
+        // TODO sense should be different than just max, mostly for reading from file
         SenseConfidence confidence = isPositive ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
         SenseMessage message = new SenseMessage(data, data, confidence);
         Agent agent = getAgent(agentName);
@@ -97,7 +98,6 @@ public class Scenario {
                 List<DataModel> expressions = agentModel.getExpressions();
                 expressions.forEach(expressionModel -> {
                     Expression expression = getExpression(expressionModel);
-//                    agent.getMemory().addData(expression.getData());
                     scenario.setSense(agentName, expression.getData(), expression.getModifier() == DataModifier.POSITIVE);
                 });
             });

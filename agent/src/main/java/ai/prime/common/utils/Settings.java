@@ -8,7 +8,8 @@ public class Settings {
     private static final  String FILE = "/settings.properties";
     private static Properties settings;
 
-    static{
+    //TODO support refreshing at runtime
+    private static void load() {
         settings = new Properties();
 
         try {
@@ -18,6 +19,10 @@ public class Settings {
         }
 
         Logger.info("settings", "Finished loading settings");
+    }
+
+    static{
+        load();
     }
 
     public static String getStringProperty(String key) {

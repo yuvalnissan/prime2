@@ -1,7 +1,7 @@
 package ai.prime.agent;
 
-import ai.prime.common.queue.QueueMessage;
 import ai.prime.common.queue.MessageQueue;
+import ai.prime.common.queue.QueueMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +33,6 @@ public class QueueManager {
     }
 
     public boolean hasPendingMessages() {
-        return queues.values().stream().anyMatch(queue -> queue.size() > 0);
+        return queues.values().stream().anyMatch(queue -> queue.size() > 0 || queue.isProcessing());
     }
 }

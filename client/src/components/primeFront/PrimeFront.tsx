@@ -22,6 +22,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
+    const [messageCount, setMessageCount] = React.useState<number>(0)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
 
     const setData = (agent: any) => {
@@ -44,6 +45,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
         }
         setNeurons(neurons)
         setExpressions(expressions)
+        setMessageCount(agent.messageCount)
     }
 
     const toggleRefresh = () => {
@@ -112,7 +114,7 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
                 </Box>
                 <Box className={styles['context']}>
                     <Typography variant="subtitle1" display="inline">
-                        Agent: {agentName} ({isStable ? 'Stable' : 'Not stable'})
+                        Agent: {agentName} ({isStable ? 'Stable' : 'Not stable'} {messageCount})
                     </Typography>
                 </Box>
                 <Button onClick={toggleRefresh}>

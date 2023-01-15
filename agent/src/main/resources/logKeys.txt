@@ -1,3 +1,8 @@
+### top level settings
+info
+debug
+
+### active keys
 #agent
 scenarioLoaded
 settings

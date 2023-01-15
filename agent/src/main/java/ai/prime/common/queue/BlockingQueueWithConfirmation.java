@@ -24,6 +24,10 @@ public class BlockingQueueWithConfirmation<T extends QueueMessage> {
         }
     }
 
+    public boolean isProcessing() {
+        return processingCount > 0;
+    }
+
     public void add(T message) {
         queue.add(message);
     }

@@ -89,7 +89,7 @@ public class ModelConversion {
             memory.put(neuron.getData().getDisplayName(), neuronModel);
         });
 
-        AgentModel agentModel = new AgentModel(agent.getName(), agent.isStable(), memory);
+        AgentModel agentModel = new AgentModel(agent.getName(), agent.isStable(), memory, agent.getMessageCount());
 
         return agentModel;
     }

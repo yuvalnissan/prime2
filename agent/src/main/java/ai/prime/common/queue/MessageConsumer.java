@@ -31,8 +31,11 @@ public class MessageConsumer<T extends QueueMessage> implements Runnable {
                 }else{
                     T message = queue.take();
                     queue.setProcessing(true);
-                    handleMessage(message);
-                    queue.setProcessing(false);
+                    try {
+                        handleMessage(message);
+                    } finally {
+                        queue.setProcessing(false);
+                    }
                 }
             }
         } catch(InterruptedException e) {

@@ -10,7 +10,14 @@
   "agents": {
     "smith": {
       "expressions": [
-        {"value": "D", "negative": true},
+        {"value": "root", "negative": true},
+        {
+          "type": "infer",
+          "expressions": [
+            {"value": "root"},
+            {"value": "A"}
+          ]
+        },
         {
           "type": "infer",
           "expressions": [
@@ -23,6 +30,13 @@
           "expressions": [
             {"value": "B"},
             {"value": "C"}
+          ]
+        },
+        {
+          "type": "infer",
+          "expressions": [
+            {"value": "C"},
+            {"value": "A", "negative": true}
           ]
         }
       ]

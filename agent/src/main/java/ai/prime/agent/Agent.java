@@ -8,6 +8,7 @@ import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.memory.Memory;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 public class Agent {
@@ -20,12 +21,15 @@ public class Agent {
 
     private final NodeMapping nodeMapping;
 
+    private AtomicLong fireCounter;
+
 
     public Agent(String name) {
         this.name = name;
         this.memory = new Memory(this);
         this.queueManager = new QueueManager();
         this.nodeMapping = new NodeMapping();
+        this.fireCounter = new AtomicLong(0);
 
         MessageQueue<QueueMessage> neuronQueue = this.queueManager.addQueue(FIRE_QUEUE);
         IntStream.range(0, FIRE_QUEUE_SIZE).forEach(i -> neuronQueue.registerConsumer(message -> {
@@ -46,11 +50,16 @@ public class Agent {
         return nodeMapping;
     }
 
+    public long getMessageCount() {
+        return fireCounter.get();
+    }
+
     public void sendMessageToNeuron(NeuralMessage message) {
         Logger.info("agent", "sending message to " + message.getTo().getDisplayName());
         Data to = message.getTo();
         getMemory().getNeuron(to).addMessage(message);
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));
+        fireCounter.incrementAndGet();
     }
 
     public boolean isStable() {
