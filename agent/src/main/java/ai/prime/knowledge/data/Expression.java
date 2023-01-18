@@ -1,5 +1,9 @@
 package ai.prime.knowledge.data;
 
+import ai.prime.knowledge.data.base.VariableData;
+
+import java.util.Map;
+
 public class Expression {
     private Data data;
     private DataModifier modifier;
@@ -36,11 +40,68 @@ public class Expression {
         return displayName;
     }
 
-    public int hashCode(){
+    public Expression applyModifier(DataModifier alter) {
+        DataModifier appliedModifier = modifier.applyModifier(alter);
+
+        return new Expression(data, appliedModifier);
+    }
+
+    public Expression not() {
+        return applyModifier(DataModifier.NEGATIVE);
+    }
+
+    public  Unification unify(Expression exp){
+        if ((!(getData().getType().equals(VariableData.TYPE)))){
+            if (!modifier.equals(exp.getModifier())){
+                return null;
+            }
+
+            if (exp.getData().getType().equals(VariableData.TYPE)){
+                //Dealing with a case of unifying with a pattern
+                return new Unification();
+            }
+        }
+
+        Unification answer = data.unify(exp, modifier);
+        return answer;
+    }
+
+    public Expression replace(Map<Data, Expression> replace) {
+        if (replace.containsKey(data)){
+            return replace.get(data).applyModifier(modifier);
+        }
+
+        return data.replace(replace).applyModifier(modifier);
+    }
+
+    public Expression bind(Unification unification, boolean shiftUnification) {
+        Data bounded = data.bind(unification, shiftUnification);
+        if (bounded != null) {
+            return new Expression(bounded, modifier);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
+
+    @Override
+    public int hashCode() {
         if (hashCode == 0){
             hashCode = getDisplayName().hashCode();
         }
 
         return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Expression))
+            return false;
+
+        return (toString().equals(obj.toString()));
     }
 }

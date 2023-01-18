@@ -1,29 +1,26 @@
 package ai.prime.common.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.Objects;
+import java.util.Properties;
 
 public class Logger {
+    private static final  String FILE = "/logKeys.properties";
     private static final String INFO = "info";
     private static final String DEBUG = "debug";
-    private static HashSet<String> keysToLog;
+
+    private static Properties keysToLog;
 
     //TODO support refreshing at runtime
     private static void load() {
-        var inputStream = Logger.class.getResourceAsStream("/logKeys.txt");
-        var inputStreamReader = new InputStreamReader(inputStream);
-        try (BufferedReader br = new BufferedReader(inputStreamReader)) {
-            keysToLog = new HashSet<>();
-            String key;
-            while ((key = br.readLine()) != null) {
-                keysToLog.add(key);
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading keys from file: " + e.getMessage());
+        keysToLog = new Properties();
+
+        try {
+            keysToLog.load(new InputStreamReader(Objects.requireNonNull(Logger.class.getResourceAsStream(FILE))));
+        } catch(Exception e){
+            Logger.error("Failed loading settings", e);
         }
     }
 
@@ -38,13 +35,18 @@ public class Logger {
         return dateFormat.format(date);
     }
 
-    private static String getFormattedMessage(String key, String message) {
-        return getTime() + "\t" + key + ":\t" + message;
+    private static String getFormattedMessage(String key, String message, String type) {
+        return getTime() + "\t" + type.toUpperCase() + "\t" + key + ":\t" + message;
     }
 
     private static void print(String key, String message, String type) {
-        if (keysToLog.contains(key) && keysToLog.contains(type)) {
-            System.out.println(getFormattedMessage(key, message));
+        if (!keysToLog.containsKey(key)) {
+            return;
+        }
+
+        if (keysToLog.getProperty(key).equals(type) ||
+                (type.equals(INFO) && keysToLog.getProperty(key).equals(DEBUG))) {
+            System.out.println(getFormattedMessage(key, message, type));
         }
     }
 
@@ -57,7 +59,7 @@ public class Logger {
     }
 
     public static void error(String message) {
-        System.err.println(getFormattedMessage("ERROR!!!", message));
+        System.err.println(getFormattedMessage("ERROR", "ERROR!!!", message));
     }
 
     public static void error(String message, Exception exception) {

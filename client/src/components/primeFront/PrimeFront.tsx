@@ -4,7 +4,6 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { NeuronView } from '../neuron/NeuronView'
 import styles from './PrimeFront.module.scss'
-import { Expression } from '../../businessLogic/data'
 import { DataList } from '../dataList/DataList'
 import { Neuron } from '../../businessLogic/neuron'
 import { getScenarioURL, getResetURL } from '../../communication/urls'
@@ -18,7 +17,6 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
     const scenarioName = searchParams.get('scenario')!
     const agentName = searchParams.get('agent')!
 
-    const [expressions, setExpressions] = React.useState<Record<string, Expression>>({})
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
@@ -29,11 +27,10 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
         const memory = agent.memory
         const keys: string[] = Object.keys(agent.memory)
         const neurons = {} as Record<string, Neuron>
-        const expressions = {} as Record<string, Expression>
+        
         keys.forEach(key => {
             const neuron = memory[key]
             neurons[key] = neuron
-            expressions[key] = neuron.data
         })
 
         setIsStable(agent.stable)
@@ -44,7 +41,6 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
             console.log('Still not stable', isStable)
         }
         setNeurons(neurons)
-        setExpressions(expressions)
         setMessageCount(agent.messageCount)
     }
 
@@ -124,10 +120,10 @@ export const PrimeFront = ({ className }: PrimeFrontProps) => {
                     Reset scenario
                 </Button>
             </Box>
-            <DataList expressions = {expressions} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
+            <DataList className={styles['data-list']} neurons = {neurons} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
         </Box>
         <Box className={styles['right-panel']}>
-            {(expressions[selectedExpressionId]) ? 
+            {(neurons[selectedExpressionId]) ? 
                 <NeuronView
                     neuron={neurons[selectedExpressionId]}
                     scenarioName={scenarioName}

@@ -1,7 +1,8 @@
 package ai.prime.knowledge.data.base;
 
-import ai.prime.knowledge.data.Data;
-import ai.prime.knowledge.data.DataType;
+import ai.prime.knowledge.data.*;
+
+import java.util.Map;
 
 public class ValueData extends Data {
     public static final DataType TYPE = new DataType("value");
@@ -17,7 +18,25 @@ public class ValueData extends Data {
     }
 
     @Override
-    public String getDisplayName() {
+    protected String buildDisplayName() {
         return getValue();
+    }
+
+    @Override
+    public Expression replace(Map<Data, Expression> replace) {
+        if (replace.containsKey(this)) {
+            return replace.get(this);
+        }
+
+        return new Expression(this);
+    }
+
+    @Override
+    public Unification unify(Expression exp, DataModifier modifier) {
+        if (exp.getData().getType().equals(TYPE) && getDisplayName().equals(exp.getData().getDisplayName())) {
+            return new Unification();
+        }
+
+        return null;
     }
 }

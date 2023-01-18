@@ -3,7 +3,7 @@
 .all {
     display: grid;
     grid-template-rows: 100%;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 70% 30%;
     width: 100vw;
     height: 100vh;
 }
@@ -15,6 +15,7 @@
     grid-column-start: 1;
     border: 1px solid black;
     margin: 5px;
+    width: 100%;
 }
 
 .right-panel {
@@ -26,5 +27,9 @@
 }
 
 .context {
+    margin: 10px;
+}
+
+.data-list {
     margin: 10px;
 }

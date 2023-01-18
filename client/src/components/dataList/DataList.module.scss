@@ -1,8 +1,26 @@
 .root {}
 
+.list {
+    height: 100%;
+    width: 100%;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-end: 1;
+    grid-column-start: 1;
+}
+
+.graph {
+    height: 500px;
+    width: 100%;
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-end: 1;
+    grid-column-start: 1;
+}
+
 .all {
     display: grid;
-    grid-template-rows: 100%;
+    grid-template-rows: 50% 50%;
     grid-template-columns: 100%;
     width: 100%;
     height: 100%;
