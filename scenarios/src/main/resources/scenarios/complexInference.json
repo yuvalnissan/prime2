@@ -1,0 +1,121 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.inference.ComplexInferenceNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "rootA"}
+        },
+        {
+          "data": {"value": "A"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "rootB"}
+        },
+        {
+          "data": {"value": "B"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "rootC"}
+        },
+        {
+          "data": {"value": "C"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "rootD"}
+        },
+        {
+          "data": {"value": "D"}
+        },
+        {
+          "data": {"value": "Target"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "A"},
+              {"value": "rootA"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "B", "negative": true},
+              {"value": "rootB"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "C"},
+              {"value": "rootC"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "D"},
+              {"value": "rootD"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "AB", "negative": true},
+              {"value": "A"},
+              {"value": "B", "negative": true}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "CD"},
+              {"value": "C"},
+              {"value": "D"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "Target"},
+              {"value": "AB", "negative": true},
+              {"value": "CD"}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

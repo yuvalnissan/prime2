@@ -112,9 +112,12 @@ public class Scenario {
 
                 List<NeuronModel> expressions = agentModel.getNeurons();
                 expressions.forEach(neuronModel -> {
-                    Confidence confidence = getConfidence(neuronModel.getConfidence());
                     Expression expression = getExpression(neuronModel.getData());
-                    scenario.setSense(agentName, expression.getData(), confidence);
+
+                    if (neuronModel.getConfidence() != null) {
+                        Confidence confidence = getConfidence(neuronModel.getConfidence());
+                        scenario.setSense(agentName, expression.getData(), confidence);
+                    }
                 });
             });
 
