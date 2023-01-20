@@ -1,0 +1,27 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.inference.InferNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "confidence": "0|0|0",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "A"},
+              {"value": "B"}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

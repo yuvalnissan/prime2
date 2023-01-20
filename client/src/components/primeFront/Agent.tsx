@@ -16,6 +16,7 @@ export const Agent = ({ className }: AgentProps) => {
     const searchParams = new URLSearchParams(document.location.search)
     const scenarioName = searchParams.get('scenario')!
     const agentName = searchParams.get('agent')!
+    document.title = scenarioName
 
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)

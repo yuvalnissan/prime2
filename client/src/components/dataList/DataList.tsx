@@ -11,6 +11,13 @@ import { Neuron } from '../../businessLogic/neuron'
 import { Expression } from '../../businessLogic/data'
 import styles from './DataList.module.scss'
 
+const shapeMapping = {
+    infer: 'triangleDown',
+    value: 'dot',
+    rel: 'square',
+    rule: 'triangle'
+} as Record<string, string>
+
 export interface DataListProps {
     className?: string
     neurons: Record<string, Neuron>
@@ -51,18 +58,30 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
 
     const visJsRef = useRef<HTMLDivElement>(null)
 
+    const getColor = (confidence: string) => {
+        const strength = parseFloat(confidence.substring(0, confidence.indexOf("|")))
+        const red = 255 * Math.min(strength, 0.0) * (-1.0)
+        const green = 255 * Math.max(strength, 0.0)
+        const blue = 255 * (1.0 - Math.abs(strength)) * 0.5
+
+        return `rgb(${red},${green},${blue})`
+    }
+
+    const getShape = (type: string): string => shapeMapping[type] || 'dot'
+
     useEffect(() => {
         const nodesArray = [] as Node[]
         const nodes = new DataSet(nodesArray)
         const edgesArray = [] as Edge[]
         const edges = new DataSet(edgesArray)
-        
-        
 
         edges.clear()
         nodes.clear()
         Object.values(neurons).forEach(neuron => {
-            nodes.add({ id: neuron.data.id, label: neuron.data.id})
+            const color = getColor(neuron.nodes.confidence?.props?.confidence || "0|0|0")
+            const shape = getShape(neuron.data.type)
+
+            nodes.add({ id: neuron.data.id, label: neuron.data.id, color, shape})
             neuron.links.forEach(link => {
                 edges.add({from: link.from.id, to: link.to.id})
             })
