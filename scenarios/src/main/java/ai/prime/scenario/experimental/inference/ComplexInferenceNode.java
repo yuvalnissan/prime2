@@ -38,7 +38,15 @@ public class ComplexInferenceNode extends FactorNode{
 
     @Override
     public Map<String, String> getDisplayProps() {
-        return new HashMap<>();
+        Map<String, String> props = new HashMap<>();
+
+        props.put("infer", getStatusConfidence(getData()).toString());
+        props.put("target", getStatusConfidence(target.getData()).toString());
+        for (Expression condition : conditions) {
+            props.put(condition.getData().getDisplayName(), getStatusConfidence(condition.getData()).toString());
+        }
+
+        return props;
     }
 
     private Confidence getConditionConfidence(Expression condition){
@@ -68,10 +76,7 @@ public class ComplexInferenceNode extends FactorNode{
         Confidence inferConfidence = getStatusConfidence(getData());
 
         Confidence conditionConfidence = getConditionsConfidence();
-        Confidence targetConfidence = getStatusConfidence(target.getData());
-        if (target.getModifier() == DataModifier.NEGATIVE) {
-            targetConfidence = targetConfidence.invert();
-        }
+        Confidence targetConfidence = getConditionConfidence(target);
 
         if (!isPositive) {
             targetConfidence = targetConfidence.invert();

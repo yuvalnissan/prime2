@@ -1,0 +1,63 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.inference.ComplexInferenceNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "data": {"value": "rootA"}
+        },
+        {
+          "data": {"value": "A"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "A"},
+              {"value": "rootA"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "B"},
+              {"value": "rootB"}
+            ]
+          }
+        },
+        {
+          "data": {"value": "rootB"}
+        },
+        {
+          "data": {"value": "B"}
+        },
+        {
+          "data": {"value": "AandB"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "AandB"},
+              {"value": "A"},
+              {"value": "B"}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

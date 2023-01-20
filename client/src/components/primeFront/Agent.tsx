@@ -18,6 +18,7 @@ export const Agent = ({ className }: AgentProps) => {
     const agentName = searchParams.get('agent')!
     document.title = scenarioName
 
+    const [resetState, setResetState] = React.useState<number>(0)
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
@@ -70,6 +71,8 @@ export const Agent = ({ className }: AgentProps) => {
     const resetScenario = async () => {
         console.log(`Resetting scenario ${scenarioName}`)
         try {
+            setNeurons({})
+            setResetState(resetState + 1)
             const body = {}
             const response = await fetch(getResetURL(scenarioName), {
                 method: 'POST',
@@ -121,7 +124,7 @@ export const Agent = ({ className }: AgentProps) => {
                     Reset scenario
                 </Button>
             </Box>
-            <DataList className={styles['data-list']} neurons = {neurons} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
+            <DataList className={styles['data-list']} key = {resetState} neurons = {neurons} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
         </Box>
         <Box className={styles['right-panel']}>
             {(neurons[selectedExpressionId]) ? 

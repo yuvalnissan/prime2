@@ -97,6 +97,16 @@
           "data": {
             "type": "infer",
             "expressions": [
+              {"value": "GodMode"},
+              {"value": "AB", "negative": true}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
               {"value": "CD"},
               {"value": "C"},
               {"value": "D"}

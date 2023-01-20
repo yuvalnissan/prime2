@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class VisualizationMainTests {
+public class ServerMainTests {
 
 	@Autowired
 	private MockMvc mockMvc;

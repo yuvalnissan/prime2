@@ -17,6 +17,8 @@ import ai.prime.scenario.model.NeuronModel;
 import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
@@ -88,11 +90,16 @@ public class Scenario {
     }
 
     public static Scenario loadScenario(String name) {
-        Logger.info("scenarioLoaded", "*** loading scenario: " + name);
+        Logger.info("scenario", "*** loading scenario: " + name);
         try{
             Scenario scenario = new Scenario(name);
             Gson gson = new Gson();
-            Reader reader = new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
+
+            String path = System.getenv("SCENARIOS");
+            Logger.debug("scenario", "path: " + path);
+            Reader reader = path != null ?
+                    new FileReader(new File(path + "/" + name + ".json")) :
+                    new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
             ScenarioModel scenarioModel = gson.fromJson(reader, ScenarioModel.class);
             List<String> defaultNodes = scenarioModel.getDefaultNodes();
             Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
