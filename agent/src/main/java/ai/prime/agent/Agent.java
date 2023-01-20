@@ -55,7 +55,7 @@ public class Agent {
     }
 
     public void sendMessageToNeuron(NeuralMessage message) {
-        Logger.info("agent", "sending message to " + message.getTo().getDisplayName());
+        Logger.debug("agent", "sending message to " + message.getTo().getDisplayName());
         Data to = message.getTo();
         getMemory().getNeuron(to).addMessage(message);
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));

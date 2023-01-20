@@ -94,7 +94,7 @@ public class InferNode extends FactorNode {
     public SetMap<Data, PullValue> buildPullValues() {
         SetMap<Data, PullValue> results = new SetMap<>();
 
-        Logger.info("inferNode", getNeuron().getData() + " building pull values");
+        Logger.debug("inferNode", getNeuron().getData() + " building pull values");
 
         Confidence effectConfidence = getStatusConfidence(getData());
         Confidence fromConfidence = getStatusConfidence(condition.getData());

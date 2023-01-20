@@ -1,0 +1,1 @@
+- bug1 scenario, mark infer(root,A) as negative. B should not remain positive

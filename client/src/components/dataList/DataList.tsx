@@ -81,8 +81,9 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
             const label = id
 
             if (nodes.get(id)) {
-                nodes.update({ id, label, color, shape})
+                nodes.update({ id, label, color})
             } else {
+                //, fixed: true
                 nodes.add({ id, label, color, shape})
             }
 

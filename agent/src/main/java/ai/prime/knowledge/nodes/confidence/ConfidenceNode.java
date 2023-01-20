@@ -65,7 +65,7 @@ public class ConfidenceNode extends Node {
     private void processPullMessage(Collection<NeuralMessage> messages) {
         messages.forEach(message -> {
             PullMessage pullMessage = (PullMessage) message;
-            Logger.info("confidenceNode", "Pull message: " + pullMessage);
+            Logger.debug("confidenceNode", "Pull message: " + pullMessage);
             pullMessages.put(pullMessage.getFrom(), pullMessage);
             newSources.add(message.getFrom());
             pullMessageWaitingList.remove(message.getFrom());

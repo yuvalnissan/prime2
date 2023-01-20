@@ -38,7 +38,7 @@ public abstract class FactorNode extends Node {
 
     public void sendUpdates() {
         if (statusMessageWaitingList.isEmpty() && !shouldUpdate.isEmpty()) {
-            Logger.debug("factorNode", getNeuron().getData().getDisplayName() + " is updating");
+            Logger.info("factorNode", getNeuron().getData().getDisplayName() + " is updating");
 
             SetMap<Data, PullValue> results = buildPullValues();
             results.getKeys().forEach(to -> {
