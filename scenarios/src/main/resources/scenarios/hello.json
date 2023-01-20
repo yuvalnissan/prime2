@@ -9,29 +9,35 @@
   },
   "agents": {
     "smith": {
-      "expressions": [
+      "neurons": [
         {
-          "type": "rel",
-          "expressions": [
-            {"value": "Ford"},
-            {"value": "isa"},
-            {
-              "type": "rel",
-              "expressions": [
-                {"value": "Something"},
-                {"value": "thatIs"},
-                {"negative": true, "value": "else"}
-              ]
-            }
-          ]
+          "confidence": "0|0|0",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Ford"},
+              {"value": "isa"},
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "Something"},
+                  {"value": "thatIs"},
+                  {"negative": true, "value": "else"}
+                ]
+              }
+            ]
+          }
         },
         {
-          "type": "rel",
-          "expressions": [
-            {"value": "Ford"},
-            {"value": "isa"},
-            {"value": "Vehicle"}
-          ]
+          "confidence": "0|0|0",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Ford"},
+              {"value": "isa"},
+              {"value": "Vehicle"}
+            ]
+          }
         }
       ]
     }

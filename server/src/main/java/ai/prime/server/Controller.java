@@ -3,6 +3,7 @@ package ai.prime.server;
 import ai.prime.agent.Agent;
 import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Expression;
+import ai.prime.knowledge.nodes.confidence.SenseConfidence;
 import ai.prime.scenario.Scenario;
 import ai.prime.server.models.AgentModel;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +50,9 @@ public class Controller {
         if (Objects.equals(messageBody.getType(), "ignite")) {
             scenario.igniteNeuron(agentName, expression.getData());
         } else if (Objects.equals(messageBody.getType(), "sense-positive")) {
-            scenario.setSense(agentName, expression.getData(), true);
+            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_POSITIVE);
         } else if (Objects.equals(messageBody.getType(), "sense-negative")) {
-            scenario.setSense(agentName, expression.getData(), false);
+            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_NEGATIVE);
         } else {
             Logger.error("Invalid scenario message type: " + messageBody.getType());
         }

@@ -6,14 +6,14 @@ import ai.prime.knowledge.data.Data;
 public class SenseMessage extends NeuralMessage {
     public static final String TYPE = "senseMessage";
 
-    private final SenseConfidence confidence;
+    private final Confidence confidence;
 
-    public SenseMessage(Data from, Data to, SenseConfidence confidence) {
+    public SenseMessage(Data from, Data to, Confidence confidence) {
         super(from, to);
         this.confidence = confidence;
     }
 
-    public SenseConfidence getConfidence() {
+    public Confidence getConfidence() {
         return confidence;
     }
 

@@ -7,10 +7,13 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
+import ai.prime.knowledge.nodes.confidence.Confidence;
+import ai.prime.knowledge.nodes.confidence.InferredConfidence;
 import ai.prime.knowledge.nodes.confidence.SenseConfidence;
 import ai.prime.knowledge.nodes.confidence.SenseMessage;
 import ai.prime.knowledge.nodes.connotation.IgniteMessage;
 import ai.prime.scenario.model.DataModel;
+import ai.prime.scenario.model.NeuronModel;
 import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
 
@@ -58,15 +61,27 @@ public class Scenario {
         return new Expression(data, modifier);
     }
 
+    private static Confidence getConfidence(String confidenceStr) {
+        if (confidenceStr.equals("POSITIVE")) {
+            return SenseConfidence.SENSE_POSITIVE;
+        }
+
+        if (confidenceStr.equals("NEGATIVE")) {
+            return SenseConfidence.SENSE_NEGATIVE;
+        }
+
+        String[] parts = confidenceStr.split("\\|");
+
+        return new InferredConfidence(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+    }
+
     public void igniteNeuron(String agentName, Data data) {
         IgniteMessage igniteMessage = new IgniteMessage(data, data, DEFAULT_IGNITE_STRENGTH);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(igniteMessage);
     }
 
-    public void setSense(String agentName, Data data, boolean isPositive) {
-        // TODO sense should be different than just max, mostly for reading from file
-        SenseConfidence confidence = isPositive ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
+    public void setSense(String agentName, Data data, Confidence confidence) {
         SenseMessage message = new SenseMessage(data, data, confidence);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(message);
@@ -95,10 +110,11 @@ public class Scenario {
 
                 scenario.addAgent(agentName, agent);
 
-                List<DataModel> expressions = agentModel.getExpressions();
-                expressions.forEach(expressionModel -> {
-                    Expression expression = getExpression(expressionModel);
-                    scenario.setSense(agentName, expression.getData(), expression.getModifier() == DataModifier.POSITIVE);
+                List<NeuronModel> expressions = agentModel.getNeurons();
+                expressions.forEach(neuronModel -> {
+                    Confidence confidence = getConfidence(neuronModel.getConfidence());
+                    Expression expression = getExpression(neuronModel.getData());
+                    scenario.setSense(agentName, expression.getData(), confidence);
                 });
             });
 

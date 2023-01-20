@@ -51,6 +51,7 @@ public class ConfidenceNode extends Node {
     public Map<String, String> getDisplayProps() {
         Map<String, String> props = new HashMap<>();
         props.put("confidence", confidence.toString());
+        props.put("pull", this.pullMessages.toString());
 
         return props;
     }

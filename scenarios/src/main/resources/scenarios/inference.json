@@ -9,35 +9,50 @@
   },
   "agents": {
     "smith": {
-      "expressions": [
-        {"value": "root", "negative": true},
+      "neurons": [
         {
-          "type": "infer",
-          "expressions": [
-            {"value": "root"},
-            {"value": "A"}
-          ]
+          "confidence": "0|0|0",
+          "data": {"value": "root", "negative": true}
         },
         {
-          "type": "infer",
-          "expressions": [
-            {"value": "A"},
-            {"value": "B"}
-          ]
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "root"},
+              {"value": "A"}
+            ]
+          }
         },
         {
-          "type": "infer",
-          "expressions": [
-            {"value": "B"},
-            {"value": "C"}
-          ]
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "A"},
+              {"value": "B"}
+            ]
+          }
         },
         {
-          "type": "infer",
-          "expressions": [
-            {"value": "C"},
-            {"value": "A", "negative": true}
-          ]
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "B"},
+              {"value": "C"}
+            ]
+          }
+        },
+        {
+          "confidence": "1|10000|0",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "C"},
+              {"value": "A", "negative": true}
+            ]
+          }
         }
       ]
     }

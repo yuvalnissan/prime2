@@ -89,11 +89,11 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     }, [visJsRef, neurons, selectedExpressionId])
 
     return (
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <List className={styles['list']} component="nav" aria-label="main mailbox folders">
-            {Object.values(neurons).map(neuron => ListNode(neuron.data))}
-        </List>
-        <div className={styles['graph']} ref={visJsRef} />
+        <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            <List className={styles['list']} component="nav" aria-label="main mailbox folders">
+                {Object.values(neurons).map(neuron => ListNode(neuron.data))}
+            </List>
+            <div className={styles['graph']} ref={visJsRef} />
         </Box>
     )
 }
