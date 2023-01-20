@@ -11,6 +11,14 @@
     "smith": {
       "neurons": [
         {
+          "confidence": "POSITIVE",
+          "data":  {"value": "A"}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data":  {"value": "B"}
+        },
+        {
           "confidence": "0|0|0",
           "data": {
             "type": "infer",

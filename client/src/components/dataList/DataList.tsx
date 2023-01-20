@@ -36,6 +36,10 @@ const options = {
 }
 
 export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, className }: DataListProps) => {
+    const [nodes, setNodes] = React.useState<DataSet<Node>>(new DataSet([]))
+    const [edges, setEdges] = React.useState<DataSet<Edge>>(new DataSet([]))
+    const [network, setNetwork] = React.useState<Network | null>(null)
+
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         id: string,
@@ -70,27 +74,33 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     const getShape = (type: string): string => shapeMapping[type] || 'dot'
 
     useEffect(() => {
-        const nodesArray = [] as Node[]
-        const nodes = new DataSet(nodesArray)
-        const edgesArray = [] as Edge[]
-        const edges = new DataSet(edgesArray)
-
-        edges.clear()
-        nodes.clear()
         Object.values(neurons).forEach(neuron => {
             const color = getColor(neuron.nodes.confidence?.props?.confidence || "0|0|0")
             const shape = getShape(neuron.data.type)
+            const id = neuron.data.id
+            const label = id
 
-            nodes.add({ id: neuron.data.id, label: neuron.data.id, color, shape})
+            if (nodes.get(id)) {
+                nodes.update({ id, label, color, shape})
+            } else {
+                nodes.add({ id, label, color, shape})
+            }
+
             neuron.links.forEach(link => {
-                edges.add({from: link.from.id, to: link.to.id})
+                const edgeId = link.from.id + '-' + link.to.id
+                if (edges.get(edgeId)) {
+                    edges.update({id: edgeId, from: link.from.id, to: link.to.id})
+                } else {
+                    edges.add({id: edgeId, from: link.from.id, to: link.to.id})
+                }
             })
         })
 
-        //TODO this is stable, but always rebuilds. Need to move outside of the useEffect
-        const network =
-                visJsRef.current &&
-                new Network(visJsRef.current, { nodes, edges }, options)
+        if (!network && nodes.length > 0) {
+            console.log('rendering')
+            setNetwork(visJsRef.current && new Network(visJsRef.current, { nodes, edges }, options))
+        }
+    
 
         if (selectedExpressionId) {
             network?.setSelection({nodes: [selectedExpressionId]})
