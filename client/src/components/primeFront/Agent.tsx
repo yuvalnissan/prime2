@@ -3,16 +3,16 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { NeuronView } from '../neuron/NeuronView'
-import styles from './PrimeFront.module.scss'
+import styles from './Agent.module.scss'
 import { DataList } from '../dataList/DataList'
 import { Neuron } from '../../businessLogic/neuron'
 import { getScenarioURL, getResetURL } from '../../communication/urls'
 
-export interface PrimeFrontProps {
+export interface AgentProps {
     className?: string
 }
 
-export const PrimeFront = ({ className }: PrimeFrontProps) => {
+export const Agent = ({ className }: AgentProps) => {
     const searchParams = new URLSearchParams(document.location.search)
     const scenarioName = searchParams.get('scenario')!
     const agentName = searchParams.get('agent')!
