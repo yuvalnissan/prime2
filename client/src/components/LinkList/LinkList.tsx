@@ -29,7 +29,7 @@ export const LinkList = ({links, className, setSelectedExpressionId }: LinkListP
         <Divider />
         <ArrowRightAlt />
         <Typography variant="subtitle1" display="inline">
-          {link.type} strength: {link.strength}
+          {link.type}
         </Typography>
         <Button onClick={handleClick} >Go</Button>
         <DataView expression={link.to} />

@@ -1,8 +1,9 @@
 //TODO general list
 
-- Infer should accept complex condition, maybe as an AND node
-- Binding
 - Rule node
+- Balance rules and infers
+- Receptor nodes should use connotation instead of their own links
+- Implement connotation node value, currently doesn't do anything
 - consider separating the resistance in complex infer
 
 

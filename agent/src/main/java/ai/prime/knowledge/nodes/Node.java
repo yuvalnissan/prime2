@@ -1,5 +1,6 @@
 package ai.prime.knowledge.nodes;
 
+import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.neuron.Neuron;
@@ -27,6 +28,8 @@ public abstract class Node {
     public abstract void init();
 
     public abstract void handleMessage(String messageType, Collection<NeuralMessage> messages);
+
+    public abstract void handleEvent(NeuralEvent event);
 
     public abstract String getName();
 

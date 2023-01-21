@@ -1,5 +1,6 @@
 package ai.prime.knowledge.nodes.confidence;
 
+import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.common.utils.Logger;
 import ai.prime.common.utils.SetMap;
@@ -83,6 +84,7 @@ public abstract class FactorNode extends Node {
     }
 
     public void setMessage(StatusMessage statusMessage) {
+        Logger.debug("factorNode", getNeuron().getData().getDisplayName() + " got a status message: " + statusMessage);
         StatusMessage oldMessage = statusMessages.get(statusMessage.getFrom());
         if (oldMessage == null || statusMessage.getConfidence().isSignificantlyDifferent(oldMessage.getConfidence())) {
             shouldUpdate.add(statusMessage.getFrom().normalize());
@@ -106,5 +108,17 @@ public abstract class FactorNode extends Node {
         });
 
         sendUpdates();
+    }
+
+    @Override
+    public void handleEvent(NeuralEvent event) {
+
+    }
+
+    @Override
+    public Map<String, String> getDisplayProps() {
+        Map<String, String> props = new HashMap<>();
+        props.put("status", statusMessages.toString());
+        return props;
     }
 }

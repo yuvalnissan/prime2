@@ -1,5 +1,6 @@
 package ai.prime.knowledge.nodes.connotation;
 
+import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.Expression;
@@ -25,12 +26,12 @@ public class ConnotationNode extends Node {
     }
 
     private boolean isConnected(Data data) {
-        return getNeuron().getLinks().hasLink(ConnotationLink.TYPE, data);
+        return getNeuron().hasLink(ConnotationLink.TYPE, data);
     }
 
     private void connectWith(Data data) {
         if (!isConnected(data) && !isSelf(data)) {
-            getNeuron().getLinks().addLink(new ConnotationLink(this.getData(), data, DEFAULT_LINK_STRENGTH));
+            getNeuron().addLink(new ConnotationLink(this.getData(), data, DEFAULT_LINK_STRENGTH));
             ConnotationConnectMessage message = new ConnotationConnectMessage(this.getData(), data);
             getNeuron().getAgent().sendMessageToNeuron(message);
         }
@@ -71,6 +72,11 @@ public class ConnotationNode extends Node {
         } else {
             throw new RuntimeException("Wrong message type " + messageType);
         }
+    }
+
+    @Override
+    public void handleEvent(NeuralEvent event) {
+
     }
 
     @Override

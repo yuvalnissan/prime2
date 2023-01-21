@@ -10,6 +10,7 @@ public class Logger {
     private static final  String FILE = "/logKeys.properties";
     private static final String INFO = "info";
     private static final String DEBUG = "debug";
+    private static final String ERROR = "error";
 
     private static Properties keysToLog;
 
@@ -59,12 +60,13 @@ public class Logger {
     }
 
     public static void error(String message) {
-        System.err.println(getFormattedMessage("ERROR", "ERROR!!!", message));
+        System.err.println(getFormattedMessage("", message, ERROR));
     }
 
     public static void error(String message, Exception exception) {
         error(message);
         System.err.println(exception);
+        exception.printStackTrace();
     }
 }
 

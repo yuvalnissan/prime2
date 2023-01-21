@@ -22,7 +22,7 @@ public class Memory {
     public void addData(Data data) {
         synchronized (data.getDisplayName()){
             if (!neuralMap.hasNeuron(data)) {
-                Logger.info("memory", "Adding neuron: " + data.getDisplayName());
+                Logger.debug("memory", "Adding neuron: " + data.getDisplayName());
                 Neuron neuron = new Neuron(agent, data);
                 neuralMap.addNeuron(neuron);
 

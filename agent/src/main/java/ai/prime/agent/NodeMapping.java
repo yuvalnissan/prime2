@@ -1,20 +1,19 @@
 package ai.prime.agent;
 
-import ai.prime.common.utils.SetMap;
+import ai.prime.common.utils.ListMap;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.nodes.Node;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 public class NodeMapping {
-    private final SetMap<DataType, Class<Node>> dataToNodes;
-    private final Set<Class<Node>> defaultNodes;
+    private final ListMap<DataType, Class<Node>> dataToNodes;
+    private final List<Class<Node>> defaultNodes;
 
     public NodeMapping() {
-        this.dataToNodes = new SetMap<>();
-        this.defaultNodes = new HashSet<>();
+        this.dataToNodes = new ListMap<>();
+        this.defaultNodes = new LinkedList<>();
     }
 
     private Class<Node> getClass(String nodeClassName) {
@@ -37,8 +36,8 @@ public class NodeMapping {
         dataToNodes.add(dataType, nodeClass);
     }
 
-    public Collection<Class<Node>> getNodesForType(DataType dataType) {
-        Collection<Class<Node>> nodeClasses = new HashSet<>();
+    public List<Class<Node>> getNodesForType(DataType dataType) {
+        List<Class<Node>> nodeClasses = new LinkedList<>();
         nodeClasses.addAll(defaultNodes);
         nodeClasses.addAll(dataToNodes.getValues(dataType));
 

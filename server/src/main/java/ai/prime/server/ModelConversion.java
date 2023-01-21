@@ -60,12 +60,12 @@ public class ModelConversion {
 
     private Set<LinkModel> getLinkModels(Neuron neuron) {
         var linkModels = new HashSet<LinkModel>();
-        neuron.getLinks().getTypes().forEach(type -> {
-            var links = neuron.getLinks().getLinks(type);
+        neuron.getLinkTypes().forEach(type -> {
+            var links = neuron.getLinks(type);
             links.forEach(link -> {
                 var fromModel = getDataModel(link.getFrom());
                 var toModel = getDataModel(link.getTo());
-                var linkModel = new LinkModel(type.getName(), fromModel, toModel, link.getStrength());
+                var linkModel = new LinkModel(type.getName(), fromModel, toModel);
                 linkModels.add(linkModel);
             });
         });

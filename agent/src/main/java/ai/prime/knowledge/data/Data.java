@@ -183,10 +183,14 @@ public class Data {
         }
 
         Data normalized = getUpdatedVariableNames(updatedNames);
-        isNormalized = true;
+        normalized.isNormalized = true;
         cachedNormalizedValue = normalized;
 
         return normalized;
+    }
+
+    public boolean hasVariables() {
+        return getVariableReference().getUniqueVariables().size() > 0;
     }
 
     public boolean isNormalized() {

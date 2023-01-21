@@ -5,12 +5,10 @@ import ai.prime.knowledge.data.Data;
 public abstract class Link {
     private Data from;
     private Data to;
-    private double strength;
 
-    public Link(Data from, Data to, double strength) {
+    public Link(Data from, Data to) {
         this.from = from;
         this.to = to;
-        this.strength = strength;
     }
 
     public abstract LinkType getType();
@@ -21,9 +19,5 @@ public abstract class Link {
 
     public Data getTo() {
         return to;
-    }
-
-    public double getStrength() {
-        return strength;
     }
 }

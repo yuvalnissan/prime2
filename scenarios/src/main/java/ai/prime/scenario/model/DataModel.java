@@ -6,6 +6,7 @@ public class DataModel {
     private String type;
     private List<DataModel> expressions;
     private String value;
+    private String var;
     private final boolean negative;
 
     public DataModel(boolean negative, String value) {
@@ -35,7 +36,7 @@ public class DataModel {
         return value;
     }
 
-    public boolean isPrimitive() {
-        return this.type == null;
+    public String getVar() {
+        return var;
     }
 }

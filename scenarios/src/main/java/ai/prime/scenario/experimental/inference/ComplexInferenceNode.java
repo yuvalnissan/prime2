@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ComplexInferenceNode extends FactorNode{
+public class ComplexInferenceNode extends FactorNode {
     public static final String NAME = "infer";
 
     private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("factor.convergence.factor");

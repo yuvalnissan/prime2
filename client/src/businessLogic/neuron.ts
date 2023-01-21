@@ -6,7 +6,6 @@ export interface Node {
 
 export interface Link {
     type: string
-    strength: number
     from: Data
     to: Data
 }

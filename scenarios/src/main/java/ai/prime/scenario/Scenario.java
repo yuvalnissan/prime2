@@ -7,6 +7,7 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
+import ai.prime.knowledge.data.base.VariableData;
 import ai.prime.knowledge.nodes.confidence.Confidence;
 import ai.prime.knowledge.nodes.confidence.InferredConfidence;
 import ai.prime.knowledge.nodes.confidence.SenseConfidence;
@@ -51,8 +52,10 @@ public class Scenario {
 
     private static Expression getExpression(DataModel dataModel) {
         Data data;
-        if (dataModel.isPrimitive()) {
+        if (dataModel.getValue() != null) {
             data = new ValueData(dataModel.getValue());
+        } else if (dataModel.getVar() != null) {
+            data = new VariableData(dataModel.getVar());
         } else {
             Expression[] expressions = dataModel.getExpressions().stream().map(Scenario::getExpression).toArray(Expression[]::new);
             data = new Data(new DataType(dataModel.getType()), expressions);
@@ -81,6 +84,11 @@ public class Scenario {
         IgniteMessage igniteMessage = new IgniteMessage(data, data, DEFAULT_IGNITE_STRENGTH);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(igniteMessage);
+    }
+
+    public void addData(String agentName, Data data) {
+        Agent agent = getAgent(agentName);
+        agent.getMemory().addData(data);
     }
 
     public void setSense(String agentName, Data data, Confidence confidence) {
@@ -117,13 +125,14 @@ public class Scenario {
 
                 scenario.addAgent(agentName, agent);
 
-                List<NeuronModel> expressions = agentModel.getNeurons();
-                expressions.forEach(neuronModel -> {
+                List<NeuronModel> neurons = agentModel.getNeurons();
+                neurons.forEach(neuronModel -> {
                     Expression expression = getExpression(neuronModel.getData());
+                    scenario.addData(agentName, expression.getData().normalize());
 
                     if (neuronModel.getConfidence() != null) {
                         Confidence confidence = getConfidence(neuronModel.getConfidence());
-                        scenario.setSense(agentName, expression.getData(), confidence);
+                        scenario.setSense(agentName, expression.getData().normalize(), confidence);
                     }
                 });
             });

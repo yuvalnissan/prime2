@@ -19,7 +19,7 @@ public class PullValue {
         this.potentialResistance = potentialResistance;
         this.source = source;
 
-        if (pull<0.0){
+        if (pull < 0.0){
             throw new RuntimeException("Can't set negative resistance: " + pull);
         }
     }

@@ -1,6 +1,7 @@
 package ai.prime.knowledge.neuron;
 
 import ai.prime.knowledge.data.Data;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class Links {
     public Collection<LinkType> getTypes(){
         return links.keySet();
     }
+
     public Collection<Link> getLinks(LinkType type){
         if (links.containsKey(type)){
             return Collections.unmodifiableCollection(links.get(type).values());

@@ -1,5 +1,6 @@
 package ai.prime.knowledge.nodes.confidence;
 
+import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.common.utils.Logger;
 import ai.prime.common.utils.Settings;
@@ -208,5 +209,10 @@ public class ConfidenceNode extends Node {
         }
 
         update();
+    }
+
+    @Override
+    public void handleEvent(NeuralEvent event) {
+
     }
 }

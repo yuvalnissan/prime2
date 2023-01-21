@@ -1,15 +1,15 @@
 package ai.prime.knowledge.neuron;
 
 import ai.prime.agent.Agent;
+import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.common.utils.Lock;
+import ai.prime.common.utils.Logger;
 import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.nodes.Node;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Neuron {
     private final Agent agent;
@@ -18,8 +18,11 @@ public class Neuron {
     private final Map<String, Node> nodes;
 
     private SetMap<String, NeuralMessage> messages;
-    private Lock fireLock;
-    private Lock messageLock;
+    private Set<NeuralEvent> events;
+
+    private final Lock fireLock;
+    private final Lock messageLock;
+    private final Lock eventLock;
 
     public Neuron(Agent agent, Data data){
         this.agent = agent;
@@ -27,9 +30,11 @@ public class Neuron {
         this.links = new Links();
         this.nodes = new HashMap<>();
         this.messages = new SetMap<>();
+        this.events = new HashSet<>();
 
         this.messageLock = new Lock();
         this.fireLock = new Lock();
+        this.eventLock = new Lock();
     }
 
     public Agent getAgent() {
@@ -40,8 +45,20 @@ public class Neuron {
         return data;
     }
 
-    public Links getLinks() {
-        return links;
+    public Collection<Link> getLinks(LinkType type) {
+        return links.getLinks(type);
+    }
+
+    public boolean hasLink(LinkType type, Data data) {
+        return links.hasLink(type, data);
+    }
+
+    public Collection<LinkType> getLinkTypes() {
+        return links.getTypes();
+    }
+
+    public void addLink(Link link) {
+        links.addLink(link);
     }
 
     public void addNode(Node node) {
@@ -56,9 +73,40 @@ public class Neuron {
     }
 
     public void addMessage(NeuralMessage message) {
+        Logger.debug("neuron", "add message to " + getData().getDisplayName() + ": " + message.toString());
+        if (getData().getDisplayName().contains("var:X")) {
+            System.out.println("No...");
+        }
+
+
         messageLock.lock();
         messages.add(message.getType(), message);
         messageLock.unlock();
+    }
+
+    public void addEvent(NeuralEvent event) {
+        Logger.debug("neuron", "add event: " + event.toString());
+        eventLock.lock();
+        events.add(event);
+        eventLock.unlock();
+    }
+
+    private void handleEvents() {
+        int counter = 0;
+        while (!events.isEmpty()){
+            if (counter > 20) {
+                Logger.error("Event endless loop!!!");
+                throw new RuntimeException("Endless event loop");
+            }
+            eventLock.lock();
+            Set<NeuralEvent> current = events;
+            events = new HashSet<>();
+            eventLock.unlock();
+
+            current.forEach(event -> nodes.values().forEach(node -> node.handleEvent(event)));
+
+            counter++;
+        }
     }
 
     public void fire() {
@@ -77,6 +125,8 @@ public class Neuron {
                 }
             });
         });
+
+        handleEvents();
 
         fireLock.unlock();
     }
