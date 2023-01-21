@@ -1,7 +1,5 @@
 package ai.prime.server.models;
 
-import ai.prime.knowledge.data.base.ValueData;
-
 import java.util.List;
 
 public class DataModel {
@@ -9,13 +7,15 @@ public class DataModel {
     private String type;
     private List<DataModel> expressions;
     private String value;
+    private String var;
     private final boolean negative;
 
-    public DataModel(boolean negative, String id, String type, String value, List<DataModel> expressions) {
+    public DataModel(boolean negative, String id, String type, String value, String var, List<DataModel> expressions) {
         this.negative = negative;
         this.id = id;
         this.type = type;
         this.value = value;
+        this.var = var;
         this.expressions = expressions;
     }
 
@@ -33,6 +33,10 @@ public class DataModel {
 
     public String getValue() {
         return value;
+    }
+
+    public String getVar() {
+        return var;
     }
 
     public String getId() {

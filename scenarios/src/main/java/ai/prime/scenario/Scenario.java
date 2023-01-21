@@ -128,11 +128,13 @@ public class Scenario {
                 List<NeuronModel> neurons = agentModel.getNeurons();
                 neurons.forEach(neuronModel -> {
                     Expression expression = getExpression(neuronModel.getData());
-                    scenario.addData(agentName, expression.getData().normalize());
+                    var normalized = expression.getData().normalize();
+                    Logger.info("scenario", "Adding " + normalized.getDisplayName());
+                    scenario.addData(agentName, normalized);
 
                     if (neuronModel.getConfidence() != null) {
                         Confidence confidence = getConfidence(neuronModel.getConfidence());
-                        scenario.setSense(agentName, expression.getData().normalize(), confidence);
+                        scenario.setSense(agentName, normalized, confidence);
                     }
                 });
             });

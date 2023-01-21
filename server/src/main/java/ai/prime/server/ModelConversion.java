@@ -6,6 +6,7 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
+import ai.prime.knowledge.data.base.VariableData;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.nodes.Node;
 import ai.prime.server.models.*;
@@ -20,13 +21,19 @@ public class ModelConversion {
         if (data.getType() == ValueData.TYPE) {
             ValueData valueData = (ValueData)data;
 
-            return new DataModel(isNegative, valueData.getDisplayName(), ValueData.TYPE.getPredicate(), valueData.getValue(), null);
+            return new DataModel(isNegative, valueData.getDisplayName(), ValueData.TYPE.getPredicate(), valueData.getValue(), null, null);
+        }
+
+        if (data.getType() == VariableData.TYPE) {
+            VariableData variableData = (VariableData)data;
+
+            return new DataModel(isNegative, variableData.getDisplayName(), ValueData.TYPE.getPredicate(), null, variableData.getName(), null);
         }
 
         String type = data.getType().getPredicate();
         List<DataModel> expressions = Arrays.stream(data.getExpressions()).toList().stream().map(this::getDataModel).toList();
 
-        return new DataModel(isNegative, data.getDisplayName(), type, null, expressions);
+        return new DataModel(isNegative, data.getDisplayName(), type, null, null, expressions);
     }
 
     public DataModel getDataModel(Data data) {
@@ -37,6 +44,8 @@ public class ModelConversion {
         Data data;
         if (dataModel.getValue() != null) {
             data = new ValueData(dataModel.getValue());
+        } else if (dataModel.getVar() != null) {
+            data = new VariableData(dataModel.getVar());
         } else {
             Expression[] expressions = dataModel.getExpressions().stream().map(this::getExpressionFromModel).toArray(Expression[]::new);
             data = new Data(new DataType(dataModel.getType()), expressions);

@@ -3,6 +3,7 @@ export interface Data {
     id: string,
     type: string,
     value?: string,
+    var?: string,
     expressions?: Expression[]
 }
 
