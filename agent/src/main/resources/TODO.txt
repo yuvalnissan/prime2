@@ -5,7 +5,8 @@
 - Receptor nodes should use connotation instead of their own links
 - Implement connotation node value, currently doesn't do anything
 - consider separating the resistance in complex infer
-
+- Short term memory
+- Backwards binding, maybe with Any and All
 
 
 

@@ -22,7 +22,13 @@ public class UnificationTests {
                 from,
                 predicate,
                 to
-        }).normalize();
+        });
+
+        return new Expression(data);
+    }
+
+    private Expression getInfer(Expression... targetAndConditions) {
+        var data = new Data(new DataType("infer"), targetAndConditions);
 
         return new Expression(data);
     }
@@ -33,13 +39,13 @@ public class UnificationTests {
                 getValue("B"),
                 getValue("isa"),
                 getValue("C")
-        ).getData();
+        ).getData().normalize();
 
         var pattern = getRel(
                 getValue("B"),
                 getValue("isa"),
                 getVariable("4")
-        ).getData();
+        ).getData().normalize();
 
         Unification unify = pattern.unify(data);
 
@@ -54,13 +60,13 @@ public class UnificationTests {
                 getValue("B"),
                 getValue("isa"),
                 getValue("C").not()
-        ).getData();
+        ).getData().normalize();
 
         var pattern = getRel(
                 getVariable("a").not(),
                 getValue("isa"),
                 getVariable("4")
-        ).getData();
+        ).getData().normalize();
 
         Unification unify = pattern.unify(data);
 
@@ -68,6 +74,68 @@ public class UnificationTests {
         assertEquals(unify.getBoundedVariables().size(), 2);
         assertEquals(unify.getBound("var:1"), getValue("B").not());
         assertEquals(unify.getBound("var:2"), getValue("C").not());
+    }
+
+    @Test
+    public void testNesting() {
+        var rel = getRel(
+                getValue("S"),
+                getValue("isa"),
+                getValue("T")
+        );
+        var data = getRel(
+                getValue("B"),
+                getValue("isa"),
+                rel
+        ).getData().normalize();
+
+        var pattern = getRel(
+                getValue("B"),
+                getValue("isa"),
+                getVariable("4")
+        ).getData().normalize();
+
+        Unification unify = pattern.unify(data);
+
+        assertNotNull(unify);
+        assertEquals(unify.getBoundedVariables().size(), 1);
+        assertEquals(unify.getBound("var:1"), rel.normalize());
+    }
+
+    @Test
+    public void testInference() {
+        var data = getInfer(
+                getValue("Target"),
+                getValue("A")
+        ).getData().normalize();
+
+        var pattern = getInfer(
+                getValue("Target"),
+                getVariable("X")
+        ).getData().normalize();
+
+        Unification unify = pattern.unify(data);
+
+        assertNotNull(unify);
+        assertEquals(unify.getBoundedVariables().size(), 1);
+        assertEquals(unify.getBound("var:1"), getValue("A"));
+    }
+
+    @Test
+    public void testFullMatch() {
+        var infer = getInfer(
+                getValue("Target"),
+                getValue("A")
+        ).normalize();
+        var data = infer.getData();
+
+        var pattern = getVariable("X").getData().normalize();
+
+        Unification unify = pattern.unify(data);
+
+        assertNotNull(unify);
+        assertEquals(unify.getBoundedVariables().size(), 1);
+        assertEquals(unify.getBound("var:1"), infer);
     }
 
 //    @Test
@@ -87,21 +155,7 @@ public class UnificationTests {
 //    }
 //
 //
-//    @Test
-//    public void testInference() {
 //
-//        Data data = INFER(OBJ("a"), OBJ("b")).build().getData();
-//        Data pattern = INFER(AND(VAR("c")), VAR("x")).build().getData();
-//        Unification unify = pattern.unify(data);
-//
-//        System.out.println(unify);
-//
-//        assertNotNull(unify);
-//        assertEquals(unify.getBoundedVariables().size(), 2);
-//        assertEquals(unify.getBound("var:1"), OBJ("a").build());
-//        assertEquals(unify.getBound("var:2"), OBJ("b").build());
-//
-//    }
 //
 //    @Test
 //    public void testInferenceWithList() {

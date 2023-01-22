@@ -88,7 +88,7 @@ public class ComplexInferenceNode extends FactorNode {
 
         double effectConflict = inferConfidence.getStrength() - expected;
         double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
-        if (pull <= RELAX_THRESHOLD) {
+        if (pull < RELAX_THRESHOLD) {
             pull = 0.0;
         }
 

@@ -46,6 +46,7 @@ public class ReceptorNode extends Node {
             getNeuron().addLink(new ReceptorLink(this.getData(), data));
             ReceptorConnectMessage message = new ReceptorConnectMessage(this.getData(), data);
             getNeuron().getAgent().sendMessageToNeuron(message);
+            sendQueriesToNeuron(data);
         }
     }
 

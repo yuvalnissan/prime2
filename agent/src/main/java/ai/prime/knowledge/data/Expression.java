@@ -50,6 +50,15 @@ public class Expression {
         return applyModifier(DataModifier.NEGATIVE);
     }
 
+    public Expression normalize(){
+        if (!data.isNormalized()) {
+            Data normalized = data.normalize();
+            return new Expression(normalized, modifier);
+        } else {
+            return this;
+        }
+    }
+
     public  Unification unify(Expression exp){
         if ((!(getData().getType().equals(VariableData.TYPE)))){
             if (!modifier.equals(exp.getModifier())){
