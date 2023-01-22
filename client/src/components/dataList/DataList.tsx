@@ -118,10 +118,12 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         // Use `network` here to configure events, etc
     }, [visJsRef, neurons, selectedExpressionId])
 
+    const compareIds = (neuron1: Neuron, neuron2: Neuron) => neuron1.data.id === neuron2.data.id ? 0 : (neuron1.data.id > neuron2.data.id ? 1 : -1)
+
     return (
         <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <List className={styles['list']} component="nav" aria-label="main mailbox folders">
-                {Object.values(neurons).map(neuron => ListNode(neuron.data))}
+                {Object.values(neurons).sort(compareIds).map(neuron => ListNode(neuron.data))}
             </List>
             <div className={styles['graph']} ref={visJsRef} />
         </Box>

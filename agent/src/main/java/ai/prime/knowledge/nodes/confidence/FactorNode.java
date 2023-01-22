@@ -43,8 +43,7 @@ public abstract class FactorNode extends Node {
 
             SetMap<Data, PullValue> results = buildPullValues();
             results.getKeys().forEach(to -> {
-                Set<PullValue> values = results.getValues(to);
-                values = adjustPullValues(values);
+                Set<PullValue> values = adjustPullValues(results.getValues(to));
                 Data normalized = to.normalize();
                 PullMessage message = new PullMessage(getNeuron().getData(), normalized, values);
                 getNeuron().getAgent().sendMessageToNeuron(message);

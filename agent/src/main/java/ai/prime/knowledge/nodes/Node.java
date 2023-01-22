@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public abstract class Node {
-    private Neuron neuron;
+    private final Neuron neuron;
 
     public Node(Neuron neuron) {
         this.neuron = neuron;

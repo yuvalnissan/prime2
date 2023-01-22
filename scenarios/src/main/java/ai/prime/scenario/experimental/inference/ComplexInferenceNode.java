@@ -13,7 +13,6 @@ import ai.prime.knowledge.nodes.confidence.InferredConfidence;
 import ai.prime.knowledge.nodes.confidence.PullValue;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ComplexInferenceNode extends FactorNode {
@@ -38,10 +37,10 @@ public class ComplexInferenceNode extends FactorNode {
 
     @Override
     public Map<String, String> getDisplayProps() {
-        Map<String, String> props = new HashMap<>();
+        Map<String, String> props = super.getDisplayProps();
 
         props.put("infer", getStatusConfidence(getData()).toString());
-        props.put("target", getStatusConfidence(target.getData()).toString());
+        props.put(target.getData().getDisplayName(), getStatusConfidence(target.getData()).toString());
         for (Expression condition : conditions) {
             props.put(condition.getData().getDisplayName(), getStatusConfidence(condition.getData()).toString());
         }

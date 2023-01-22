@@ -82,15 +82,33 @@ public class RuleNode extends FactorNode {
         return MESSAGE_TYPES;
     }
 
-    private void buildPullValuesForLink(SetMap<Data, PullValue> results, Data inferData) {
-        //TODO this is one directional, and doesn't learn from the infer values
+    private void addDirectionalPull(SetMap<Data, PullValue> results, Data inferData, boolean isPositive) {
         Confidence ruleConfidence = getStatusConfidence(getData());
         Confidence inferConfidence = getStatusConfidence(inferData);
 
+        if (!isPositive) {
+            ruleConfidence = ruleConfidence.invert();
+            inferConfidence = inferConfidence.invert();
+        }
+
         double conflict = Math.max(0.0, ruleConfidence.getStrength() - inferConfidence.getStrength());
         double pull = conflict * 0.5;
-        results.add(getData(), new PullValue(false, pull, inferConfidence.getResistance(false), getData()));
-        results.add(inferData, new PullValue(true, pull, ruleConfidence.getResistance(true), getData()));
+
+        double ruleResistance = inferConfidence.getResistance(false);
+        double inferResistance = ruleConfidence.getResistance(true);
+
+        if (pull <= RELAX_THRESHOLD) {
+            pull = 0.0;
+            ruleResistance = 0.0; //TODO not sure this is a good idea
+            inferResistance = 0.0;
+        }
+        results.add(getData(), new PullValue(!isPositive, pull, ruleResistance, inferData));
+        results.add(inferData, new PullValue(isPositive, pull, inferResistance, getData()));
+    }
+
+    private void buildPullValuesForLink(SetMap<Data, PullValue> results, Data inferData) {
+        addDirectionalPull(results, inferData, true);
+        addDirectionalPull(results, inferData, false);
     }
 
     @Override

@@ -68,17 +68,20 @@ public class InferNode extends FactorNode {
 
         double effectConflict = inferConfidence.getStrength() - expected;
         double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
-        if (pull <= RELAX_THRESHOLD) {
-            pull = 0.0;
-        }
 
         double effectResistance = Math.min(conditionConfidence.getResistance(true), targetConfidence.getResistance(false));
         double fromResistance = Math.min(targetConfidence.getResistance(false), inferConfidence.getResistance(true));
         double toResistance = Math.min(conditionConfidence.getResistance(true), inferConfidence.getResistance(true));
 
+        if (pull <= RELAX_THRESHOLD) {
+            pull = 0.0;
+            effectResistance = 0.0; //TODO not sure if relax should affect pull
+            fromResistance = 0.0;
+            toResistance = 0.0;
+        }
+
         inferPullValue = new PullValue(!isPositive, pull, effectResistance, getData());
         confidencePullValue = new PullValue(conditionIsPositive, pull, fromResistance, getData());
-
         targetPullValue = new PullValue(targetIsPositive, pull, toResistance, getData());
 
         results.add(getData(), inferPullValue);

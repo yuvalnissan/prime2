@@ -14,13 +14,11 @@
     "smith": {
       "neurons": [
         {
-          "data": {"value": "A"}
-        },
-        {
+          "confidence": "POSITIVE",
           "data": {
             "type": "rel",
             "expressions": [
-              {"value": "A"},
+              {"value": "P1"},
               {"value": "isThe"},
               {"value": "Question"}
             ]
@@ -28,6 +26,59 @@
         },
         {
           "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "P2"},
+              {"value": "isThe"},
+              {"value": "Question"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Test"},
+              {"value": "isThe"},
+              {"value": "Question"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "maybe",
+            "expressions": [
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "P1"},
+                  {"value": "isThe"},
+                  {"value": "Answer"}
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "maybe",
+            "expressions": [
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "P2"},
+                  {"value": "isThe"},
+                  {"value": "Answer"}
+                ]
+              }
+            ]
+          }
+        },
+        {
           "data": {
             "type": "rule",
             "expressions": [
@@ -44,7 +95,14 @@
                   }
                 ]
               },
-              {"var": "X"}
+              {
+                "type": "rel",
+                "expressions": [
+                  {"var": "X"},
+                  {"value": "isThe"},
+                  {"value": "Question"}
+                ]
+              }
             ]
           }
         }

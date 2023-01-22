@@ -158,6 +158,21 @@ public class ConfidenceNode extends Node {
         }
     }
 
+    private Confidence reduceLowValues(Confidence confidence) {
+        if (confidence.getStrength() != 0.0 &&
+                confidence.getResistance(true) == 0.0 &&
+                confidence.getResistance(false) == 0.0) {
+
+            return InferredConfidence.EMPTY;
+        }
+
+        if (Math.abs(confidence.getStrength()) < 0.01) {
+            return InferredConfidence.EMPTY;
+        }
+
+        return confidence;
+    }
+
     private void update() {
         if (!pullMessageWaitingList.isEmpty()) {
             return;
@@ -170,7 +185,8 @@ public class ConfidenceNode extends Node {
             confidence = getUpdatedConfidence(balancedChange);
 
             // Resetting if no support
-            confidence = lowPullAdjustment(confidence);
+//            confidence = lowPullAdjustment(confidence);
+            confidence = reduceLowValues(confidence);
 
             if (confidence.isSignificantlyDifferent(current)) {
                 Logger.info("confidenceNode", "Neuron " + getNeuron().getData().getDisplayName() + " changed from " + current.toString() + " to: " + confidence.toString());

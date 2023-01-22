@@ -4,8 +4,7 @@ import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.data.base.VariableData;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UnificationTests {
 
@@ -74,6 +73,43 @@ public class UnificationTests {
         assertEquals(unify.getBoundedVariables().size(), 2);
         assertEquals(unify.getBound("var:1"), getValue("B").not());
         assertEquals(unify.getBound("var:2"), getValue("C").not());
+    }
+
+    @Test
+    public void testNoneRepeating() {
+        var data = getRel(
+                getValue("B"),
+                getValue("isa"),
+                getValue("C").not()
+        ).getData().normalize();
+
+        var pattern = getRel(
+                getVariable("X"),
+                getValue("isa"),
+                getVariable("X")
+        ).getData().normalize();
+
+        Unification unify = pattern.unify(data);
+
+        assertNull(unify);
+    }
+
+    @Test
+    public void testWrongTypeNot() {
+        var data = new Data(new DataType("rel2"), new Expression[]{
+                getValue("B"),
+                getValue("isa"),
+                getValue("C")
+        });
+        var pattern = getRel(
+                getVariable("X").not(),
+                getValue("isa"),
+                getVariable("Y")
+        ).getData().normalize();
+
+        Unification unify = pattern.unify(data);
+
+        assertNull(unify);
     }
 
     @Test
