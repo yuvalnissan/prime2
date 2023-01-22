@@ -1,5 +1,6 @@
 //TODO general list
 
+- Towers
 - Rule node
 - Balance rules and infers
 - Receptor nodes should use connotation instead of their own links
@@ -14,3 +15,7 @@
 // MAYBE
 - add AND node
 - Rules can pull themselves up instead of getting it from other infers. Makes for a "theory"
+
+
+// BUGS
+- Balancing scenario, mark infer(rel(P3,isThe,Answer),rel(P3,isThe,Question)) as sense negative. Doesn't balance

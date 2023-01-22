@@ -30,7 +30,7 @@ export const NodeList = ({nodes, className }: NodeListProps) => {
         </Typography>
         <Box>
           {Object.entries(node.props).map(([prop, value]) => {
-            return <Box key={prop}><Typography variant="subtitle1" display="inline" key={prop}>
+            return <Box key={prop}><Typography variant="subtitle2" display="inline" key={prop}>
               {prop}: {value}
             </Typography></Box>
           })}

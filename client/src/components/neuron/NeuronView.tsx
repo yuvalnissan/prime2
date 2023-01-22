@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import styles from './NeuronView.module.scss'
 import { Link, Neuron } from '../../businessLogic/neuron'
 import { DataView } from '../data/DataView'
@@ -60,12 +61,22 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
         await sendMessage('sense-negative', neuron.data)
     }
 
+    const confidenceNode = neuron?.nodes['confidence']
+    const confidence = confidenceNode.props['confidence']
+
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['details']} >
-            <Button onClick={handleIgniteClick} >Ignite</Button>
-            <Button onClick={handlePositiveSenseClick} >Sense+</Button>
-            <Button onClick={handleNegativeSenseClick} >Sense-</Button>
-            <DataView expression={neuron.data} />
+            <Box>
+                <Button onClick={handleIgniteClick} >Ignite</Button>
+                <Button onClick={handlePositiveSenseClick} >Sense+</Button>
+                <Button onClick={handleNegativeSenseClick} >Sense-</Button>
+            </Box>
+            <Box>
+                <Typography variant="subtitle1" display="inline">
+                    <b>Confidence: {confidence}</b>
+                </Typography>
+                <DataView expression={neuron.data} />
+            </Box>
         </Box>
         <Box className={styles['list']} >
             <NodeList nodes={neuron.nodes} />

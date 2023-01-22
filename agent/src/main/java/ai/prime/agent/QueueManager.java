@@ -35,4 +35,8 @@ public class QueueManager {
     public boolean hasPendingMessages() {
         return queues.values().stream().anyMatch(queue -> queue.size() > 0 || queue.isProcessing());
     }
+
+    public void stop() {
+        queues.values().forEach(MessageQueue::stop);
+    }
 }

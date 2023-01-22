@@ -39,4 +39,8 @@ public class BlockingQueueWithConfirmation<T extends QueueMessage> {
     public long size() {
         return queue.size();
     }
+
+    public void clear() {
+        queue.clear();
+    }
 }

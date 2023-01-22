@@ -22,10 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Scenario {
     private static final double DEFAULT_IGNITE_STRENGTH = 10.0;
@@ -48,6 +45,10 @@ public class Scenario {
 
     public Agent getAgent(String agentName) {
         return this.agents.get(agentName);
+    }
+
+    public Collection<Agent> getAllAgents() {
+        return this.agents.values();
     }
 
     private static Expression getExpression(DataModel dataModel) {

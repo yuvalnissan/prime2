@@ -87,4 +87,8 @@ public class Agent {
             throw new RuntimeException(e);
         }
     }
+
+    public void stop() {
+        queueManager.stop();
+    }
 }

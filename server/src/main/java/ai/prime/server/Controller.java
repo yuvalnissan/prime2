@@ -23,7 +23,17 @@ public class Controller {
         modelConversion = new ModelConversion();
     }
 
+    private void stopExistingScenario(String scenarioName) {
+        if (!scenarios.containsKey(scenarioName)) {
+            return;
+        }
+
+        Scenario scenario = scenarios.get(scenarioName);
+        scenario.getAllAgents().forEach(Agent::stop);
+    }
+
     private void loadScenario(String scenarioName) {
+        stopExistingScenario(scenarioName);
         scenarios.put(scenarioName, Scenario.loadScenario(scenarioName));
     }
 
