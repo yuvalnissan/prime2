@@ -13,7 +13,7 @@
     "smith": {
       "neurons": [
         {
-          "confidence": "POSITIVE",
+          "confidence": "NEGATIVE",
           "data": {
             "type": "rel",
             "expressions": [
@@ -24,13 +24,46 @@
           }
         },
         {
-          "confidence": "NEGATIVE",
+          "confidence": "POSITIVE",
           "data": {
             "type": "rel",
             "expressions": [
               {"value": "Kona"},
               {"value": "isa"},
               {"value": "Car"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Kona"},
+              {"value": "color"},
+              {"value": "White"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Kona"},
+              {"value": "isa"},
+              {"value": "Device"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "Vehicle"},
+              {"value": "isa"},
+              {"value": "TransportationMean"}
             ]
           }
         },
@@ -53,6 +86,38 @@
                   {"var": "X"},
                   {"value": "isa"},
                   {"value": "Car"}
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {
+                "type": "rel",
+                "expressions": [
+                  {"var": "X"},
+                  {"value": "isa"},
+                  {"var": "Z"}
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [
+                  {"var": "X"},
+                  {"value": "isa"},
+                  {"var": "Y"}
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [
+                  {"var": "Y"},
+                  {"value": "isa"},
+                  {"var": "Z"}
                 ]
               }
             ]

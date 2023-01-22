@@ -1,5 +1,31 @@
-.root {}
+.root {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 100%;
+    // width: 100vw;
+    height: 92vh;
+    border-left: 1px solid;
+}
 
 .all {
     
+}
+
+.details {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-end: 1;
+    grid-column-start: 1;
+    height: 100%;
+}
+
+.list {
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-end: 1;
+    grid-column-start: 1;
+    // height: 90vh;
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

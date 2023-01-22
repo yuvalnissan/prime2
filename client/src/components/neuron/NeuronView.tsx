@@ -61,11 +61,15 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
     }
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
-        <Button onClick={handleIgniteClick} >Ignite</Button>
-        <Button onClick={handlePositiveSenseClick} >Sense+</Button>
-        <Button onClick={handleNegativeSenseClick} >Sense-</Button>
-        <DataView expression={neuron.data} />
-        <NodeList nodes={neuron.nodes} />
-        <LinkList links={neuron.links.sort(compare)} setSelectedExpressionId={setSelectedExpressionId} />
+        <Box className={styles['details']} >
+            <Button onClick={handleIgniteClick} >Ignite</Button>
+            <Button onClick={handlePositiveSenseClick} >Sense+</Button>
+            <Button onClick={handleNegativeSenseClick} >Sense-</Button>
+            <DataView expression={neuron.data} />
+        </Box>
+        <Box className={styles['list']} >
+            <NodeList nodes={neuron.nodes} />
+            <LinkList links={neuron.links.sort(compare)} setSelectedExpressionId={setSelectedExpressionId} />
+        </Box>
     </Box>
 }

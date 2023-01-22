@@ -4,8 +4,8 @@
     display: grid;
     grid-template-rows: 100%;
     grid-template-columns: 70% 30%;
-    width: 100vw;
-    height: 100vh;
+    width: 95vw;
+    height: 95vh;
 }
 
 .left-panel {
@@ -13,7 +13,6 @@
     grid-row-end: 1;
     grid-column-end: 1;
     grid-column-start: 1;
-    border: 1px solid black;
     margin: 5px;
     width: 100%;
 }
