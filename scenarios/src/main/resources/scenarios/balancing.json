@@ -40,6 +40,17 @@
           "data": {
             "type": "rel",
             "expressions": [
+              {"value": "P3"},
+              {"value": "isThe"},
+              {"value": "Question"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
               {"value": "Test"},
               {"value": "isThe"},
               {"value": "Question"}
@@ -49,32 +60,33 @@
         {
           "confidence": "POSITIVE",
           "data": {
-            "type": "maybe",
+            "type": "rel",
             "expressions": [
-              {
-                "type": "rel",
-                "expressions": [
-                  {"value": "P1"},
-                  {"value": "isThe"},
-                  {"value": "Answer"}
-                ]
-              }
+              {"value": "P1"},
+              {"value": "isThe"},
+              {"value": "Answer"}
             ]
           }
         },
         {
           "confidence": "POSITIVE",
           "data": {
-            "type": "maybe",
+            "type": "rel",
             "expressions": [
-              {
-                "type": "rel",
-                "expressions": [
-                  {"value": "P2"},
-                  {"value": "isThe"},
-                  {"value": "Answer"}
-                ]
-              }
+              {"value": "P2"},
+              {"value": "isThe"},
+              {"value": "Answer"}
+            ]
+          }
+        },
+        {
+          "confidence": "NEGATIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "P3"},
+              {"value": "isThe"},
+              {"value": "Answer"}
             ]
           }
         },
@@ -83,16 +95,11 @@
             "type": "rule",
             "expressions": [
               {
-                "type": "maybe",
+                "type": "rel",
                 "expressions": [
-                  {
-                    "type": "rel",
-                    "expressions": [
-                      {"var": "X"},
-                      {"value": "isThe"},
-                      {"value": "Answer"}
-                    ]
-                  }
+                  {"var": "X"},
+                  {"value": "isThe"},
+                  {"value": "Answer"}
                 ]
               },
               {

@@ -4,6 +4,7 @@
 - Balance rules and infers
 - Receptor nodes should use connotation instead of their own links
 - Implement connotation node value, currently doesn't do anything
+- Add tests over scenarios
 - consider separating the resistance in complex infer
 - Short term memory
 - Backwards binding, maybe with Any and All
@@ -12,3 +13,4 @@
 
 // MAYBE
 - add AND node
+- Rules can pull themselves up instead of getting it from other infers. Makes for a "theory"
