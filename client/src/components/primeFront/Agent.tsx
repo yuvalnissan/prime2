@@ -6,7 +6,7 @@ import { NeuronView } from '../neuron/NeuronView'
 import styles from './Agent.module.scss'
 import { DataList } from '../dataList/DataList'
 import { Neuron } from '../../businessLogic/neuron'
-import { getScenarioURL, getResetURL } from '../../communication/urls'
+import { getScenarioURL, getResetURL, getPauseURL, getResumeURL } from '../../communication/urls'
 
 export interface AgentProps {
     className?: string
@@ -22,6 +22,7 @@ export const Agent = ({ className }: AgentProps) => {
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
+    const [isPaused, setIsPaused] = React.useState<boolean>(false)
     const [messageCount, setMessageCount] = React.useState<number>(0)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
 
@@ -68,30 +69,65 @@ export const Agent = ({ className }: AgentProps) => {
         }
     }
 
+    const postToUrl = async (url: string) => {
+        const body = {}
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        })
+  
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+    }
+
     const resetScenario = async () => {
         console.log(`Resetting scenario ${scenarioName}`)
         try {
             setNeurons({})
             setResetState(resetState + 1)
-            const body = {}
-            const response = await fetch(getResetURL(scenarioName), {
-                method: 'POST',
-                body: JSON.stringify(body),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            })
-      
-            if (!response.ok) {
-                throw new Error(`Error! status: ${response.status}`);
-            }
-    
+            postToUrl(getResetURL(scenarioName))
             setShouldRefresh(true)
-
+            setIsPaused(false)
         } catch (err) {
           console.error(err)
           window.alert('Failed resetting scenario')
+        }
+    }
+
+    const pauseScenario = async () => {
+        console.log(`Pausing scenario ${scenarioName}`)
+        try {
+            postToUrl(getPauseURL(scenarioName))
+            setShouldRefresh(false)
+            setIsPaused(true)
+        } catch (err) {
+          console.error(err)
+          window.alert('Failed pausing scenario')
+        }
+    }
+
+    const resumeScenario = async () => {
+        console.log(`Resuming scenario ${scenarioName}`)
+        try {
+            postToUrl(getResumeURL(scenarioName))
+            setShouldRefresh(true)
+            setIsPaused(false)
+        } catch (err) {
+          console.error(err)
+          window.alert('Failed resuming scenario')
+        }
+    }
+
+    const togglePause = async () => {
+        if (isPaused) {
+            await resumeScenario()
+        } else {
+            await pauseScenario()
         }
     }
 
@@ -122,6 +158,9 @@ export const Agent = ({ className }: AgentProps) => {
                 </Button>
                 <Button onClick={resetScenario}>
                     Reset scenario
+                </Button>
+                <Button onClick={togglePause}>
+                    {isPaused ? 'Resume' : 'Pause'}
                 </Button>
             </Box>
             <DataList className={styles['data-list']} key = {resetState} neurons = {neurons} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -23,13 +24,25 @@ public class Controller {
         modelConversion = new ModelConversion();
     }
 
-    private void stopExistingScenario(String scenarioName) {
+    private void allAgentAction(String scenarioName, Consumer<Agent> action) {
         if (!scenarios.containsKey(scenarioName)) {
             return;
         }
 
         Scenario scenario = scenarios.get(scenarioName);
-        scenario.getAllAgents().forEach(Agent::stop);
+        scenario.getAllAgents().forEach(action);
+    }
+
+    private void stopExistingScenario(String scenarioName) {
+        allAgentAction(scenarioName, Agent::stop);
+    }
+
+    private void pauseScenario(String scenarioName) {
+        allAgentAction(scenarioName, Agent::pause);
+    }
+
+    private void resumeScenario(String scenarioName) {
+        allAgentAction(scenarioName, Agent::resume);
     }
 
     private void loadScenario(String scenarioName) {
@@ -71,5 +84,15 @@ public class Controller {
     @PostMapping("/reset")
     public void resetScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
         loadScenario(scenarioName);
+    }
+
+    @PostMapping("/pause")
+    public void pauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+        pauseScenario(scenarioName);
+    }
+
+    @PostMapping("/resume")
+    public void unpauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+        resumeScenario(scenarioName);
     }
 }

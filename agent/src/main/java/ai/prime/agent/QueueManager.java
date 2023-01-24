@@ -39,4 +39,12 @@ public class QueueManager {
     public void stop() {
         queues.values().forEach(MessageQueue::stop);
     }
+
+    public void pause() {
+        queues.values().forEach(MessageQueue::pause);
+    }
+
+    public void resume() {
+        queues.values().forEach(MessageQueue::resume);
+    }
 }

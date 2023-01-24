@@ -45,6 +45,6 @@ public class MessageQueue<T extends QueueMessage> {
     }
 
     public void resume() {
-        messageConsumers.forEach(consumer -> consumer.setPaused(true));
+        messageConsumers.forEach(consumer -> consumer.setPaused(false));
     }
 }

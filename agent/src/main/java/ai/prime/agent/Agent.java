@@ -91,4 +91,12 @@ public class Agent {
     public void stop() {
         queueManager.stop();
     }
+
+    public void pause() {
+        queueManager.pause();
+    }
+
+    public void resume() {
+        queueManager.resume();
+    }
 }
