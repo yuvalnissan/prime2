@@ -89,8 +89,8 @@ export const Agent = ({ className }: AgentProps) => {
         console.log(`Resetting scenario ${scenarioName}`)
         try {
             setNeurons({})
+            await postToUrl(getResetURL(scenarioName))
             setResetState(resetState + 1)
-            postToUrl(getResetURL(scenarioName))
             setShouldRefresh(true)
             setIsPaused(false)
         } catch (err) {
@@ -102,7 +102,7 @@ export const Agent = ({ className }: AgentProps) => {
     const pauseScenario = async () => {
         console.log(`Pausing scenario ${scenarioName}`)
         try {
-            postToUrl(getPauseURL(scenarioName))
+            await postToUrl(getPauseURL(scenarioName))
             setShouldRefresh(false)
             setIsPaused(true)
         } catch (err) {
@@ -114,7 +114,7 @@ export const Agent = ({ className }: AgentProps) => {
     const resumeScenario = async () => {
         console.log(`Resuming scenario ${scenarioName}`)
         try {
-            postToUrl(getResumeURL(scenarioName))
+            await postToUrl(getResumeURL(scenarioName))
             setShouldRefresh(true)
             setIsPaused(false)
         } catch (err) {

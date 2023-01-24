@@ -9,6 +9,7 @@
 - consider separating the resistance in complex infer
 - Short term memory
 - Backwards binding, maybe with Any and All
+- Write tests
 
 
 
@@ -18,4 +19,4 @@
 
 
 // BUGS
-- Balancing scenario, mark infer(rel(P3,isThe,Answer),rel(P3,isThe,Question)) as sense negative. Doesn't balance
+- Balancing scenario, mark infer(rel(P3,isThe,Answer),rel(P3,isThe,Question)) as sense negative and then positive. Takes a long time

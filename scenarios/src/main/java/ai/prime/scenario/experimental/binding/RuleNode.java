@@ -99,8 +99,8 @@ public class RuleNode extends FactorNode {
 
         if (pull <= RELAX_THRESHOLD) {
             pull = 0.0;
-            ruleResistance = 0.0; //TODO not sure this is a good idea
-            inferResistance = 0.0;
+//            ruleResistance = 0.0; //TODO not sure this is a good idea
+//            inferResistance = 0.0;
         }
         results.add(getData(), new PullValue(!isPositive, pull, ruleResistance, inferData));
         results.add(inferData, new PullValue(isPositive, pull, inferResistance, getData()));
