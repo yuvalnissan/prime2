@@ -9,6 +9,7 @@
         <version>1.0</version>
     </parent>
 
+    <groupId>ai.prime</groupId>
     <artifactId>scenarios</artifactId>
     <version>1.0</version>
 
