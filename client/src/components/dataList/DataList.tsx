@@ -3,6 +3,7 @@ import { Network, Node, Edge} from "vis-network"
 import {DataSet} from "vis-data"
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
+import TextField from '@mui/material/TextField'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
@@ -39,6 +40,7 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     const [nodes, setNodes] = React.useState<DataSet<Node>>(new DataSet([]))
     const [edges, setEdges] = React.useState<DataSet<Edge>>(new DataSet([]))
     const [network, setNetwork] = React.useState<Network | null>(null)
+    const [filter, setFilter] = React.useState<string>('')
 
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -120,11 +122,26 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
 
     const compareIds = (neuron1: Neuron, neuron2: Neuron) => neuron1.data.id === neuron2.data.id ? 0 : (neuron1.data.id > neuron2.data.id ? 1 : -1)
 
+    const filterBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value
+        setFilter(value)
+    }
+
+    const matchesFilter = (neuron: Neuron) => {
+        const regexStr = filter.toLowerCase().replaceAll(' ', '.*')
+        const re = new RegExp(regexStr)
+
+        return !!neuron.data.id.toLowerCase().match(re)
+    }
+
     return (
         <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <List className={styles['list']} component="nav" aria-label="main mailbox folders">
-                {Object.values(neurons).sort(compareIds).map(neuron => ListNode(neuron.data))}
-            </List>
+            <Box className={styles['list']}>
+                <TextField className={styles['search']} id="outlined-basic" fullWidth variant="outlined" onChange={filterBoxChange} />
+                <List className={styles['results']} component="nav" aria-label="main mailbox folders">
+                    {Object.values(neurons).filter(matchesFilter).sort(compareIds).map(neuron => ListNode(neuron.data))}
+                </List>
+            </Box>
             <div className={styles['graph']} ref={visJsRef} />
         </Box>
     )

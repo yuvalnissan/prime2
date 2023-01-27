@@ -9,10 +9,27 @@
 .list {
     height: 100%;
     width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
     grid-row-start: 1;
     grid-row-end: 1;
+    grid-column-end: 1;
+    grid-column-start: 1;
+    display: grid;
+    grid-template-rows: 10% 90%;
+    grid-template-columns: 100%;
+}
+
+.search {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-end: 1;
+    grid-column-start: 1;
+}
+
+.results {
+    overflow-y: auto;
+    overflow-x: hidden;
+    grid-row-start: 2;
+    grid-row-end: 2;
     grid-column-end: 1;
     grid-column-start: 1;
 }
