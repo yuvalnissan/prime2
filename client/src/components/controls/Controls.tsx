@@ -108,7 +108,6 @@ export const Controls = ({
 
     const setFilterValue = (value: string) => {
         setFilter(value)
-        console.log(value)
         if (!!neurons[value]) {
             setSelectedExpressionId(value)
         }

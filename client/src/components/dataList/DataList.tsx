@@ -74,6 +74,7 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     const getShape = (type: string): string => shapeMapping[type] || 'dot'
 
     useEffect(() => {
+        console.log('Refreshing graph')
         Object.values(neurons).forEach(neuron => {
             const color = getColor(neuron.nodes.confidence?.props?.confidence || "0|0|0")
             const shape = getShape(neuron.data.type)
@@ -116,7 +117,13 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         })
         
         // Use `network` here to configure events, etc
-    }, [visJsRef, neurons, selectedExpressionId])
+    }, [visJsRef, neurons])
+
+    useEffect(() => {
+        if (selectedExpressionId) {
+            network?.setSelection({nodes: [selectedExpressionId]})
+        }
+    }, [visJsRef, selectedExpressionId])
 
     return (
         <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
