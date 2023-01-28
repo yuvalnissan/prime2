@@ -3,6 +3,7 @@
 - Towers
 - Rule node
 - Balance rules and infers
+- On UI selection, use up and down arrows to switch selected items
 - Receptor nodes should use connotation instead of their own links
 - Implement connotation node value, currently doesn't do anything
 - Add tests over scenarios

@@ -1,7 +1,9 @@
 package ai.prime.knowledge.data;
 
+import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.data.base.VariableData;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class Expression {
@@ -112,5 +114,37 @@ public class Expression {
             return false;
 
         return (toString().equals(obj.toString()));
+    }
+
+    private static Data extractPrimitive(String id) {
+        if (id.startsWith(VariableData.PREFIX)) {
+            return new VariableData(id);
+        }
+
+        return new ValueData(id);
+    }
+
+    public static Expression fromString(String id) {
+        var cleanId = id.trim().replaceAll(" ", "");
+        var start = cleanId.indexOf(NamingUtil.START_COMPLEX_EXPRESSION);
+        if (start == -1) {
+            return new Expression(extractPrimitive(cleanId));
+        }
+
+        if (!cleanId.substring(cleanId.length() - 1, cleanId.length()).equals(NamingUtil.END_COMPLEX_EXPRESSION)) {
+            throw new RuntimeException("Invalid ID format");
+        }
+
+        var type = cleanId.substring(0, start);
+        var internal = cleanId.substring(start + 1, cleanId.length() - 1);
+        if (type.equals(DataModifier.NEGATIVE.getDisplayName())) {
+            return fromString(internal).not();
+        }
+
+        var expressionIds = NamingUtil.separate(internal, NamingUtil.LIST_SEPARATOR);
+        Expression[] expressions = Arrays.stream(expressionIds).map(Expression::fromString).toArray(Expression[]::new);
+        Data data = new Data(new DataType(type), expressions);
+
+        return new Expression(data);
     }
 }

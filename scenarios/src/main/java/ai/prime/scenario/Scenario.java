@@ -81,15 +81,15 @@ public class Scenario {
         return new InferredConfidence(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
     }
 
+    public void addDataOnLoad(String agentName, Data data) {
+        Agent agent = getAgent(agentName);
+        agent.getMemory().addData(data);
+    }
+
     public void igniteNeuron(String agentName, Data data) {
         IgniteMessage igniteMessage = new IgniteMessage(data, data, DEFAULT_IGNITE_STRENGTH);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(igniteMessage);
-    }
-
-    public void addData(String agentName, Data data) {
-        Agent agent = getAgent(agentName);
-        agent.getMemory().addData(data);
     }
 
     public void setSense(String agentName, Data data, Confidence confidence) {
@@ -131,7 +131,7 @@ public class Scenario {
                     Expression expression = getExpression(neuronModel.getData());
                     var normalized = expression.getData().normalize();
                     Logger.info("scenario", "Adding " + normalized.getDisplayName());
-                    scenario.addData(agentName, normalized);
+                    scenario.addDataOnLoad(agentName, normalized);
 
                     if (neuronModel.getConfidence() != null) {
                         Confidence confidence = getConfidence(neuronModel.getConfidence());

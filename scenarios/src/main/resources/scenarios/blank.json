@@ -1,0 +1,20 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.inference.ComplexInferenceNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+
+      ]
+    }
+  }
+}
+

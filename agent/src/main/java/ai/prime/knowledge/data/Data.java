@@ -214,7 +214,7 @@ public class Data {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         if (hashCode == 0){
             hashCode = getDisplayName().hashCode();
         }
@@ -223,7 +223,7 @@ public class Data {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (!(obj instanceof Data))
             return false;
 

@@ -1,12 +1,12 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { NeuronView } from '../neuron/NeuronView'
 import styles from './Agent.module.scss'
 import { DataList } from '../dataList/DataList'
+import { Controls } from '../controls/Controls'
 import { Neuron } from '../../businessLogic/neuron'
-import { getScenarioURL, getResetURL, getPauseURL, getResumeURL } from '../../communication/urls'
+import { getScenarioURL, postToUrl, getResetURL } from '../../communication/urls'
 
 export interface AgentProps {
     className?: string
@@ -22,9 +22,10 @@ export const Agent = ({ className }: AgentProps) => {
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
-    const [isPaused, setIsPaused] = React.useState<boolean>(false)
+    
     const [messageCount, setMessageCount] = React.useState<number>(0)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
+    const [filteredIds, setFilteredIds] = React.useState<string[]>([])
 
     const setData = (agent: any) => {
         const memory = agent.memory
@@ -47,10 +48,6 @@ export const Agent = ({ className }: AgentProps) => {
         setMessageCount(agent.messageCount)
     }
 
-    const toggleRefresh = () => {
-        setShouldRefresh(!shouldRefresh)
-    }
-
     const refreshData = () => {
         if (shouldRefresh) {
             console.log(`Refreshing scenario ${scenarioName} and agent ${agentName}`)
@@ -69,68 +66,6 @@ export const Agent = ({ className }: AgentProps) => {
         }
     }
 
-    const postToUrl = async (url: string) => {
-        const body = {}
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-        })
-  
-        if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-        }
-    }
-
-    const resetScenario = async () => {
-        console.log(`Resetting scenario ${scenarioName}`)
-        try {
-            setNeurons({})
-            await postToUrl(getResetURL(scenarioName))
-            setResetState(resetState + 1)
-            setShouldRefresh(true)
-            setIsPaused(false)
-        } catch (err) {
-          console.error(err)
-          window.alert('Failed resetting scenario')
-        }
-    }
-
-    const pauseScenario = async () => {
-        console.log(`Pausing scenario ${scenarioName}`)
-        try {
-            await postToUrl(getPauseURL(scenarioName))
-            setShouldRefresh(false)
-            setIsPaused(true)
-        } catch (err) {
-          console.error(err)
-          window.alert('Failed pausing scenario')
-        }
-    }
-
-    const resumeScenario = async () => {
-        console.log(`Resuming scenario ${scenarioName}`)
-        try {
-            await postToUrl(getResumeURL(scenarioName))
-            setShouldRefresh(true)
-            setIsPaused(false)
-        } catch (err) {
-          console.error(err)
-          window.alert('Failed resuming scenario')
-        }
-    }
-
-    const togglePause = async () => {
-        if (isPaused) {
-            await resumeScenario()
-        } else {
-            await pauseScenario()
-        }
-    }
-
     React.useEffect(() => {
         refreshData()
         const interval = setInterval(() => {
@@ -140,30 +75,44 @@ export const Agent = ({ className }: AgentProps) => {
         return () => clearInterval(interval)
     }, [shouldRefresh])
 
+    const reset = async () => {
+        console.log(`Resetting scenario ${scenarioName}`)
+        try {
+            setSelectedExpressionId('')
+            setNeurons({})
+            await postToUrl(getResetURL(scenarioName), {})
+            setResetState(resetState + 1)
+            setShouldRefresh(true)
+        } catch (err) {
+          console.error(err)
+          window.alert('Failed resetting scenario')
+        }
+    }
+
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>
-            <Box className={styles['controls']}>
-                <Box className={styles['context']}>
-                    <Typography variant="subtitle1" display="inline">
-                        Scenario: {scenarioName}
-                    </Typography>
-                </Box>
-                <Box className={styles['context']}>
-                    <Typography variant="subtitle1" display="inline">
-                        Agent: {agentName} ({isStable ? 'Stable' : 'Not stable'} {messageCount})
-                    </Typography>
-                </Box>
-                <Button onClick={toggleRefresh}>
-                    Refreshing: {shouldRefresh + ''}
-                </Button>
-                <Button onClick={resetScenario}>
-                    Reset scenario
-                </Button>
-                <Button onClick={togglePause}>
-                    {isPaused ? 'Resume' : 'Pause'}
-                </Button>
+            <Box>
+                <Typography variant="subtitle1" display="inline">
+                    <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName} ({isStable ? 'Stable' : 'Not stable'} {messageCount})
+                </Typography>
             </Box>
-            <DataList className={styles['data-list']} key = {resetState} neurons = {neurons} setSelectedExpressionId = {setSelectedExpressionId} selectedExpressionId = {selectedExpressionId}/>
+            <Controls className={styles['data-list']}
+                scenarioName={scenarioName}
+                agentName={agentName}
+                setShouldRefresh={setShouldRefresh}
+                setSelectedExpressionId={setSelectedExpressionId}
+                setFilteredIds={setFilteredIds}
+                reset={reset}
+                neurons={neurons}
+                shouldRefresh={shouldRefresh}
+                selectedExpressionId={selectedExpressionId}
+            />
+            <DataList className={styles['data-list']} key = {resetState}
+                neurons = {neurons}
+                setSelectedExpressionId = {setSelectedExpressionId}
+                selectedExpressionId = {selectedExpressionId}
+                filteredIds={filteredIds}
+            />
         </Box>
         <Box className={styles['right-panel']}>
             {(neurons[selectedExpressionId]) ? 

@@ -3,13 +3,11 @@ import { Network, Node, Edge} from "vis-network"
 import {DataSet} from "vis-data"
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
-import TextField from '@mui/material/TextField'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import InboxIcon from '@mui/icons-material/Inbox'
 import { Neuron } from '../../businessLogic/neuron'
-import { Expression } from '../../businessLogic/data'
 import styles from './DataList.module.scss'
 
 const shapeMapping = {
@@ -24,6 +22,7 @@ export interface DataListProps {
     neurons: Record<string, Neuron>
     setSelectedExpressionId: Function
     selectedExpressionId: string
+    filteredIds: string[]
 }
 
 const options = {
@@ -36,11 +35,10 @@ const options = {
     }
 }
 
-export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, className }: DataListProps) => {
+export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, filteredIds, className }: DataListProps) => {
     const [nodes, setNodes] = React.useState<DataSet<Node>>(new DataSet([]))
     const [edges, setEdges] = React.useState<DataSet<Edge>>(new DataSet([]))
     const [network, setNetwork] = React.useState<Network | null>(null)
-    const [filter, setFilter] = React.useState<string>('')
 
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -49,16 +47,16 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         setSelectedExpressionId(id);
     }
 
-    const ListNode = (expression: Expression) => {
+    const ListNode = (id: string) => {
         return <ListItemButton
-        key = { expression.id}
-        selected={selectedExpressionId === expression.id}
-        onClick={(event) => handleListItemClick(event, expression.id)}
+        key = {id}
+        selected={selectedExpressionId === id}
+        onClick={(event) => handleListItemClick(event, id)}
     >
         <ListItemIcon>
         <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary={expression.id.replaceAll(',', ', ')} />
+        <ListItemText primary={id.replaceAll(',', ', ')} />
     </ListItemButton>
     }
 
@@ -120,26 +118,11 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         // Use `network` here to configure events, etc
     }, [visJsRef, neurons, selectedExpressionId])
 
-    const compareIds = (neuron1: Neuron, neuron2: Neuron) => neuron1.data.id === neuron2.data.id ? 0 : (neuron1.data.id > neuron2.data.id ? 1 : -1)
-
-    const filterBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value
-        setFilter(value)
-    }
-
-    const matchesFilter = (neuron: Neuron) => {
-        const regexStr = filter.toLowerCase().replaceAll(' ', '.*')
-        const re = new RegExp(regexStr)
-
-        return !!neuron.data.id.toLowerCase().match(re)
-    }
-
     return (
         <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <Box className={styles['list']}>
-                <TextField className={styles['search']} id="outlined-basic" fullWidth variant="outlined" onChange={filterBoxChange} />
-                <List className={styles['results']} component="nav" aria-label="main mailbox folders">
-                    {Object.values(neurons).filter(matchesFilter).sort(compareIds).map(neuron => ListNode(neuron.data))}
+                <List component="nav" aria-label="main mailbox folders">
+                    {filteredIds.map(ListNode)}
                 </List>
             </Box>
             <div className={styles['graph']} ref={visJsRef} />

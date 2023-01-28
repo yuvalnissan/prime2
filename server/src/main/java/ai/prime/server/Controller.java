@@ -2,6 +2,7 @@ package ai.prime.server;
 
 import ai.prime.agent.Agent;
 import ai.prime.common.utils.Logger;
+import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.nodes.confidence.SenseConfidence;
 import ai.prime.scenario.Scenario;
@@ -81,18 +82,30 @@ public class Controller {
         }
     }
 
+    @PostMapping("/newData")
+    public void newData(@RequestParam(value = "name")  String scenarioName, @RequestParam(value = "agent") String agentName, @RequestBody NewDataBody newDataBody) {
+        Scenario scenario = scenarios.get(scenarioName);
+        String id = newDataBody.getId();
+        Expression expression = Expression.fromString(id);
+        if (expression.getModifier().equals(DataModifier.POSITIVE)) {
+            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_POSITIVE);
+        } else {
+            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_NEGATIVE);
+        }
+    }
+
     @PostMapping("/reset")
-    public void resetScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+    public void resetScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ScenarioStateBody scenarioStateBody) {
         loadScenario(scenarioName);
     }
 
     @PostMapping("/pause")
-    public void pauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+    public void pauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ScenarioStateBody scenarioStateBody) {
         pauseScenario(scenarioName);
     }
 
     @PostMapping("/resume")
-    public void unpauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ResetScenarioBody resetScenarioBody) {
+    public void unpauseScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ScenarioStateBody scenarioStateBody) {
         resumeScenario(scenarioName);
     }
 }
