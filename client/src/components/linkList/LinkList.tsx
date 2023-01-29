@@ -8,7 +8,6 @@ import { Link } from '../../businessLogic/neuron'
 import { DataView } from '../data/DataView'
 import Divider from '@mui/material/Divider'
 
-
 export interface LinkViewProps {
   link: Link
 }
