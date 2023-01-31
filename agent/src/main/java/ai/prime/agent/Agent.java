@@ -1,5 +1,6 @@
 package ai.prime.agent;
 
+import ai.prime.agent.interaction.Actuator;
 import ai.prime.common.queue.MessageQueue;
 import ai.prime.common.queue.QueueMessage;
 import ai.prime.common.utils.Logger;
@@ -8,6 +9,8 @@ import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.memory.Memory;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -20,8 +23,9 @@ public class Agent {
     private final QueueManager queueManager;
 
     private final NodeMapping nodeMapping;
+    private final Map<String, Actuator> actuators;
 
-    private AtomicLong fireCounter;
+    private final AtomicLong fireCounter;
 
 
     public Agent(String name) {
@@ -30,6 +34,7 @@ public class Agent {
         this.queueManager = new QueueManager();
         this.nodeMapping = new NodeMapping();
         this.fireCounter = new AtomicLong(0);
+        this.actuators = new HashMap<>();
 
         MessageQueue<QueueMessage> neuronQueue = this.queueManager.addQueue(FIRE_QUEUE);
         IntStream.range(0, FIRE_QUEUE_SIZE).forEach(i -> neuronQueue.registerConsumer(message -> {
@@ -52,6 +57,18 @@ public class Agent {
 
     public long getMessageCount() {
         return fireCounter.get();
+    }
+
+    public void registerActuator(Actuator actuator) {
+        if (actuators.containsKey(actuator.getMappedAction())) {
+            throw new RuntimeException("Actuator already registered for " + actuator.getMappedAction());
+        }
+
+        actuators.put(actuator.getMappedAction(), actuator);
+    }
+
+    public Actuator getActuator(String action) {
+        return actuators.get(action);
     }
 
     public void sendMessageToNeuron(NeuralMessage message) {

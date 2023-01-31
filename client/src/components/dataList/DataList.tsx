@@ -6,6 +6,7 @@ import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
 import InboxIcon from '@mui/icons-material/Inbox'
 import { Neuron } from '../../businessLogic/neuron'
 import styles from './DataList.module.scss'
@@ -48,13 +49,19 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     }
 
     const ListNode = (id: string) => {
+        const confidenceNode = neurons[id]?.nodes['confidence']
+        const confidence = confidenceNode.props['confidence']
+        const strength = confidence.split('|')[0]
+
         return <ListItemButton
         key = {id}
         selected={selectedExpressionId === id}
         onClick={(event) => handleListItemClick(event, id)}
     >
         <ListItemIcon>
-        <InboxIcon />
+        <Typography variant="subtitle1" display="inline">
+          {strength}
+        </Typography>
         </ListItemIcon>
         <ListItemText primary={id.replaceAll(',', ', ')} />
     </ListItemButton>

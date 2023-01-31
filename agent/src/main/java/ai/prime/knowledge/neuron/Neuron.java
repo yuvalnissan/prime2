@@ -73,12 +73,8 @@ public class Neuron {
     }
 
     public void addMessage(NeuralMessage message) {
+        //TODO fix a case where two messages arrive with conflicting values. Only one will be processed, but it may not be the latest one
         Logger.debug("neuron", "add message to " + getData().getDisplayName() + ": " + message.toString());
-        if (getData().getDisplayName().contains("var:X")) {
-            System.out.println("No...");
-        }
-
-
         messageLock.lock();
         messages.add(message.getType(), message);
         messageLock.unlock();

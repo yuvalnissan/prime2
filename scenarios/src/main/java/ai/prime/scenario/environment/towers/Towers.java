@@ -1,12 +1,15 @@
 package ai.prime.scenario.environment.towers;
 
+import ai.prime.agent.interaction.Actuator;
 import ai.prime.common.utils.Logger;
+import ai.prime.knowledge.data.Expression;
 import ai.prime.scenario.Environment;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class Towers extends Environment {
+    private static final int NUMBER_OF_DISKS = 3;
     private static final int NUMBER_OF_TOWERS = 3;
     private static final int MID_TOWER = 2;
     private static final int INITIAL_TOWER = 1;
@@ -14,13 +17,21 @@ public class Towers extends Environment {
     private final int numberOfDisks;
     private Map<Integer, Stack<Integer>> towers;
 
-    public Towers(int numberOfDisks) {
-        this.numberOfDisks = numberOfDisks;
-        this.reset();
+    private final Actuator moveActuator;
+
+    public Towers() {
+        this.numberOfDisks = NUMBER_OF_DISKS;
+        this.innerReset();
+        this.moveActuator = new TowerActuator(this);
     }
 
     @Override
-    public void reset() {
+    public Collection<Actuator> getActuators() {
+        return new HashSet<>(Collections.singletonList(moveActuator));
+    }
+
+    @Override
+    public void innerReset() {
         resetTowers();
         resetDisks();
     }
@@ -36,6 +47,42 @@ public class Towers extends Environment {
     private void resetTowers() {
         towers = new HashMap<>();
         IntStream.rangeClosed(1, NUMBER_OF_TOWERS).forEach(i -> towers.put(i, new Stack<>()));
+    }
+
+    private Set<Expression> getTowersState() {
+        Set<Expression> expressions = new HashSet<>();
+        IntStream.rangeClosed(1, NUMBER_OF_TOWERS).forEach(towerId -> {
+            expressions.add(Expression.fromString(String.format("rel(isa,T%d,Tower)", towerId)));
+            Expression isEmpty = Expression.fromString(String.format("rel(isa,T%d,Empty)", towerId));
+            if (isTowerEmpty(towerId)) {
+                expressions.add(isEmpty);
+            } else {
+                expressions.add(isEmpty.not());
+                getTowerTopDisk(towerId).ifPresent(topDisk -> expressions.add(Expression.fromString(String.format("rel(top,T%d,D%d)", towerId, topDisk))));
+            }
+        });
+
+        return expressions;
+    }
+
+    private Set<Expression> getGameState() {
+        Set<Expression> expressions = new HashSet<>();
+        if (isWon()) {
+            expressions.add(Expression.fromString("won"));
+        } else {
+            expressions.add(Expression.fromString("NOT(won)"));
+        }
+
+        return expressions;
+    }
+
+    @Override
+    protected Set<Expression> getState() {
+        Set<Expression> expressions = new HashSet<>();
+        expressions.addAll(getTowersState());
+        expressions.addAll(getGameState());
+
+        return expressions;
     }
 
     public int getNumberOfDisksOnTower(int towerId) {
@@ -55,6 +102,8 @@ public class Towers extends Environment {
 
         int value = fromTower.pop();
         toTower.push(value);
+
+        print();
 
         return true;
     }

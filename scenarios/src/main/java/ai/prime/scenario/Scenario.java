@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 public class Scenario {
@@ -29,6 +30,7 @@ public class Scenario {
 
     private final String name;
     private final Map<String, Agent> agents;
+    private Environment environment;
 
     public Scenario(String name) {
         this.name = name;
@@ -43,12 +45,22 @@ public class Scenario {
         this.agents.put(agentName, agent);
     }
 
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+
+        //Register actuators for all agents
+    }
+
     public Agent getAgent(String agentName) {
         return this.agents.get(agentName);
     }
 
     public Collection<Agent> getAllAgents() {
         return this.agents.values();
+    }
+
+    public Environment getEnvironment() {
+        return environment;
     }
 
     private static Expression getExpression(DataModel dataModel) {
@@ -98,6 +110,17 @@ public class Scenario {
         agent.sendMessageToNeuron(message);
     }
 
+    private static Environment loadEnvironment(String className) {
+        try {
+            Class<Environment> environmentClass = (Class<Environment>) Class.forName(className);
+            Constructor<Environment> ctor = environmentClass.getConstructor();
+
+            return ctor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Scenario loadScenario(String name) {
         Logger.info("scenario", "*** loading scenario: " + name);
         try{
@@ -110,6 +133,8 @@ public class Scenario {
                     new FileReader(new File(path + "/" + name + ".json")) :
                     new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
             ScenarioModel scenarioModel = gson.fromJson(reader, ScenarioModel.class);
+            reader.close();
+
             List<String> defaultNodes = scenarioModel.getDefaultNodes();
             Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
 
@@ -140,7 +165,11 @@ public class Scenario {
                 });
             });
 
-            reader.close();
+            if (scenarioModel.getEnvironment() != null) {
+                Environment environment = loadEnvironment(scenarioModel.getEnvironment());
+                scenario.setEnvironment(environment);
+                scenario.getAllAgents().forEach(agent -> scenario.getEnvironment().registerAgent(agent));
+            }
 
             return scenario;
         } catch (Exception e) {

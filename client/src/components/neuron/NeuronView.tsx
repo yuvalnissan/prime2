@@ -61,8 +61,8 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
         await sendMessage('sense-negative', neuron.data)
     }
 
-    const confidenceNode = neuron?.nodes['confidence']
-    const confidence = confidenceNode.props['confidence']
+        const confidenceNode = neuron?.nodes['confidence']
+        const confidence = confidenceNode.props['confidence']
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['details']} >

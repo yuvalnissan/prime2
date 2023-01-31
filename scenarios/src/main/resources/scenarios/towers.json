@@ -1,0 +1,81 @@
+{
+  "environment": "ai.prime.scenario.environment.towers.Towers",
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.inference.ComplexInferenceNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"],
+    "act": ["ai.prime.scenario.experimental.actuators.ActuatorNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T1"},
+              {"value": "T2"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T1"},
+              {"value": "T3"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T3"},
+              {"value": "T1"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T3"},
+              {"value": "T2"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T2"},
+              {"value": "T1"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "T2"},
+              {"value": "T3"}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

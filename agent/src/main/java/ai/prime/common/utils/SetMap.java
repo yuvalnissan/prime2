@@ -20,6 +20,11 @@ public class SetMap <K, V> {
         values.get(key).add(value);
     }
 
+    public void remove(K key, V value) {
+        ensureKey(key);
+        values.get(key).remove(value);
+    }
+
     public Collection<K> getKeys(){
         return Collections.unmodifiableCollection(values.keySet());
     }
@@ -27,6 +32,6 @@ public class SetMap <K, V> {
     public Set<V> getValues(K key){
         ensureKey(key);
 
-        return Set.copyOf(values.get(key));
+        return new HashSet<>(values.get(key));
     }
 }

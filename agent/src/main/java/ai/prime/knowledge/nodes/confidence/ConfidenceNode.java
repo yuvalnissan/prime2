@@ -90,13 +90,12 @@ public class ConfidenceNode extends Node {
                     pullMessageWaitingList.add(source);
                 }
 
-                //TODO deal with update event for confidence  - sense
-//                getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));
+                getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));
             }
         });
     }
 
-    private double getBalancedChange(){
+    private double getBalancedChange() {
         double changeSum = 0.0;
         double factor = 0.0;
 
@@ -178,8 +177,7 @@ public class ConfidenceNode extends Node {
                     Logger.debug("confidenceNode", "\tPull " + message.getFrom() + ": " + message.getPullValues());
                 }
 
-                //TODO deal with confidence update events
-//                getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));
+                getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));
             }
         }
 
