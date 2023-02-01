@@ -26,6 +26,7 @@ export const Agent = ({ className }: AgentProps) => {
     const [messageCount, setMessageCount] = React.useState<number>(0)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
     const [filteredIds, setFilteredIds] = React.useState<string[]>([])
+    const [focused, setFocused] = React.useState<number>(-1)
 
     const setData = (agent: any) => {
         const memory = agent.memory
@@ -102,16 +103,21 @@ export const Agent = ({ className }: AgentProps) => {
                 setShouldRefresh={setShouldRefresh}
                 setSelectedExpressionId={setSelectedExpressionId}
                 setFilteredIds={setFilteredIds}
+                filteredIds={filteredIds}
                 reset={reset}
                 neurons={neurons}
                 shouldRefresh={shouldRefresh}
                 selectedExpressionId={selectedExpressionId}
+                focused={focused}
+                setFocused={setFocused}
             />
             <DataList className={styles['data-list']} key = {resetState}
                 neurons = {neurons}
                 setSelectedExpressionId = {setSelectedExpressionId}
                 selectedExpressionId = {selectedExpressionId}
                 filteredIds={filteredIds}
+                focused={focused}
+                setFocused={setFocused}
             />
         </Box>
         <Box className={styles['right-panel']}>

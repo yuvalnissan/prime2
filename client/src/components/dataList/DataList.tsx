@@ -24,6 +24,8 @@ export interface DataListProps {
     setSelectedExpressionId: Function
     selectedExpressionId: string
     filteredIds: string[]
+    focused: number
+    setFocused: Function
 }
 
 const options = {
@@ -36,7 +38,7 @@ const options = {
     }
 }
 
-export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, filteredIds, className }: DataListProps) => {
+export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, filteredIds, focused, setFocused, className }: DataListProps) => {
     const [nodes, setNodes] = React.useState<DataSet<Node>>(new DataSet([]))
     const [edges, setEdges] = React.useState<DataSet<Edge>>(new DataSet([]))
     const [network, setNetwork] = React.useState<Network | null>(null)
@@ -44,19 +46,21 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         id: string,
+        index: number
     ) => {
-        setSelectedExpressionId(id);
+        setSelectedExpressionId(id)
+        setFocused(index)
     }
 
-    const ListNode = (id: string) => {
+    const ListNode = (id: string, index: number) => {
         const confidenceNode = neurons[id]?.nodes['confidence']
-        const confidence = confidenceNode.props['confidence']
+        const confidence = confidenceNode?.props['confidence'] || '0|0|0'
         const strength = confidence.split('|')[0]
 
         return <ListItemButton
         key = {id}
-        selected={selectedExpressionId === id}
-        onClick={(event) => handleListItemClick(event, id)}
+        selected={focused === index}
+        onClick={(event) => handleListItemClick(event, id, index)}
     >
         <ListItemIcon>
         <Typography variant="subtitle1" display="inline">
@@ -135,7 +139,7 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
     return (
         <Box className={styles['frame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <Box className={styles['list']}>
-                <List component="nav" aria-label="main mailbox folders">
+                <List id="data-list" component="nav" aria-label="main mailbox folders">
                     {filteredIds.map(ListNode)}
                 </List>
             </Box>
