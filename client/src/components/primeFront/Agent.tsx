@@ -6,7 +6,7 @@ import styles from './Agent.module.scss'
 import { DataList } from '../dataList/DataList'
 import { Controls } from '../controls/Controls'
 import { Neuron } from '../../businessLogic/neuron'
-import { getScenarioURL, postToUrl, getResetURL } from '../../communication/urls'
+import {RequestHandler} from '../../communication/RequestHandler'
 
 export interface AgentProps {
     className?: string
@@ -27,6 +27,10 @@ export const Agent = ({ className }: AgentProps) => {
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
     const [filteredIds, setFilteredIds] = React.useState<string[]>([])
     const [focused, setFocused] = React.useState<number>(-1)
+    const [filter, setFilter] = React.useState<string>('')
+    const [requestHandler] = React.useState<RequestHandler>(new RequestHandler(scenarioName, agentName, setShouldRefresh))
+
+    const inputRef = React.useRef<HTMLInputElement>(null)
 
     const setData = (agent: any) => {
         const memory = agent.memory
@@ -49,21 +53,16 @@ export const Agent = ({ className }: AgentProps) => {
         setMessageCount(agent.messageCount)
     }
 
-    const refreshData = () => {
+    const refreshData = async () => {
         if (shouldRefresh) {
             console.log(`Refreshing scenario ${scenarioName} and agent ${agentName}`)
-            fetch(getScenarioURL(scenarioName, agentName))
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    }
-                })
-                .then(data => {
-                    setData(data)
-                })
-                .catch(err => {
-                    console.error('Failed to fetch', err)
-                })
+            
+            try {
+                const data = await requestHandler.getScenario()
+                setData(data)
+            } catch (err) {
+                console.error('Failed to fetch', err)
+            }
         }
     }
 
@@ -81,16 +80,70 @@ export const Agent = ({ className }: AgentProps) => {
         try {
             setSelectedExpressionId('')
             setNeurons({})
-            await postToUrl(getResetURL(scenarioName), {})
+            await requestHandler.sendReset()
             setResetState(resetState + 1)
             setShouldRefresh(true)
         } catch (err) {
           console.error(err)
           window.alert('Failed resetting scenario')
+        }   
+    }
+
+    const getCleanFilter = () => filter.replaceAll(' ', '')
+
+    const addData = async (id: string) => {
+        await requestHandler.sendAddData(id)
+    }
+
+    const onSubmit = async () => {
+        const cleanId = getCleanFilter()
+        if (selectedExpressionId === filteredIds[focused]) {
+            await addData(selectedExpressionId)
+        } else if (focused > -1) {
+            setSelectedExpressionId(filteredIds[focused])
+        } else if (neurons[cleanId]) {
+            setSelectedExpressionId(cleanId)
+        } else {
+            await addData(filter)
         }
     }
 
-    return <Box className={`${styles.root} ${className} ${styles.all}`}>
+    const focusOnInput = () => inputRef?.current?.focus()
+
+    const onFilterKey = async (event: any) => {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            await onSubmit()
+            console.log('Submit')
+            focusOnInput()
+            inputRef?.current?.select()
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault()
+            focusOnInput()
+            if (selectedExpressionId !== '') {
+                setSelectedExpressionId('')
+            } else {
+                setFocused(-1)
+            }
+        }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault()
+            focusOnInput()
+            setFocused((focused + 1) % filteredIds.length)
+        }
+        
+        if (event.key === 'ArrowUp') {
+            event.preventDefault()
+            focusOnInput()
+            setFocused((focused - 1 + filteredIds.length) % filteredIds.length)
+        }
+    }
+
+    return <Box onKeyDown={onFilterKey}
+        className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>
             <Box>
                 <Typography variant="subtitle1" display="inline">
@@ -110,6 +163,10 @@ export const Agent = ({ className }: AgentProps) => {
                 selectedExpressionId={selectedExpressionId}
                 focused={focused}
                 setFocused={setFocused}
+                filter={filter}
+                setFilter={setFilter}
+                requestHandler={requestHandler}
+                inputRef={inputRef}
             />
             <DataList className={styles['data-list']} key = {resetState}
                 neurons = {neurons}

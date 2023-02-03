@@ -137,7 +137,7 @@ public class Expression {
 
         var type = cleanId.substring(0, start);
         var internal = cleanId.substring(start + 1, cleanId.length() - 1);
-        if (type.equals(DataModifier.NEGATIVE.getDisplayName())) {
+        if (type.equalsIgnoreCase(DataModifier.NEGATIVE.getDisplayName())) {
             return fromString(internal).not();
         }
 

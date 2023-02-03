@@ -1,18 +1,16 @@
 package ai.prime.server;
 
-import ai.prime.server.models.DataModel;
-
 public class AgentMessageBody {
-    private DataModel data;
+    private String id;
     private String type;
 
-    public AgentMessageBody(DataModel data, String type) {
-        this.data = data;
+    public AgentMessageBody(String id, String type) {
+        this.id = id;
         this.type = type;
     }
 
-    public DataModel getData() {
-        return data;
+    public String getId() {
+        return id;
     }
 
     public String getType() {

@@ -3,9 +3,9 @@ package ai.prime.knowledge.neuron;
 import ai.prime.agent.Agent;
 import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
+import ai.prime.common.utils.ListMap;
 import ai.prime.common.utils.Lock;
 import ai.prime.common.utils.Logger;
-import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.nodes.Node;
 
@@ -17,7 +17,7 @@ public class Neuron {
     private final Links links;
     private final Map<String, Node> nodes;
 
-    private SetMap<String, NeuralMessage> messages;
+    private ListMap<String, NeuralMessage> messages;
     private Set<NeuralEvent> events;
 
     private final Lock fireLock;
@@ -29,7 +29,7 @@ public class Neuron {
         this.data = data;
         this.links = new Links();
         this.nodes = new HashMap<>();
-        this.messages = new SetMap<>();
+        this.messages = new ListMap<>();
         this.events = new HashSet<>();
 
         this.messageLock = new Lock();
@@ -109,8 +109,8 @@ public class Neuron {
         fireLock.lock();
 
         messageLock.lock();
-        SetMap<String, NeuralMessage> currentMessages = messages;
-        messages = new SetMap<>();
+        ListMap<String, NeuralMessage> currentMessages = messages;
+        messages = new ListMap<>();
         messageLock.unlock();
 
         nodes.values().forEach(node -> {

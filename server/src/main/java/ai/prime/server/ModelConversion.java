@@ -3,7 +3,6 @@ package ai.prime.server;
 import ai.prime.agent.Agent;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.DataModifier;
-import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.data.base.VariableData;
@@ -38,22 +37,6 @@ public class ModelConversion {
 
     public DataModel getDataModel(Data data) {
         return getDataModel(new Expression(data));
-    }
-
-    public Expression getExpressionFromModel(DataModel dataModel) {
-        Data data;
-        if (dataModel.getValue() != null) {
-            data = new ValueData(dataModel.getValue());
-        } else if (dataModel.getVar() != null) {
-            data = new VariableData(dataModel.getVar());
-        } else {
-            Expression[] expressions = dataModel.getExpressions().stream().map(this::getExpressionFromModel).toArray(Expression[]::new);
-            data = new Data(new DataType(dataModel.getType()), expressions);
-        }
-
-        DataModifier modifier = dataModel.isNegative() ? DataModifier.NEGATIVE : DataModifier.POSITIVE;
-
-        return new Expression(data, modifier);
     }
 
     private Map<String, NodeModel> getNodeModels(Neuron neuron) {

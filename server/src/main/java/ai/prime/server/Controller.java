@@ -69,7 +69,7 @@ public class Controller {
     @PostMapping("/message")
     public void sendMessage(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName, @RequestBody AgentMessageBody messageBody) {
         Scenario scenario = scenarios.get(scenarioName);
-        Expression expression = modelConversion.getExpressionFromModel(messageBody.getData());
+        Expression expression = Expression.fromString(messageBody.getId());
 
         if (Objects.equals(messageBody.getType(), "ignite")) {
             scenario.igniteNeuron(agentName, expression.getData());
@@ -77,20 +77,14 @@ public class Controller {
             scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_POSITIVE);
         } else if (Objects.equals(messageBody.getType(), "sense-negative")) {
             scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_NEGATIVE);
+        } else if (Objects.equals(messageBody.getType(), "add-data")) {
+            if (expression.getModifier().equals(DataModifier.POSITIVE)) {
+                scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_POSITIVE);
+            } else {
+                scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_NEGATIVE);
+            }
         } else {
             Logger.error("Invalid scenario message type: " + messageBody.getType());
-        }
-    }
-
-    @PostMapping("/newData")
-    public void newData(@RequestParam(value = "name")  String scenarioName, @RequestParam(value = "agent") String agentName, @RequestBody NewDataBody newDataBody) {
-        Scenario scenario = scenarios.get(scenarioName);
-        String id = newDataBody.getId();
-        Expression expression = Expression.fromString(id);
-        if (expression.getModifier().equals(DataModifier.POSITIVE)) {
-            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_POSITIVE);
-        } else {
-            scenario.setSense(agentName, expression.getData(), SenseConfidence.SENSE_NEGATIVE);
         }
     }
 
