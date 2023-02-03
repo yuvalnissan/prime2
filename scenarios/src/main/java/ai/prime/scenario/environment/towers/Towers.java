@@ -1,5 +1,6 @@
 package ai.prime.scenario.environment.towers;
 
+import ai.prime.agent.Agent;
 import ai.prime.agent.interaction.Actuator;
 import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Expression;
@@ -17,17 +18,14 @@ public class Towers extends Environment {
     private final int numberOfDisks;
     private Map<Integer, Stack<Integer>> towers;
 
-    private final Actuator moveActuator;
-
     public Towers() {
         this.numberOfDisks = NUMBER_OF_DISKS;
         this.innerReset();
-        this.moveActuator = new TowerActuator(this);
     }
 
     @Override
-    public Collection<Actuator> getActuators() {
-        return new HashSet<>(Collections.singletonList(moveActuator));
+    public Collection<Actuator> getActuators(Agent agent) {
+        return new HashSet<>(Collections.singletonList(new TowerActuator(agent, this)));
     }
 
     @Override

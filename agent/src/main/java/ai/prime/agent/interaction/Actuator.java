@@ -1,12 +1,22 @@
 package ai.prime.agent.interaction;
 
+import ai.prime.agent.Agent;
 import ai.prime.knowledge.data.Data;
 
-public interface Actuator {
+public abstract class Actuator {
+    private Agent agent;
 
-    public String getMappedAction();
+    public Actuator(Agent agent) {
+        this.agent = agent;
+    }
 
-    public void act(Data data);
+    public Agent getAgent() {
+        return agent;
+    }
 
-    public void cancel(Data data);
+    public abstract String getMappedAction();
+
+    public abstract void act(Data data);
+
+    public abstract void cancel(Data data);
 }

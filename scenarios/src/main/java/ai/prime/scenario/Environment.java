@@ -27,13 +27,13 @@ public abstract class Environment {
         reset();
     }
 
-    public abstract Collection<Actuator> getActuators();
+    public abstract Collection<Actuator> getActuators(Agent agent);
 
     public void registerAgent(Agent agent) {
         agents.put(agent.getName(), agent);
         sendStateToAgent(agent);
 
-        Collection<Actuator> actuators = getActuators();
+        Collection<Actuator> actuators = getActuators(agent);
         actuators.forEach(agent::registerActuator);
     }
     private void sendMessage(Agent agent, Data data, Confidence confidence) {

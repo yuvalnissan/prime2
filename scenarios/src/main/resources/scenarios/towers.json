@@ -73,6 +73,59 @@
               {"value": "T3"}
             ]
           }
+        },
+        {
+          "data": {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "isa"},
+                  {"value": "T1"},
+                  {"value": "Empty"}
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {
+                "type": "act",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "X"},
+                  {"value": "T3"}
+                ]
+              },
+              {
+                "type": "want",
+                "expressions": [
+                  {
+                    "type": "rel",
+                    "expressions": [
+                      {"value": "isa"},
+                      {"var": "X"},
+                      {"value": "Empty"}
+                    ]
+                  }
+                ]
+              },
+              {
+                "negative": true,
+                "type": "acting",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "X"},
+                  {"value": "T3"}
+                ]
+              }
+            ]
+          }
         }
       ]
     }
