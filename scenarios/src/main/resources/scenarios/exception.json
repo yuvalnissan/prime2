@@ -11,18 +11,12 @@
     "smith": {
       "neurons": [
         {
-          "data": {"value": "rootA"}
-        },
-        {
-          "data": {"value": "A"}
-        },
-        {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
             "expressions": [
-              {"value": "A"},
-              {"value": "rootA"}
+              {"value": "value"},
+              {"value": "A"}
             ]
           }
         },
@@ -31,26 +25,7 @@
           "data": {
             "type": "infer",
             "expressions": [
-              {"value": "B"},
-              {"value": "rootB"}
-            ]
-          }
-        },
-        {
-          "data": {"value": "rootB"}
-        },
-        {
-          "data": {"value": "B"}
-        },
-        {
-          "data": {"value": "AandB"}
-        },
-        {
-          "confidence": "POSITIVE",
-          "data": {
-            "type": "infer",
-            "expressions": [
-              {"value": "AandB"},
+              {"value": "value", "negative": true},
               {"value": "A"},
               {"value": "B"}
             ]

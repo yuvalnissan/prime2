@@ -1,6 +1,7 @@
 //TODO general list
 
 - Towers
+    want tower1 empty should work
 - Rule node
 - Balance rules and infers
 - On UI selection, use up and down arrows to switch selected items

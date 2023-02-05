@@ -1,4 +1,4 @@
-package ai.prime.scenario.experimental.inference;
+package ai.prime.knowledge.nodes.infer;
 
 import ai.prime.common.utils.Logger;
 import ai.prime.common.utils.SetMap;
@@ -15,7 +15,7 @@ import ai.prime.knowledge.nodes.confidence.PullValue;
 import java.util.Arrays;
 import java.util.Map;
 
-public class ComplexInferenceNode extends FactorNode {
+public class InferNode extends FactorNode {
     public static final String NAME = "infer";
 
     private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("factor.convergence.factor");
@@ -23,7 +23,7 @@ public class ComplexInferenceNode extends FactorNode {
     private final Expression target;
     private final Expression[] conditions;
 
-    public ComplexInferenceNode(Neuron neuron) {
+    public InferNode(Neuron neuron) {
         super(neuron);
         Expression[] expressions = neuron.getData().getExpressions();
         this.target = expressions[0];

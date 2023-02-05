@@ -5,7 +5,7 @@
   ],
   "nodeMapping": {
     "rel": [],
-    "infer": ["ai.prime.scenario.experimental.inference.InferNode"]
+    "infer": ["ai.prime.knowledge.nodes.infer.InferNode"]
   },
   "agents": {
     "smith": {
