@@ -126,6 +126,39 @@
               }
             ]
           }
+        },
+        {
+          "confidence": "1|100|0",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {
+                "negative": true,
+                "type": "acting",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "X"},
+                  {"var": "Y"}
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "isa"},
+                  {"var": "X"},
+                  {"value": "Tower"}
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "isa"},
+                  {"var": "Y"},
+                  {"value": "Tower"}
+                ]
+              }
+            ]
+          }
         }
       ]
     }

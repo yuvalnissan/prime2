@@ -183,8 +183,10 @@ export const Agent = ({ className }: AgentProps) => {
                     neuron={neurons[selectedExpressionId]}
                     scenarioName={scenarioName}
                     agentName={agentName}
+                    selectedExpressionId={selectedExpressionId}
                     setSelectedExpressionId={setSelectedExpressionId}
                     setShouldRefresh={setShouldRefresh}
+                    requestHandler={requestHandler}
                 /> : null}
         </Box>
     </Box>

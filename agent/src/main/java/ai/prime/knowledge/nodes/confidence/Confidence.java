@@ -55,7 +55,9 @@ public abstract class Confidence {
             return true;
         }
 
-        if (Math.abs((other.getStrength() / this.getStrength()) - 1.0) > CONFIDENCE_SIGNIFICANT_DIFF) {
+        //TODO finalize the decision
+//        if (Math.abs((other.getStrength() / this.getStrength()) - 1.0) > CONFIDENCE_SIGNIFICANT_DIFF) {
+        if (Math.abs(other.getStrength() - this.getStrength()) > CONFIDENCE_SIGNIFICANT_DIFF) {
             return true;
         }
 

@@ -4,6 +4,7 @@
     want tower1 empty should work
 - Rule node
 - Balance rules and infers
+- Decide about AND nodes or if Infer should balance the resistance in case one side is locked
 - On UI selection, use up and down arrows to switch selected items
 - Receptor nodes should use connotation instead of their own links
 - Implement connotation node value, currently doesn't do anything
@@ -18,7 +19,9 @@
 // MAYBE
 - add AND node
 - Rules can pull themselves up instead of getting it from other infers. Makes for a "theory"
-
+- Balancing scenario, mark infer(rel(P3,isThe,Answer),rel(P3,isThe,Question)) as sense negative and then positive. Takes a long time.
+    this is because of loop prevention and decay, so somewhat expected. Maybe something better than be done
 
 // BUGS
-- Balancing scenario, mark infer(rel(P3,isThe,Answer),rel(P3,isThe,Question)) as sense negative and then positive. Takes a long time
+-
+-

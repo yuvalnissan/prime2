@@ -9,6 +9,7 @@ import { NodeList } from '../nodeList/NodeList'
 import { LinkList } from '../linkList/LinkList'
 import { getMessageURL } from '../../communication/urls'
 import { Data } from '../../businessLogic/data'
+import { RequestHandler } from '../../communication/RequestHandler'
 
 
 export interface NeuronViewProps {
@@ -16,13 +17,15 @@ export interface NeuronViewProps {
   neuron: Neuron
   scenarioName: string
   agentName: string
+  selectedExpressionId: string
   setSelectedExpressionId: Function
   setShouldRefresh: Function
+  requestHandler: RequestHandler
 }
 
 const compare = (a: Link, b: Link) => (a.to.id > b.to.id) ? 1 : ((b.to.id > a.to.id) ? -1 : 0)
 
-export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressionId, setShouldRefresh, className}: NeuronViewProps) => {
+export const NeuronView = ({neuron, scenarioName, agentName, selectedExpressionId, setSelectedExpressionId, setShouldRefresh, requestHandler, className}: NeuronViewProps) => {
     const sendMessage = async (type: string, data: Data) => {
         try {
             const body = {data, type}
@@ -47,22 +50,19 @@ export const NeuronView = ({neuron, scenarioName, agentName, setSelectedExpressi
     }
   
     const handleIgniteClick = async () => {
-        console.log('Sending Ignite')
-        await sendMessage('ignite', neuron.data)
+        await requestHandler.sendIgnite(selectedExpressionId)
     }
 
     const handlePositiveSenseClick = async () => {
-        console.log('Sending Positive Sense')
-        await sendMessage('sense-positive', neuron.data)
+        await requestHandler.sendSensePositive(selectedExpressionId)
     }
 
     const handleNegativeSenseClick = async () => {
-        console.log('Sending Negative Sense')
-        await sendMessage('sense-negative', neuron.data)
+        await requestHandler.sendSenseNegative(selectedExpressionId)
     }
 
-        const confidenceNode = neuron?.nodes['confidence']
-        const confidence = confidenceNode.props['confidence']
+    const confidenceNode = neuron?.nodes['confidence']
+    const confidence = confidenceNode.props['confidence']
 
     return <Box className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['details']} >
