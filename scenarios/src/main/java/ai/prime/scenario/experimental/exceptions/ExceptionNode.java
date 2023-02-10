@@ -169,6 +169,7 @@ public class ExceptionNode extends FactorNode {
         addDirectionalCorrelationPull(results, true);
         addDirectionalCorrelationPull(results, false);
 
+        //TODO this is not working yet
         exceptions.forEach(exception -> addExceptionPull(results, exception));
 
         return results;
