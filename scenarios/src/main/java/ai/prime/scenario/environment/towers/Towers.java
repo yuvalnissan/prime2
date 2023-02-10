@@ -50,13 +50,17 @@ public class Towers extends Environment {
     private Set<Expression> getTowersState() {
         Set<Expression> expressions = new HashSet<>();
         IntStream.rangeClosed(1, NUMBER_OF_TOWERS).forEach(towerId -> {
-            expressions.add(Expression.fromString(String.format("rel(isa,T%d,Tower)", towerId)));
-            Expression isEmpty = Expression.fromString(String.format("rel(isa,T%d,Empty)", towerId));
+            expressions.add(Expression.fromString(String.format("rel(isa,t%d,tower)", towerId)));
+            Expression isEmpty = Expression.fromString(String.format("rel(isa,t%d,empty)", towerId));
             if (isTowerEmpty(towerId)) {
                 expressions.add(isEmpty);
             } else {
                 expressions.add(isEmpty.not());
-                getTowerTopDisk(towerId).ifPresent(topDisk -> expressions.add(Expression.fromString(String.format("rel(top,T%d,D%d)", towerId, topDisk))));
+                getTowerTopDisk(towerId).ifPresent(topDisk -> expressions.add(Expression.fromString(String.format("rel(top,t%d,d%d)", towerId, topDisk))));
+                getTowerDisks(towerId).forEach(diskId -> {
+                    expressions.add(Expression.fromString(String.format("rel(on,d%d,t%d)", diskId, towerId)));
+                    expressions.add(Expression.fromString(String.format("rel(size,d%d,%d)", diskId, diskId)));
+                });
             }
         });
 
@@ -68,7 +72,7 @@ public class Towers extends Environment {
         if (isWon()) {
             expressions.add(Expression.fromString("won"));
         } else {
-            expressions.add(Expression.fromString("NOT(won)"));
+            expressions.add(Expression.fromString("not(won)"));
         }
 
         return expressions;

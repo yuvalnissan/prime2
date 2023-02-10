@@ -106,7 +106,7 @@ export const Agent = ({ className }: AgentProps) => {
             setSelectedExpressionId(filteredIds[focused])
         } else if (neurons[cleanId]) {
             setSelectedExpressionId(cleanId)
-        } else {
+        } else  if (cleanId.length > 0) {
             await addData(filter)
         }
     }
@@ -127,8 +127,10 @@ export const Agent = ({ className }: AgentProps) => {
             focusOnInput()
             if (selectedExpressionId !== '') {
                 setSelectedExpressionId('')
-            } else {
+            } else if (focused > -1) {
                 setFocused(-1)
+            } else {
+                inputRef?.current?.select()
             }
         }
 

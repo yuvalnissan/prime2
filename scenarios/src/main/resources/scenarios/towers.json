@@ -13,80 +13,45 @@
   },
   "agents": {
     "smith": {
-      "knowledge": ["knowledge/basicMath.json"],
+      "knowledge": [
+        "knowledge/basicMath.json",
+        "knowledge/towersPlanning.json"
+      ],
       "neurons": [
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T1"}, {"value": "T2"}]
+            "expressions": [{"value": "move"}, {"value": "t1"}, {"value": "t2"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T1"}, {"value": "T3"}]
+            "expressions": [{"value": "move"}, {"value": "t1"}, {"value": "t3"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T3"}, {"value": "T1"}]
+            "expressions": [{"value": "move"}, {"value": "t3"}, {"value": "t1"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T3"}, {"value": "T2"}]
+            "expressions": [{"value": "move"}, {"value": "t3"}, {"value": "t2"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T2"}, {"value": "T1"}]
+            "expressions": [{"value": "move"}, {"value": "t2"}, {"value": "t1"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [{"value": "move"}, {"value": "T2"}, {"value": "T3"}]
-          }
-        },
-        {
-          "data": {
-            "type": "want",
-            "expressions": [
-              {
-                "type": "rel",
-                "expressions": [{"value": "isa"}, {"value": "T1"}, {"value": "Empty"}]
-              }
-            ]
-          }
-        },
-        {
-          "name": "moveIfWantAndNotMoving",
-          "confidence": "POSITIVE",
-          "data": {
-            "type": "rule",
-            "expressions": [
-              {
-                "type": "act",
-                "expressions": [{"value": "move"}, {"var": "X"}, {"value": "T3"}]
-              },
-              {
-                "type": "want",
-                "expressions": [
-                  {
-                    "type": "rel",
-                    "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "Empty"}]
-                  }
-                ]
-              },
-              {
-                "negative": true,
-                "type": "acting",
-                "expressions": [{"value": "move"}, {"var": "X"}, {"value": "T3"}]
-              }
-            ]
+            "expressions": [{"value": "move"}, {"value": "t2"}, {"value": "t3"}]
           }
         }
       ]

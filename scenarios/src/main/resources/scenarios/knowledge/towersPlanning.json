@@ -1,0 +1,104 @@
+{
+  "neurons": {
+    "win": {
+      "confidence": "POSITIVE",
+      "data": {"type": "goal", "expressions": [{"value": "won"}]}
+    },
+    "wantAllDisksOnT3": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [{"value": "allDisksOnT3"}]
+          },
+          {
+            "type": "goal",
+            "expressions": [{"value": "won"}]
+          }
+        ]
+      }
+    },
+    "notAllDisksOnT3BecauseT1": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"value": "allDisksOnT3", "negative": true},
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "isa"}, {"value": "t1"}, {"value": "empty"}]
+          }
+        ]
+      }
+    },
+    "notAllDisksOnT3BecauseT2": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"value": "allDisksOnT3", "negative": true},
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "isa"}, {"value": "t2"}, {"value": "empty"}]
+          }
+        ]
+      }
+    },
+    "allDisksOnT3": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"value": "allDisksOnT3"},
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"value": "t1"}, {"value": "empty"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"value": "t2"}, {"value": "empty"}]
+          }
+        ]
+      },
+      "wantMoveBiggest": {
+        "confidence": "POSITIVE",
+        "data": {
+          "type": "rule",
+          "expressions": [
+            {
+              "type": "want",
+              "expressions": [{"value": "moveBiggestDiskNoOnT3ToT3"}]
+            },
+            {
+              "type": "want",
+              "expressions": [{"value": "allDisksOnT3"}]
+            },
+            {"value": "allDisksOnT3", "negative": true}
+          ]
+        }
+      }
+    },
+    "wantMoveBiggestNonT3ToT3": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [{"value": "moveBiggestDiskNotOnT3ToT3"}]
+          },
+          {
+            "type": "want",
+            "expressions": [{"value": "allDisksOnT3"}]
+          },
+          {"value": "allDisksOnT3", "negative": true}
+        ]
+      }
+    }
+  }
+}
+

@@ -83,7 +83,7 @@ public class Agent {
         return !queueManager.hasPendingMessages();
     }
 
-    public boolean waitForStability(int timeout){
+    public boolean waitForStability(int timeout) {
         long startTime = (new Date()).getTime();
         long passed = 0;
 

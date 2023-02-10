@@ -7,20 +7,28 @@
 }
 
 .list {
+    display: grid;
     height: 100%;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     grid-row-start: 1;
     grid-row-end: 1;
-    grid-column-end: 1;
     grid-column-start: 1;
+    grid-column-end: 1;
 }
 
 .selectionFrame {
     display: grid;
     grid-template-rows: 100%;
-    grid-template-columns: 30% 70%;
     width: 100%;
     height: 80%;
+}
+
+.narrowList {
+    grid-template-columns: 30% 70%;
+}
+
+.wideList {
+    grid-template-columns: 100%;
 }

@@ -1,19 +1,25 @@
 {
   "defaultNodes": [
     "ai.prime.knowledge.nodes.connotation.ConnotationNode",
-    "ai.prime.knowledge.nodes.confidence.ConfidenceNode"
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
   ],
   "nodeMapping": {
     "rel": [],
-    "infer": ["ai.prime.knowledge.nodes.infer.InferNode"]
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"]
   },
   "agents": {
     "smith": {
       "neurons": [
         {
           "confidence": "POSITIVE",
+          "data": {"value": "A"}
+        },
+        {
+          "confidence": "POSITIVE",
           "data": {
-            "type": "infer",
+            "type": "rule",
             "expressions": [
               {"value": "value"},
               {"value": "A"}
@@ -23,11 +29,35 @@
         {
           "confidence": "POSITIVE",
           "data": {
-            "type": "infer",
+            "type": "rule",
             "expressions": [
               {"value": "value", "negative": true},
               {"value": "A"},
               {"value": "B"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "source"}
+        },
+        {
+          "confidence": "0|100000|100000",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "test"},
+              {"value": "source"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "test", "negative": true},
+              {"value": "source"}
             ]
           }
         }
