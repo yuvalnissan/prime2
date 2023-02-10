@@ -83,12 +83,6 @@ public class Towers extends Environment {
         return expressions;
     }
 
-    public int getNumberOfDisksOnTower(int towerId) {
-        Stack<Integer> tower = towers.get(towerId);
-
-        return tower.size();
-    }
-
     public boolean move(int from, int to) {
         if (!canMove(from, to)) {
             Logger.error("Illegal move: " + from + " to " + to);

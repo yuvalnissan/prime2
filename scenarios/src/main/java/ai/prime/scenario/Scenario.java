@@ -14,11 +14,11 @@ import ai.prime.knowledge.nodes.confidence.SenseConfidence;
 import ai.prime.knowledge.nodes.confidence.SenseMessage;
 import ai.prime.knowledge.nodes.connotation.IgniteMessage;
 import ai.prime.scenario.model.DataModel;
+import ai.prime.scenario.model.KnowledgeModel;
 import ai.prime.scenario.model.NeuronModel;
 import ai.prime.scenario.model.ScenarioModel;
 import com.google.gson.Gson;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -121,59 +121,95 @@ public class Scenario {
         }
     }
 
-    public static Scenario loadScenario(String name) {
-        Logger.info("scenario", "*** loading scenario: " + name);
-        try{
-            Scenario scenario = new Scenario(name);
+    private static ScenarioModel readScenarioModel(String name) {
+        try {
             Gson gson = new Gson();
 
-            String path = System.getenv("SCENARIOS");
-            Logger.debug("scenario", "path: " + path);
-            Reader reader = path != null ?
-                    new FileReader(new File(path + "/" + name + ".json")) :
+            String root = System.getenv("SCENARIOS");
+            Logger.debug("scenario", "root: " + root);
+            Reader reader = root != null ?
+                    new FileReader(root + "/" + name + ".json") :
                     new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
             ScenarioModel scenarioModel = gson.fromJson(reader, ScenarioModel.class);
             reader.close();
 
-            List<String> defaultNodes = scenarioModel.getDefaultNodes();
-            Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
+            return scenarioModel;
+        } catch (Exception e) {
+            Logger.error("Failed loading scenario" + name, e);
+            throw new RuntimeException("Failed loading model");
+        }
+    }
 
-            scenarioModel.getAgents().forEach((agentName, agentModel) -> {
-                Logger.info("scenarioLoaded", "*** loading agent: " + agentName);
-                Agent agent = new Agent(agentName);
+    private static KnowledgeModel readKnowledgePack(String path) {
+        try {
+            Gson gson = new Gson();
 
-                defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));
+            String root = System.getenv("SCENARIOS");
+            Logger.debug("knowledge", "root: " + root);
+            Reader reader = root != null ?
+                    new FileReader(root + "/" + path) :
+                    new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + path)));
+            KnowledgeModel knowledgeModel = gson.fromJson(reader, KnowledgeModel.class);
+            reader.close();
 
-                nodeMapping.forEach((dataTypeName, nodeClassNames) -> {
-                    DataType dataType = new DataType(dataTypeName);
-                    nodeClassNames.forEach(nodeClassName -> agent.getNodeMapping().registerDataToNode(dataType, nodeClassName));
-                });
+            return knowledgeModel;
+        } catch (Exception e) {
+            Logger.error("Failed loading knowledge pack" + path, e);
+            throw new RuntimeException("Failed loading knowledge");
+        }
+    }
 
-                scenario.addAgent(agentName, agent);
+    private static void updateNeuronModel(Scenario scenario, String agentName, NeuronModel neuronModel) {
+        Expression expression = getExpression(neuronModel.getData());
+        var normalized = expression.getData().normalize();
+        Logger.info("scenario", "Adding " + normalized.getDisplayName());
+        scenario.addDataOnLoad(agentName, normalized);
 
-                List<NeuronModel> neurons = agentModel.getNeurons();
-                neurons.forEach(neuronModel -> {
-                    Expression expression = getExpression(neuronModel.getData());
-                    var normalized = expression.getData().normalize();
-                    Logger.info("scenario", "Adding " + normalized.getDisplayName());
-                    scenario.addDataOnLoad(agentName, normalized);
+        if (neuronModel.getConfidence() != null) {
+            Confidence confidence = getConfidence(neuronModel.getConfidence());
+            scenario.setSense(agentName, normalized, confidence);
+        }
+    }
 
-                    if (neuronModel.getConfidence() != null) {
-                        Confidence confidence = getConfidence(neuronModel.getConfidence());
-                        scenario.setSense(agentName, normalized, confidence);
-                    }
-                });
+    public static Scenario loadScenario(String name) {
+        Logger.info("scenario", "*** loading scenario: " + name);
+        ScenarioModel scenarioModel = readScenarioModel(name);
+
+        Scenario scenario = new Scenario(name);
+
+        List<String> defaultNodes = scenarioModel.getDefaultNodes();
+        Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
+
+        scenarioModel.getAgents().forEach((agentName, agentModel) -> {
+            Logger.info("scenarioLoaded", "*** loading agent: " + agentName);
+            Agent agent = new Agent(agentName);
+
+            defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));
+
+            nodeMapping.forEach((dataTypeName, nodeClassNames) -> {
+                DataType dataType = new DataType(dataTypeName);
+                nodeClassNames.forEach(nodeClassName -> agent.getNodeMapping().registerDataToNode(dataType, nodeClassName));
             });
 
-            if (scenarioModel.getEnvironment() != null) {
-                Environment environment = loadEnvironment(scenarioModel.getEnvironment());
-                scenario.setEnvironment(environment);
-                scenario.getAllAgents().forEach(agent -> scenario.getEnvironment().registerAgent(agent));
-            }
+            scenario.addAgent(agentName, agent);
 
-            return scenario;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+                List<NeuronModel> neurons = agentModel.getNeurons();
+                neurons.forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
+
+                if (agentModel.getKnowledge() != null) {
+                    agentModel.getKnowledge().forEach(knowledgePack -> {
+                        KnowledgeModel knowledge = readKnowledgePack(knowledgePack);
+                        knowledge.getNeurons().values().forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
+                    });
+                }
+            });
+
+        if (scenarioModel.getEnvironment() != null) {
+            Environment environment = loadEnvironment(scenarioModel.getEnvironment());
+            scenario.setEnvironment(environment);
+            scenario.getAllAgents().forEach(agent -> scenario.getEnvironment().registerAgent(agent));
         }
+
+        return scenario;
     }
 }

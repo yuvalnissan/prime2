@@ -24,6 +24,8 @@ export interface ControlsProps {
     setFilter: Function
     requestHandler: RequestHandler
     inputRef: React.Ref<HTMLInputElement>
+    setLoadGraph: Function
+    loadGraph: boolean
 }
 
 export const Controls = ({
@@ -43,7 +45,9 @@ export const Controls = ({
     filter,
     setFilter,
     requestHandler,
-    inputRef
+    inputRef,
+    setLoadGraph,
+    loadGraph
 }: ControlsProps) => {
 
     const [isPaused, setIsPaused] = React.useState<boolean>(false)
@@ -101,6 +105,10 @@ export const Controls = ({
         setFilter(value)
     }
 
+    const toggleGraph = () => {
+        setLoadGraph(!loadGraph)
+    }
+
     const filterBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
         setFilterValue(value)
@@ -148,6 +156,9 @@ export const Controls = ({
             </Button>
             <Button onClick={togglePause}>
                 {isPaused ? 'Resume' : 'Pause'}
+            </Button>
+            <Button onClick={toggleGraph}>
+                {!loadGraph ? 'Show Graph' : 'Hide Graph'}
             </Button>
         </Box>
     </Box>

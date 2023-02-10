@@ -17,9 +17,10 @@ export interface DataListProps {
     filteredIds: string[]
     focused: number
     setFocused: Function
+    loadGraph: boolean
 }
 
-export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, filteredIds, focused, setFocused, className }: DataListProps) => {
+export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId, filteredIds, focused, setFocused, loadGraph, className }: DataListProps) => {
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         id: string,
@@ -53,10 +54,10 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         <Box className={styles['selectionFrame']} sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <Box className={styles['list']}>
                 <List id="data-list" component="nav" aria-label="main mailbox folders">
-                    {filteredIds.map(ListNode)}
+                    {filteredIds.slice(0, 20).map(ListNode)}
                 </List>
             </Box>
-            <Graph neurons={neurons} setSelectedExpressionId={setSelectedExpressionId} selectedExpressionId={selectedExpressionId} />
+            {loadGraph ? <Graph neurons={neurons} setSelectedExpressionId={setSelectedExpressionId} selectedExpressionId={selectedExpressionId} /> : null}
         </Box>
     )
 }

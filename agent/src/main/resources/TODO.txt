@@ -1,7 +1,6 @@
 //TODO general list
 
-- Towers
-    want tower1 empty should work
+- Inconsistent number of neurons in model for towers with knowledge
 - Rule node
 - Balance rules and infers
 - Decide about AND nodes or if Infer should balance the resistance in case one side is locked
@@ -14,6 +13,11 @@
 - Backwards binding, maybe with Any and All
 - Write tests
 
+// Towers
+- want tower1 empty should work
+- Find the largest disk not on T3
+- Work when starting from any valid state
+- learn the rules
 
 
 // MAYBE

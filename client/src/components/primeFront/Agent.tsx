@@ -16,12 +16,14 @@ export const Agent = ({ className }: AgentProps) => {
     const searchParams = new URLSearchParams(document.location.search)
     const scenarioName = searchParams.get('scenario')!
     const agentName = searchParams.get('agent')!
+    const shouldLoadGraph = searchParams.get('graph')
     document.title = scenarioName
 
     const [resetState, setResetState] = React.useState<number>(0)
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
     const [isStable, setIsStable] = React.useState<boolean>(false)
+    const [loadGraph, setLoadGraph] = React.useState<boolean>(!!shouldLoadGraph)
     
     const [messageCount, setMessageCount] = React.useState<number>(0)
     const [selectedExpressionId, setSelectedExpressionId] = React.useState<string>('')
@@ -67,6 +69,7 @@ export const Agent = ({ className }: AgentProps) => {
     }
 
     React.useEffect(() => {
+        refreshData()
         refreshData()
         const interval = setInterval(() => {
             refreshData()
@@ -147,7 +150,7 @@ export const Agent = ({ className }: AgentProps) => {
         <Box className={styles['left-panel']}>
             <Box>
                 <Typography variant="subtitle1" display="inline">
-                    <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName} ({isStable ? 'Stable' : 'Not stable'} {messageCount})
+                    <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName} ({isStable ? 'Stable' : 'Not stable'} messages: {messageCount} neurons: {Object.keys(neurons).length})
                 </Typography>
             </Box>
             <Controls className={styles['data-list']}
@@ -167,6 +170,8 @@ export const Agent = ({ className }: AgentProps) => {
                 setFilter={setFilter}
                 requestHandler={requestHandler}
                 inputRef={inputRef}
+                setLoadGraph={setLoadGraph}
+                loadGraph={loadGraph}
             />
             <DataList className={styles['data-list']} key = {resetState}
                 neurons = {neurons}
@@ -175,6 +180,7 @@ export const Agent = ({ className }: AgentProps) => {
                 filteredIds={filteredIds}
                 focused={focused}
                 setFocused={setFocused}
+                loadGraph={loadGraph}
             />
         </Box>
         <Box className={styles['right-panel']}>

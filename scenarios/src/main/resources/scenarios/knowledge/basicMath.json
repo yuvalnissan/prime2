@@ -1,0 +1,133 @@
+{
+  "neurons": {
+    "0IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "0"}, {"value": "number"}]}
+    },
+    "1IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "1"}, {"value": "number"}]}
+    },
+    "2IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "2"}, {"value": "number"}]}
+    },
+    "3IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "3"}, {"value": "number"}]}
+    },
+    "4IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "4"}, {"value": "number"}]}
+    },
+    "5IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "5"}, {"value": "number"}]}
+    },
+    "6IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "6"}, {"value": "number"}]}
+    },
+    "7IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "7"}, {"value": "number"}]}
+    },
+    "8IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "8"}, {"value": "number"}]}
+    },
+    "9IsaNumber": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "isa"}, {"value": "9"}, {"value": "number"}]}
+    },
+    "1NextAfter0": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "1"}, {"value": "0"}]}
+    },
+    "2NextAfter1": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "2"}, {"value": "1"}]}
+    },
+    "3NextAfter2": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "3"}, {"value": "2"}]}
+    },
+    "4NextAfter3": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "4"}, {"value": "3"}]}
+    },
+    "5NextAfter4": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "5"}, {"value": "4"}]}
+    },
+    "6NextAfter5": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "6"}, {"value": "5"}]}
+    },
+    "7NextAfter6": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "7"}, {"value": "6"}]}
+    },
+    "8NextAfter7": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "8"}, {"value": "7"}]}
+    },
+    "9NextAfter8": {
+      "confidence": "POSITIVE",
+      "data": {"type": "rel", "expressions": [{"value": "nextAfter"}, {"value": "9"}, {"value": "8"}]}
+    },
+    "biggerThanIfNext": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "X"}, {"var": "Y"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "nextAfter"}, {"var": "X"}, {"var": "Y"}]
+          }
+        ]
+      }
+    },
+    "biggerThanTransitive": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "X"}, {"var": "Z"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "X"}, {"var": "Y"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "Y"}, {"var": "Z"}]
+          }
+        ]
+      }
+    },
+    "smallerThan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "expressions": [{"value": "smallerThan"}, {"var": "Y"}, {"var": "X"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "X"}, {"var": "Y"}]
+          }
+        ]
+      }
+    }
+  }
+}
+

@@ -13,65 +13,42 @@
   },
   "agents": {
     "smith": {
+      "knowledge": ["knowledge/basicMath.json"],
       "neurons": [
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T1"},
-              {"value": "T2"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T1"}, {"value": "T2"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T1"},
-              {"value": "T3"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T1"}, {"value": "T3"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T3"},
-              {"value": "T1"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T3"}, {"value": "T1"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T3"},
-              {"value": "T2"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T3"}, {"value": "T2"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T2"},
-              {"value": "T1"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T2"}, {"value": "T1"}]
           }
         },
         {
           "data": {
             "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "T2"},
-              {"value": "T3"}
-            ]
+            "expressions": [{"value": "move"}, {"value": "T2"}, {"value": "T3"}]
           }
         },
         {
@@ -80,82 +57,34 @@
             "expressions": [
               {
                 "type": "rel",
-                "expressions": [
-                  {"value": "isa"},
-                  {"value": "T1"},
-                  {"value": "Empty"}
-                ]
+                "expressions": [{"value": "isa"}, {"value": "T1"}, {"value": "Empty"}]
               }
             ]
           }
         },
         {
+          "name": "moveIfWantAndNotMoving",
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
             "expressions": [
               {
                 "type": "act",
-                "expressions": [
-                  {"value": "move"},
-                  {"var": "X"},
-                  {"value": "T3"}
-                ]
+                "expressions": [{"value": "move"}, {"var": "X"}, {"value": "T3"}]
               },
               {
                 "type": "want",
                 "expressions": [
                   {
                     "type": "rel",
-                    "expressions": [
-                      {"value": "isa"},
-                      {"var": "X"},
-                      {"value": "Empty"}
-                    ]
+                    "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "Empty"}]
                   }
                 ]
               },
               {
                 "negative": true,
                 "type": "acting",
-                "expressions": [
-                  {"value": "move"},
-                  {"var": "X"},
-                  {"value": "T3"}
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "confidence": "1|100|0",
-          "data": {
-            "type": "rule",
-            "expressions": [
-              {
-                "negative": true,
-                "type": "acting",
-                "expressions": [
-                  {"value": "move"},
-                  {"var": "X"},
-                  {"var": "Y"}
-                ]
-              },
-              {
-                "type": "rel",
-                "expressions": [
-                  {"value": "isa"},
-                  {"var": "X"},
-                  {"value": "Tower"}
-                ]
-              },
-              {
-                "type": "rel",
-                "expressions": [
-                  {"value": "isa"},
-                  {"var": "Y"},
-                  {"value": "Tower"}
-                ]
+                "expressions": [{"value": "move"}, {"var": "X"}, {"value": "T3"}]
               }
             ]
           }
