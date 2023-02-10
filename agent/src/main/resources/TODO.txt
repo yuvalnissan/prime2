@@ -1,6 +1,5 @@
 //TODO general list
 
-- Inconsistent number of neurons in model for towers with knowledge
 - Rule node
 - Balance rules and infers
 - Decide about AND nodes or if Infer should balance the resistance in case one side is locked

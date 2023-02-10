@@ -54,7 +54,7 @@ export const DataList = ({neurons, selectedExpressionId, setSelectedExpressionId
         <Box className={`${styles.selectionFrame} ${loadGraph ? styles.narrowList : styles.wideList}`} sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <Box className={styles['list']}>
                 <List id="data-list" component="nav" aria-label="main mailbox folders">
-                    {filteredIds.slice(0, 20).map(ListNode)}
+                    {filteredIds.map(ListNode)}
                 </List>
             </Box>
             {loadGraph ? <Graph neurons={neurons} setSelectedExpressionId={setSelectedExpressionId} selectedExpressionId={selectedExpressionId} /> : null}

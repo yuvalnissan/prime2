@@ -98,6 +98,39 @@
           {"value": "allDisksOnT3", "negative": true}
         ]
       }
+    },
+    "biggerDeniesBiggest": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggest"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "disk"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "size"}, {"var": "X"}, {"var": "sizeDisk1"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"var": "Y"}, {"value": "disk"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "size"}, {"var": "Y"}, {"var": "sizeDisk2"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"var": "sizeDisk2"}, {"var": "sizeDisk1"}]
+          }
+        ]
+      }
     }
   }
 }

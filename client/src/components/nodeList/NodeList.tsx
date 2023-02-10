@@ -31,7 +31,7 @@ export const NodeList = ({nodes, className }: NodeListProps) => {
         <Box>
           {Object.entries(node.props).map(([prop, value]) => {
             return <Box key={prop}><Typography variant="subtitle2" display="inline" key={prop}>
-              {prop}: {value}
+              * {prop.replaceAll(',', ', ')}: {value.replaceAll(',', ', ')}
             </Typography></Box>
           })}
         </Box>

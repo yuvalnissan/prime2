@@ -60,6 +60,7 @@ public class Towers extends Environment {
                 getTowerDisks(towerId).forEach(diskId -> {
                     expressions.add(Expression.fromString(String.format("rel(on,d%d,t%d)", diskId, towerId)));
                     expressions.add(Expression.fromString(String.format("rel(size,d%d,%d)", diskId, diskId)));
+                    expressions.add(Expression.fromString(String.format("rel(isa,d%d,disk)", diskId)));
                 });
             }
         });

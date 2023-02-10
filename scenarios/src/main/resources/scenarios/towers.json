@@ -19,6 +19,20 @@
       ],
       "neurons": [
         {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"value": "2"}, {"value": "1"}]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [{"value": "biggerThan"}, {"value": "3"}, {"value": "2"}]
+          }
+        },
+        {
           "data": {
             "type": "act",
             "expressions": [{"value": "move"}, {"value": "t1"}, {"value": "t2"}]

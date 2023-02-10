@@ -34,6 +34,7 @@ public class QueryNode extends Node {
     private void sendQuery(Data query) {
         ReceptorNode receptorNode = (ReceptorNode)getNeuron().getNode(ReceptorNode.NAME);
         receptorNode.query(query);
+        sentQueries.add(query);
     }
 
     private boolean wasQuerySent(Data query) {
