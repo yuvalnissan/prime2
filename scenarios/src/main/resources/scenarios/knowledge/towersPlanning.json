@@ -99,6 +99,40 @@
         ]
       }
     },
+    "onT1NotOnT3": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t1"}]
+          }
+        ]
+      }
+    },
+    "onT2NotOnT3": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t2"}]
+          }
+        ]
+      }
+    },
     "biggerDeniesBiggest": {
       "confidence": "POSITIVE",
       "data": {
@@ -107,11 +141,16 @@
           {
             "type": "rel",
             "negative": true,
-            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggest"}]
+            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggestNotOnT3"}]
           },
           {
             "type": "rel",
             "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "disk"}]
+          },
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
           },
           {
             "type": "rel",
@@ -128,6 +167,22 @@
           {
             "type": "rel",
             "expressions": [{"value": "biggerThan"}, {"var": "sizeDisk2"}, {"var": "sizeDisk1"}]
+          }
+        ]
+      }
+    },
+    "biggestDefault": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggestNotOnT3"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "disk"}]
           }
         ]
       }

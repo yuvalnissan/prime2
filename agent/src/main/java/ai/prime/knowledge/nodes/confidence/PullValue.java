@@ -42,7 +42,7 @@ public class PullValue {
 
     @Override
     public String toString(){
-        return "(" + format.format(pull) + ", " + isPositive + ", " + format.format(potentialResistance) + (source !=null ? ", " + source : "") + ")";
+        return "(" + format.format(pull) + ", " + isPositive + ", " + format.format(potentialResistance) + ")";
     }
 
     @Override
