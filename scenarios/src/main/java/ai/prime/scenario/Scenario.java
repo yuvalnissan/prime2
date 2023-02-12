@@ -7,7 +7,6 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
-import ai.prime.knowledge.data.base.VariableData;
 import ai.prime.knowledge.nodes.confidence.Confidence;
 import ai.prime.knowledge.nodes.confidence.InferredConfidence;
 import ai.prime.knowledge.nodes.confidence.SenseConfidence;
@@ -68,7 +67,7 @@ public class Scenario {
         if (dataModel.getValue() != null) {
             data = new ValueData(dataModel.getValue());
         } else if (dataModel.getVar() != null) {
-            data = new VariableData(dataModel.getVar());
+            data = Expression.fromString("var:" + dataModel.getVar()).getData();
         } else {
             Expression[] expressions = dataModel.getExpressions().stream().map(Scenario::getExpression).toArray(Expression[]::new);
             data = new Data(new DataType(dataModel.getType()), expressions);
@@ -162,12 +161,13 @@ public class Scenario {
     private static void updateNeuronModel(Scenario scenario, String agentName, NeuronModel neuronModel) {
         Expression expression = getExpression(neuronModel.getData());
         var normalized = expression.getData().normalize();
-        Logger.info("scenario", "Adding " + normalized.getDisplayName());
+        Logger.debug("scenario", "Adding " + normalized.getDisplayName());
         scenario.addDataOnLoad(agentName, normalized);
 
         if (neuronModel.getConfidence() != null) {
             Confidence confidence = getConfidence(neuronModel.getConfidence());
-            scenario.setSense(agentName, normalized, confidence);
+            Confidence expressionConfidence = expression.getModifier().equals(DataModifier.NEGATIVE) ? confidence.invert() : confidence;
+            scenario.setSense(agentName, normalized, expressionConfidence);
         }
     }
 

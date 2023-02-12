@@ -1,7 +1,8 @@
 //TODO general list
 
-- Rule node
-- Balance rules and infers
+- A fixed actuator able to capture thoughts. Act adds a mental state which is returned as a sense
+- Exception nodes optimization to prevent creating so many neurons
+- Balance rules and infers for learning
 - Decide about AND nodes or if Infer should balance the resistance in case one side is locked
 - On UI selection, use up and down arrows to switch selected items
 - Receptor nodes should use connotation instead of their own links

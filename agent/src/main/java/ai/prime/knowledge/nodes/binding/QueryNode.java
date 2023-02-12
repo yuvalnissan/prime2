@@ -125,6 +125,9 @@ public class QueryNode extends Node {
 
     @Override
     public Map<String, String> getDisplayProps() {
-        return new HashMap<>();
+        Map<String, String> props = new HashMap<>();
+        bindingPaths.getKeys().forEach(data -> props.put(data.toString(), bindingPaths.getValues(data).toString()));
+
+        return props;
     }
 }

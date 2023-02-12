@@ -6,7 +6,7 @@
   ],
   "nodeMapping": {
     "rel": [],
-    "infer": ["ai.prime.knowledge.nodes.infer.InferNode"],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
     "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"]
   },
   "agents": {

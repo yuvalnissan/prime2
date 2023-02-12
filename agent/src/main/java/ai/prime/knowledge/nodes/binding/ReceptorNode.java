@@ -7,6 +7,7 @@ import ai.prime.common.utils.SetMap;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.Unification;
+import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.nodes.Node;
 
@@ -60,6 +61,9 @@ public class ReceptorNode extends Node {
         for (Expression expression : expressions) {
             connectWith(expression.getData());
         }
+
+        //TODO this is a bit of a hack
+        connectWith(new ValueData(getData().getType().getPredicate()));
     }
 
     @Override

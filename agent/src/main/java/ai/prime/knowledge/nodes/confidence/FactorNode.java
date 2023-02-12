@@ -97,7 +97,7 @@ public abstract class FactorNode extends Node {
 
     @Override
     public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
-        if (messageType != StatusMessage.TYPE) {
+        if (!messageType.equals(StatusMessage.TYPE)) {
             throw new RuntimeException("Unknown message type");
         }
 

@@ -33,7 +33,7 @@ public class TowerActuator extends Actuator {
     private int getIndexFromExpression(Expression expression) {
         var valueData = (ValueData)expression.getData();
 
-        return Integer.parseInt(valueData.getValue().replaceAll("T", ""));
+        return Integer.parseInt(valueData.getValue().replaceAll("t", ""));
     }
 
     private void sendActing(Data data, boolean active) {

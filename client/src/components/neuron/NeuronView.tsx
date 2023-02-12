@@ -36,6 +36,10 @@ export const NeuronView = ({neuron, scenarioName, agentName, selectedExpressionI
         await requestHandler.sendSenseNegative(selectedExpressionId)
     }
 
+    const copyPopup = () => {
+        window.prompt("Selected ID", selectedExpressionId);
+    }
+
     const confidenceNode = neuron?.nodes['confidence']
     const confidence = confidenceNode.props['confidence']
 
@@ -46,6 +50,7 @@ export const NeuronView = ({neuron, scenarioName, agentName, selectedExpressionI
                     <Button onClick={handleIgniteClick} >Ignite</Button>
                     <Button onClick={handlePositiveSenseClick} >Sense+</Button>
                     <Button onClick={handleNegativeSenseClick} >Sense-</Button>
+                    <Button onClick={copyPopup} >ID</Button>
                 </Box>
                 <Box>
                     <Typography variant="subtitle1" display="inline">

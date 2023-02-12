@@ -7,7 +7,7 @@
   ],
   "nodeMapping": {
     "rel": [],
-    "infer": ["ai.prime.knowledge.nodes.infer.InferNode"],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
     "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"],
     "act": ["ai.prime.scenario.experimental.actuators.ActuatorNode"]
   },
@@ -15,7 +15,8 @@
     "smith": {
       "knowledge": [
         "knowledge/basicMath.json",
-        "knowledge/towersPlanning.json"
+        "knowledge/towersPlanning.json",
+        "knowledge/towersShortcuts.json"
       ],
       "neurons": [
         {

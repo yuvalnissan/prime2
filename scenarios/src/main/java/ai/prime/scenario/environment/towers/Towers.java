@@ -32,6 +32,7 @@ public class Towers extends Environment {
     public void innerReset() {
         resetTowers();
         resetDisks();
+        print();
     }
 
     private void resetDisks() {

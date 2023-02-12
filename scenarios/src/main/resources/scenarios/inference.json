@@ -19,18 +19,8 @@
           "data": {
             "type": "infer",
             "expressions": [
-              {"value": "root"},
-              {"value": "A"}
-            ]
-          }
-        },
-        {
-          "confidence": "POSITIVE",
-          "data": {
-            "type": "infer",
-            "expressions": [
               {"value": "A"},
-              {"value": "B"}
+              {"value": "root"}
             ]
           }
         },
@@ -40,17 +30,27 @@
             "type": "infer",
             "expressions": [
               {"value": "B"},
-              {"value": "C"}
+              {"value": "A"}
             ]
           }
         },
         {
-          "confidence": "1|10000|0",
+          "confidence": "POSITIVE",
           "data": {
             "type": "infer",
             "expressions": [
               {"value": "C"},
-              {"value": "A", "negative": true}
+              {"value": "B"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "infer",
+            "expressions": [
+              {"value": "A", "negative": true},
+              {"value": "C"}
             ]
           }
         }

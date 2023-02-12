@@ -4,7 +4,9 @@ import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.data.base.VariableData;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Expression {
     private Data data;
@@ -116,9 +118,60 @@ public class Expression {
         return (toString().equals(obj.toString()));
     }
 
+    //TODO ugly copy
+    private static String[] splitVariableName(String value) {
+        String[] result = new String[2];
+        int sameIndex = value.indexOf(VariableData.SAME);
+        int differentIndex = value.indexOf(VariableData.DIFFERENT);
+
+        if (sameIndex >= 0 && (sameIndex < differentIndex || differentIndex < 0)) {
+            result[0] = value.substring(0, sameIndex);
+            result[1] = value.substring(sameIndex);
+        } else if (differentIndex >= 0 && (differentIndex <= sameIndex || sameIndex < 0)) {
+            result[0] = value.substring(0, differentIndex);
+            result[1] = value.substring(differentIndex);
+        } else {
+            result[0] = value;
+            result[1] = "";
+        }
+
+        return result;
+    }
+
+    //TODO ugly copy
+    private static VariableData getVariableData(String value) {
+        String[] split = splitVariableName(value);
+        String name = split[0];
+        String current = split[1];
+
+        Set<Expression> same = new HashSet<>();
+        Set<Expression> different = new HashSet<>();
+
+        while (current.length() > 0) {
+            if (current.startsWith(VariableData.SAME)) {
+                current = current.substring(VariableData.SAME.length());
+                String[] varSplit = splitVariableName(current);
+                Expression expression = fromString(varSplit[0]);
+                same.add(expression);
+                current = varSplit[1];
+            } else if (current.startsWith(VariableData.DIFFERENT)) {
+                current = current.substring(VariableData.DIFFERENT.length());
+                String[] varSplit = splitVariableName(current);
+                Expression expression = fromString(varSplit[0]);
+                different.add(expression);
+                current = varSplit[1];
+
+            } else {
+                throw new RuntimeException("Not a legal state");
+            }
+        }
+
+        return new VariableData(name, same, different);
+    }
+
     private static Data extractPrimitive(String id) {
         if (id.startsWith(VariableData.PREFIX)) {
-            return new VariableData(id);
+            return getVariableData(id);
         }
 
         return new ValueData(id);

@@ -1,0 +1,54 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value": "isa"},
+              {"value": "ford"},
+              {"value": "car"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "isa"},
+                  {"var": "X!=ford"},
+                  {"value": "vehicle"}
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [
+                  {"value": "isa"},
+                  {"var": "X!=ford"},
+                  {"value": "car"}
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

@@ -99,40 +99,6 @@
         ]
       }
     },
-    "onT1NotOnT3": {
-      "confidence": "POSITIVE",
-      "data": {
-        "type": "rule",
-        "expressions": [
-          {
-            "type": "rel",
-            "negative": true,
-            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
-          },
-          {
-            "type": "rel",
-            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t1"}]
-          }
-        ]
-      }
-    },
-    "onT2NotOnT3": {
-      "confidence": "POSITIVE",
-      "data": {
-        "type": "rule",
-        "expressions": [
-          {
-            "type": "rel",
-            "negative": true,
-            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
-          },
-          {
-            "type": "rel",
-            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t2"}]
-          }
-        ]
-      }
-    },
     "biggerDeniesBiggest": {
       "confidence": "POSITIVE",
       "data": {
@@ -149,8 +115,7 @@
           },
           {
             "type": "rel",
-            "negative": true,
-            "expressions": [{"value": "on"}, {"var": "X"}, {"value": "t3"}]
+            "expressions": [{"value": "on"}, {"var": "X"}, {"var": "T!=t3"}]
           },
           {
             "type": "rel",
@@ -183,6 +148,254 @@
           {
             "type": "rel",
             "expressions": [{"value": "isa"}, {"var": "X"}, {"value": "disk"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "on"}, {"var": "X"}, {"var": "T!=t3"}]
+          }
+        ]
+      }
+    },
+    "towerOfBiggest": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "hasBiggestDisk",
+            "expressions": [{"var": "TOWER"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggestNotOnT3"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "on"}, {"var": "X"}, {"var": "TOWER"}]
+          }
+        ]
+      }
+    },
+    "notOnOtherTower": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "other"}
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "tower"}
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "isa"},
+              {"var": "other!=var:tower"},
+              {"value": "tower"}
+            ]
+          }
+        ]
+      }
+    },
+    "wantPlanForOdd": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveSubTower"},
+                      {"var": "TOWER"},
+                      {"value": "t3"},
+                      {"var": "SIZE"}
+                    ]
+                  },
+                  {"value": "done"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isThe"}, {"var": "X"}, {"value": "biggestNotOnT3"}]
+          },
+          {
+            "type": "hasBiggestDisk",
+            "expressions": [{"var": "TOWER"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "size"}, {"var": "X"}, {"var": "SIZE"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"var": "SIZE"}, {"value": "odd"}]
+          }
+        ]
+      }
+    },
+    "stepOneOfPlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [{"var": "step1"}]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [{"var": "step1"}, {"var": "step2"}]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "doSubPlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveSubTower"},
+                      {"var": "fromTower"},
+                      {"var": "thirdTower"},
+                      {"var": "depthMinusOne"}
+                    ]
+                  },
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"},
+                          {"var": "depth"}
+                        ]
+                      },
+                      {
+                        "type": "plan",
+                        "expressions": [
+                          {
+                            "type": "do",
+                            "expressions": [
+                              {"value": "moveSubTower"},
+                              {"var": "thirdTower"},
+                              {"var": "toTower"},
+                              {"var": "depthMinusOne"}
+                            ]
+                          },
+                          {"value": "done"}
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveSubTower"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"},
+                  {"var": "depth"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "nextAfter"}, {"var": "depth"}, {"var": "depthMinusOne!=0"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "isa"}, {"var": "thirdTower!=var:fromTower!=var:toTower"}, {"value": "tower"}]
+          },
+          {
+            "type": "rel",
+            "expressions": [{"value": "size"}, {"var": "disk"}, {"var": "depth"}]
+          }
+        ]
+      }
+    },
+    "wantMoveDiskIfOne": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveDisk"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"},
+                  {"var": "disk"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveSubTower"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"},
+                  {"value": "1"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "top"},
+              {"var": "fromTower"},
+              {"var": "disk"}
+            ]
           }
         ]
       }

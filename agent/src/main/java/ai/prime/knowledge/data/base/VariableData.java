@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class VariableData extends Data {
-    public static final DataType TYPE = new DataType("value");
+    public static final DataType TYPE = new DataType("variable");
 
     public static final String PREFIX = "var" + NamingUtil.TYPE_SEPARATOR;
     public static final String SAME = "==";

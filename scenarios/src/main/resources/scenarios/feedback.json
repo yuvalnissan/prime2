@@ -23,8 +23,8 @@
           "data": {
             "type": "infer",
             "expressions": [
-              {"value": "A"},
-              {"value": "B"}
+              {"value": "B"},
+              {"value": "A"}
             ]
           }
         }

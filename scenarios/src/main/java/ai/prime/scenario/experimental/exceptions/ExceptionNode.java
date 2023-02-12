@@ -1,5 +1,6 @@
 package ai.prime.scenario.experimental.exceptions;
 
+import ai.prime.agent.NeuralMessage;
 import ai.prime.common.utils.Logger;
 import ai.prime.common.utils.SetMap;
 import ai.prime.common.utils.Settings;
@@ -8,37 +9,33 @@ import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.neuron.Neuron;
-import ai.prime.knowledge.nodes.confidence.Confidence;
-import ai.prime.knowledge.nodes.confidence.FactorNode;
-import ai.prime.knowledge.nodes.confidence.InferredConfidence;
-import ai.prime.knowledge.nodes.confidence.PullValue;
+import ai.prime.knowledge.nodes.confidence.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ExceptionNode extends FactorNode {
     public static final String NAME = "inferWithExceptions";
-
+    public static List<String> MESSAGE_TYPES = List.of(new String[]{StatusMessage.TYPE, ExceptionMessage.TYPE});
     private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("factor.convergence.factor");
 
     private final Expression target;
     private final Expression[] conditions;
-    private final Collection<Expression> exceptions;
+    private final Collection<Expression> overrides;
+    private final Map<Data, PullValue> exceptions;
 
     public ExceptionNode(Neuron neuron) {
         super(neuron);
         Expression[] expressions = neuron.getData().getExpressions();
         this.target = expressions[0];
         this.conditions = Arrays.copyOfRange(expressions, 1, expressions.length);
-        this.exceptions = getExceptions();
+        this.overrides = getOverrides();
+        this.exceptions = new HashMap<>();
     }
 
-    private Collection<Expression> getExceptions() {
+    private Collection<Expression> getOverrides() {
         return IntStream.rangeClosed(0, this.conditions.length - 1).mapToObj(count -> {
             Expression[] partialCondition = Arrays.copyOfRange(conditions, 0, count);
             Expression inverseTarget = target.not();
@@ -49,6 +46,12 @@ public class ExceptionNode extends FactorNode {
 
             return new Expression(partialInfer);
         }).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    @Override
+    public Collection<String> getMessageTypes() {
+        //TODO this is a nasty hack, need to organize the messages the instance deal vs the super
+        return MESSAGE_TYPES;
     }
 
     @Override
@@ -79,6 +82,9 @@ public class ExceptionNode extends FactorNode {
     }
 
     private Confidence getConditionsConfidence() {
+        if (conditions.length == 0) {
+            return InferredConfidence.EMPTY;
+        }
         double strength = 1.0;
         double positivePull = Double.MAX_VALUE;
         double negativePull = Double.MAX_VALUE;
@@ -92,10 +98,28 @@ public class ExceptionNode extends FactorNode {
         return new InferredConfidence(strength, positivePull, negativePull);
     }
 
+    private Confidence getConditionsWithException() {
+        Confidence conditionConfidence = getConditionsConfidence();
+
+        var factor = conditionConfidence.getResistance(true);
+        var changeSum = conditionConfidence.getStrength() * factor;
+        var maxExceptionResistance = 0.0;
+        for (PullValue exceptionPull : exceptions.values()) {
+            factor += exceptionPull.getPotentialResistance();
+            changeSum -= exceptionPull.getPull() * exceptionPull.getPotentialResistance();
+            maxExceptionResistance = Math.max(maxExceptionResistance, exceptionPull.getPotentialResistance());
+        }
+
+        var strength = factor > 0.0 ? changeSum / factor : 0.0;
+        var positivePull = Math.max(0.0, conditionConfidence.getResistance(true) - maxExceptionResistance);
+
+        return new InferredConfidence(strength, positivePull, 0.0);
+    }
+
     private void addDirectionalCorrelationPull(SetMap<Data, PullValue> results, boolean isPositive) {
         Confidence inferConfidence = getStatusConfidence(getData());
 
-        Confidence conditionConfidence = getConditionsConfidence();
+        Confidence conditionConfidence = getConditionsWithException();
         Confidence targetConfidence = getConditionConfidence(target);
 
         if (!isPositive) {
@@ -103,11 +127,12 @@ public class ExceptionNode extends FactorNode {
             inferConfidence = inferConfidence.invert();
         }
 
-        double conflict = conditionConfidence.getStrength() - targetConfidence.getStrength();
+        double conflict = Math.max(0.0, conditionConfidence.getStrength() - targetConfidence.getStrength());
 //        double expected = 1.0 - conflict;
 //        double effectConflict = inferConfidence.getStrength() - expected;
 //        double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
 
+        //TODO test this, different that general logic
         var inferEffect = Math.max(inferConfidence.getStrength(), 0.0);
         double pull = conflict * inferEffect * CONVERGENCE_FACTOR;
 
@@ -138,20 +163,16 @@ public class ExceptionNode extends FactorNode {
         }
     }
 
-    private void addExceptionPull(SetMap<Data, PullValue> results, Expression exception) {
+    private void addExceptionPull(Expression exception) {
         Confidence inferConfidence = getStatusConfidence(getData());
         Confidence conditionConfidence = getConditionsConfidence();
-        Confidence targetConfidence = getConditionConfidence(exception);
 
-        var validity = Math.max(conditionConfidence.getStrength(), 0.0);
-        var relevancy = Math.max(inferConfidence.getStrength(), 0.0) * validity;
-        var expected = 0.0 - relevancy;
-        var conflict = Math.abs(targetConfidence.getStrength() - expected);
-        var pull = conflict * CONVERGENCE_FACTOR;
+        var pull = Math.max(conditionConfidence.getStrength(), 0.0) * Math.max(inferConfidence.getStrength(), 0.0);
         var resistance = Math.min(conditionConfidence.getResistance(true), inferConfidence.getResistance(true));
 
         PullValue exceptionPullValue = new PullValue(false, pull, resistance, getData());
-        results.add(exception.getData(), exceptionPullValue);
+        ExceptionMessage exceptionMessage = new ExceptionMessage(getData(), exception.getData(), exceptionPullValue);
+        getNeuron().getAgent().sendMessageToNeuron(exceptionMessage);
     }
 
     @Override
@@ -165,13 +186,33 @@ public class ExceptionNode extends FactorNode {
             Logger.debug("inferNode", "\t\t Status " +  condition.getData() + ": " + getStatusConfidence(condition.getData()));
         }
         Logger.debug("inferNode", "\t\t Status all conditions:" + getConditionsConfidence());
+        Logger.debug("exceptionNode", "\t\t Status all conditions with exception:" + getConditionsWithException());
 
         addDirectionalCorrelationPull(results, true);
         addDirectionalCorrelationPull(results, false);
 
-        //TODO this is not working yet
-        exceptions.forEach(exception -> addExceptionPull(results, exception));
+        overrides.forEach(this::addExceptionPull);
 
         return results;
+    }
+
+    private void handleExceptionMessages(Collection<NeuralMessage> messages) {
+        messages.forEach(neuralMessage -> {
+            ExceptionMessage exceptionMessage = (ExceptionMessage)neuralMessage;
+            exceptions.put(exceptionMessage.getFrom(), exceptionMessage.getExceptionPull());
+            Logger.debug("exceptionNode", getData() + " got exception from " + exceptionMessage.getFrom() + ": " + exceptionMessage.getExceptionPull());
+        });
+    }
+
+    @Override
+    public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
+        if (messageType.equals(ExceptionMessage.TYPE)) {
+            handleExceptionMessages(messages);
+            super.sendUpdates();
+        }
+
+        if (messageType.equals(StatusMessage.TYPE)) {
+            super.handleMessage(messageType, messages);
+        }
     }
 }

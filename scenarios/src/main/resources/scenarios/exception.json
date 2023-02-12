@@ -21,7 +21,7 @@
           "data": {
             "type": "rule",
             "expressions": [
-              {"value": "value"},
+              {"value": "target"},
               {"value": "A"}
             ]
           }
@@ -31,9 +31,21 @@
           "data": {
             "type": "rule",
             "expressions": [
-              {"value": "value", "negative": true},
+              {"value": "target", "negative": true},
               {"value": "A"},
               {"value": "B"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {"value": "target"},
+              {"value": "A"},
+              {"value": "B"},
+              {"value": "C"}
             ]
           }
         },

@@ -1,0 +1,16 @@
+{
+  "neurons": {
+    "3isOdd": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rel",
+        "expressions": [
+          {"value": "isa"},
+          {"value": "3"},
+          {"value": "odd"}
+        ]
+      }
+    }
+  }
+}
+
