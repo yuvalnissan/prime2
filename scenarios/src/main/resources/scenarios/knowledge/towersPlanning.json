@@ -253,27 +253,6 @@
         ]
       }
     },
-    "stepOneOfPlan": {
-      "confidence": "POSITIVE",
-      "data": {
-        "type": "rule",
-        "expressions": [
-          {
-            "type": "want",
-            "expressions": [{"var": "step1"}]
-          },
-          {
-            "type": "want",
-            "expressions": [
-              {
-                "type": "plan",
-                "expressions": [{"var": "step1"}, {"var": "step2"}]
-              }
-            ]
-          }
-        ]
-      }
-    },
     "doSubPlan": {
       "confidence": "POSITIVE",
       "data": {
@@ -301,9 +280,9 @@
                         "type": "do",
                         "expressions": [
                           {"value": "moveDisk"},
+                          {"var": "depth"},
                           {"var": "fromTower"},
-                          {"var": "toTower"},
-                          {"var": "depth"}
+                          {"var": "toTower"}
                         ]
                       },
                       {
@@ -318,7 +297,7 @@
                               {"var": "depthMinusOne"}
                             ]
                           },
-                          {"value": "done"}
+                          {"var": "rest"}
                         ]
                       }
                     ]
@@ -331,12 +310,18 @@
             "type": "want",
             "expressions": [
               {
-                "type": "do",
+                "type": "plan",
                 "expressions": [
-                  {"value": "moveSubTower"},
-                  {"var": "fromTower"},
-                  {"var": "toTower"},
-                  {"var": "depth"}
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveSubTower"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"},
+                      {"var": "depth!=1"}
+                    ]
+                  },
+                  {"var": "rest"}
                 ]
               }
             ]
@@ -365,12 +350,18 @@
             "type": "want",
             "expressions": [
               {
-                "type": "do",
+                "type": "plan",
                 "expressions": [
-                  {"value": "moveDisk"},
-                  {"var": "fromTower"},
-                  {"var": "toTower"},
-                  {"var": "disk"}
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveDisk"},
+                      {"var": "disk"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"}
+                    ]
+                  },
+                  {"var": "rest"}
                 ]
               }
             ]
@@ -379,12 +370,18 @@
             "type": "want",
             "expressions": [
               {
-                "type": "do",
+                "type": "plan",
                 "expressions": [
-                  {"value": "moveSubTower"},
-                  {"var": "fromTower"},
-                  {"var": "toTower"},
-                  {"value": "1"}
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveSubTower"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"},
+                      {"value": "1"}
+                    ]
+                  },
+                  {"var": "rest"}
                 ]
               }
             ]

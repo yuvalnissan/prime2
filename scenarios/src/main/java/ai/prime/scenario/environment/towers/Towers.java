@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class Towers extends Environment {
-    private static final int NUMBER_OF_DISKS = 3;
+    private static final int NUMBER_OF_DISKS = 5;
     private static final int NUMBER_OF_TOWERS = 3;
     private static final int MID_TOWER = 2;
     private static final int INITIAL_TOWER = 1;

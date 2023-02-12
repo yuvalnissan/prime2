@@ -10,6 +10,17 @@
           {"value": "odd"}
         ]
       }
+    },
+    "5isOdd": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rel",
+        "expressions": [
+          {"value": "isa"},
+          {"value": "5"},
+          {"value": "odd"}
+        ]
+      }
     }
   }
 }
