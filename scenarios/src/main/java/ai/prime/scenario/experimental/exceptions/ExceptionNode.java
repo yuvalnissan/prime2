@@ -138,8 +138,8 @@ public class ExceptionNode extends FactorNode {
         double expected = 1.0 - conflict;
         double effectConflict = inferConfidence.getStrength() - expected;
         //TODO the max cancels the relax check later, deal with it
-//        double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
-        double pull = effectConflict * CONVERGENCE_FACTOR;
+        double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
+//        double pull = effectConflict * CONVERGENCE_FACTOR;
 
         double effectResistance = Math.min(conditionConfidence.getResistance(true), targetConfidence.getResistance(false));
         double fromResistance = Math.min(targetConfidence.getResistance(false), inferConfidence.getResistance(true));

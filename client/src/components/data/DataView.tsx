@@ -1,16 +1,17 @@
-import * as React from 'react';
-import TreeView from '@mui/lab/TreeView';
-import Box from '@mui/material/Box';
-import { alpha, styled } from '@mui/material/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem';
-import styles from './DataView.module.scss';
-import { Expression } from '../../businessLogic/data';
+import * as React from 'react'
+import TreeView from '@mui/lab/TreeView'
+import Box from '@mui/material/Box'
+import { alpha, styled } from '@mui/material/styles'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem'
+import styles from './DataView.module.scss'
+import { Expression } from '../../businessLogic/data'
 
 
 export interface DataViewProps {
-  className?: string;
+  className?: string
   expression: Expression
 }
 
@@ -37,11 +38,11 @@ const getExpressionIds = (expression: Expression) => {
 }
 
 export const DataView = ({expression, className }: DataViewProps) => {
-  // const [expanded, setExpanded] = React.useState<string[]>([]);
+  const [expanded, setExpanded] = React.useState<boolean>(false)
   const allIds = getExpressionIds(expression)
   
   const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
-    // setExpanded(nodeIds);
+    // setExpanded(nodeIds)
   }
 
   const DataNode = ({ expression }: DataViewProps) => {
@@ -52,15 +53,25 @@ export const DataView = ({expression, className }: DataViewProps) => {
     </StyledTreeItem>
   }
 
-  return <Box className={`${styles.root} ${className} ${styles.all}`}>
-    <TreeView 
-      aria-label="Data"
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      expanded={allIds} // {expanded}
-      onNodeToggle={handleToggle}
-    >
-      <DataNode expression={expression} />
-    </TreeView>
+  const toggleExpanded = () => {
+    setExpanded(!expanded)
+  }
+
+  return <Box className={`${styles.root} ${className} ${styles.all}`} onClick={toggleExpanded}>
+    {
+      !expanded ? 
+        <Typography variant="subtitle1" display="inline">
+            {expression.id.replaceAll(',', ', ')}
+        </Typography> :
+        <TreeView 
+        aria-label="Data"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+        expanded={allIds} // {expanded}
+        onNodeToggle={handleToggle}
+      >
+        <DataNode expression={expression} />
+      </TreeView>
+    }
   </Box>
 }

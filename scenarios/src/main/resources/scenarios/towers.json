@@ -15,66 +15,11 @@
     "smith": {
       "knowledge": [
         "knowledge/basicMath.json",
-        "knowledge/towersPlanning.json",
-        "knowledge/towersShortcuts.json"
+        "knowledge/towersGeneral.json",
+        "knowledge/towersPlanning.json"
       ],
       "neurons": [
         {
-          "confidence": "POSITIVE",
-          "data": {
-            "type": "rel",
-            "expressions": [{"value": "biggerThan"}, {"value": "2"}, {"value": "1"}]
-          }
-        },
-        {
-          "confidence": "POSITIVE",
-          "data": {
-            "type": "rel",
-            "expressions": [{"value": "biggerThan"}, {"value": "3"}, {"value": "2"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t1"}, {"value": "t2"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t1"}, {"value": "t3"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t3"}, {"value": "t1"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t3"}, {"value": "t2"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t2"}, {"value": "t1"}]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [{"value": "move"}, {"value": "t2"}, {"value": "t3"}]
-          }
-        },
-        {
-          "negative": false,
-          "data": {"value": "doPlan"}
-        },
-        {
-          "confidence": "POSITIVE",
           "data": {"type": "goal", "expressions": [{"value": "won"}]}
         }
       ]

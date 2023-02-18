@@ -127,6 +127,37 @@
           }
         ]
       }
+    },
+    "0isEven": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "even",
+        "expressions": [
+          {"value": "0"}
+        ]
+      }
+    },
+    "nextIsEven": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"type": "even", "expressions": [{"var": "next"}]},
+          {"type": "odd", "expressions": [{"var": "num"}]},
+          {"type": "rel", "expressions": [{"value": "nextAfter"}, {"var": "next"}, {"var": "num"}]}
+        ]
+      }
+    },
+    "nextIsOdd": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"type": "odd", "expressions": [{"var": "next"}]},
+          {"type": "even", "expressions": [{"var": "num"}]},
+          {"type": "rel", "expressions": [{"value": "nextAfter"}, {"var": "next"}, {"var": "num"}]}
+        ]
+      }
     }
   }
 }
