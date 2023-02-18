@@ -20,7 +20,12 @@
       ],
       "neurons": [
         {
+          "confidence": "POSITIVE",
           "data": {"type": "goal", "expressions": [{"value": "won"}]}
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "doNext"}
         }
       ]
     }

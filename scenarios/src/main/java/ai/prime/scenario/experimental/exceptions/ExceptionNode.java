@@ -64,6 +64,7 @@ public class ExceptionNode extends FactorNode {
         Map<String, String> props = new HashMap<>();
 
         props.put("status-infer", getStatusConfidence(getData()).toString());
+        props.put("status-inferWithException", getInferWithException().toString());
         props.put("sent-infer", getLastSent(getData()).toString());
 
         props.put("status-" + target.getData().getDisplayName(), getStatusConfidence(target.getData()).toString());

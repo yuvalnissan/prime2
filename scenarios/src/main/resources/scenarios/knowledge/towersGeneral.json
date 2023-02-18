@@ -171,6 +171,79 @@
           }
         ]
       }
+    },
+    "current": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "current",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "notCurrent": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "current",
+            "negative": true,
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "wasAfter",
+            "expressions": [
+              {"var": "other"},
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
     }
   }
 }

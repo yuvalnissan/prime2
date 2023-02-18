@@ -33,31 +33,41 @@
         ]
       }
     },
-    "wantPlanForOdd": {
+    "wantPlanForAll": {
       "confidence": "POSITIVE",
       "data": {
         "type": "rule",
         "expressions": [
           {
-            "type": "want",
+            "type": "act",
             "expressions": [
+              {"value": "now"},
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveSubTower"},
-                      {"var": "TOWER"},
-                      {"value": "t3"},
-                      {"var": "SIZE"},
-                      {"value": "d1"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveSubTower"},
+                          {"var": "TOWER"},
+                          {"value": "t3"},
+                          {"var": "SIZE"},
+                          {"value": "d1"}
+                        ]
+                      },
+                      {"value": "done"}
                     ]
-                  },
-                  {"value": "done"}
+                  }
                 ]
               }
             ]
+          },
+          {
+            "type": "want",
+            "expressions": [{"value": "moveBiggestDiskNotOnT3ToT3"}]
           },
           {
             "type": "rel",
@@ -65,15 +75,11 @@
           },
           {
             "type": "hasBiggestDisk",
-            "expressions": [{"var": "TOWER"}]
+            "expressions": [{"var": "TOWER!=t3"}]
           },
           {
             "type": "rel",
             "expressions": [{"value": "size"}, {"var": "X"}, {"var": "SIZE"}]
-          },
-          {
-            "type": "odd",
-            "expressions": [{"var": "SIZE"}]
           }
         ]
       }
@@ -84,31 +90,23 @@
         "type": "rule",
         "expressions": [
           {
-            "type": "want",
+            "type": "act",
             "expressions": [
+              {"value": "now"},
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
-                  {
-                    "type": "do",
-                    "expressions": [
-                      {"value": "moveSubTower"},
-                      {"var": "fromTower"},
-                      {"var": "thirdTower"},
-                      {"var": "depthMinusOne"},
-                      {"var": "topDisk"}
-                    ]
-                  },
                   {
                     "type": "plan",
                     "expressions": [
                       {
                         "type": "do",
                         "expressions": [
-                          {"value": "moveDisk"},
-                          {"var": "disk"},
+                          {"value": "moveSubTower"},
                           {"var": "fromTower"},
-                          {"var": "toTower"}
+                          {"var": "thirdTower"},
+                          {"var": "depthMinusOne"},
+                          {"var": "topDisk"}
                         ]
                       },
                       {
@@ -117,14 +115,28 @@
                           {
                             "type": "do",
                             "expressions": [
-                              {"value": "moveSubTower"},
-                              {"var": "thirdTower"},
-                              {"var": "toTower"},
-                              {"var": "depthMinusOne"},
-                              {"var": "topDisk"}
+                              {"value": "moveDisk"},
+                              {"var": "disk"},
+                              {"var": "fromTower"},
+                              {"var": "toTower"}
                             ]
                           },
-                          {"var": "rest"}
+                          {
+                            "type": "plan",
+                            "expressions": [
+                              {
+                                "type": "do",
+                                "expressions": [
+                                  {"value": "moveSubTower"},
+                                  {"var": "thirdTower"},
+                                  {"var": "toTower"},
+                                  {"var": "depthMinusOne"},
+                                  {"var": "topDisk"}
+                                ]
+                              },
+                              {"var": "rest"}
+                            ]
+                          }
                         ]
                       }
                     ]
@@ -134,22 +146,27 @@
             ]
           },
           {
-            "type": "want",
+            "type": "current",
             "expressions": [
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveSubTower"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"},
-                      {"var": "depth!=1"},
-                      {"var": "topDisk"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveSubTower"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"},
+                          {"var": "depth!=1"},
+                          {"var": "topDisk"}
+                        ]
+                      },
+                      {"var": "rest"}
                     ]
-                  },
-                  {"var": "rest"}
+                  }
                 ]
               }
             ]
@@ -175,58 +192,61 @@
         "type": "rule",
         "expressions": [
           {
-            "type": "want",
+            "type": "act",
             "expressions": [
+              {"value": "now"},
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveDisk"},
-                      {"var": "topDisk"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "topDisk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"}
+                        ]
+                      },
+                      {"var": "rest"}
                     ]
-                  },
-                  {"var": "rest"}
+                  }
                 ]
               }
             ]
           },
           {
-            "type": "want",
+            "type": "current",
             "expressions": [
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveSubTower"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"},
-                      {"value": "1"},
-                      {"var": "topDisk"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveSubTower"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"},
+                          {"value": "1"},
+                          {"var": "topDisk"}
+                        ]
+                      },
+                      {"var": "rest"}
                     ]
-                  },
-                  {"var": "rest"}
+                  }
                 ]
               }
-            ]
-          },
-          {
-            "type": "rel",
-            "expressions": [
-              {"value": "top"},
-              {"var": "fromTower"},
-              {"var": "topDisk"}
             ]
           }
         ]
       }
     },
-    "canDoPlan": {
+    "wantMoveIfCan": {
       "confidence": "POSITIVE",
       "data": {
         "type": "rule",
@@ -240,127 +260,91 @@
             ]
           },
           {
-            "type": "want",
+            "type": "current",
             "expressions": [
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveDisk"},
-                      {"var": "disk"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "disk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"}
+                        ]
+                      },
+                      {"var": "rest"}
                     ]
-                  },
-                  {"var": "rest"}
+                  }
                 ]
               }
             ]
           },
           {
             "type": "rel",
-            "negative": true,
             "expressions": [
               {"value": "on"},
               {"var": "disk"},
-              {"var": "toTower"}
+              {"var": "fromTower"}
             ]
-          }
+          },
+          {"value": "doNext"}
         ]
       }
     },
-    "canDoPlanException": {
-      "data": {
-        "type": "rule",
-        "expressions": [
-          {
-            "type": "act",
-            "negative": true,
-            "expressions": [
-              {"value": "move"},
-              {"var": "fromTower"},
-              {"var": "toTower"}
-            ]
-          },
-          {
-            "type": "want",
-            "expressions": [
-              {
-                "type": "plan",
-                "expressions": [
-                  {
-                    "type": "do",
-                    "expressions": [
-                      {"value": "moveDisk"},
-                      {"var": "disk"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"}
-                    ]
-                  },
-                  {"var": "rest"}
-                ]
-              }
-            ]
-          },
-          {
-            "type": "rel",
-            "negative": true,
-            "expressions": [
-              {"value": "on"},
-              {"var": "disk"},
-              {"var": "toTower"}
-            ]
-          },
-          {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"var": "fromAnywhere!=var:fromTower"},
-              {"var": "toAnywhere!=var:fromTower"}
-            ]
-          }
-        ]
-      }
-    },
-    "doRestOfPlan": {
+    "wantMoveToNext": {
       "confidence": "POSITIVE",
       "data": {
         "type": "rule",
         "expressions": [
           {
-            "type": "want",
+            "type": "act",
             "expressions": [
-              {"var": "rest"}
+              {"value": "now"},
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "rest"}
+                ]
+              }
             ]
           },
           {
-            "type": "want",
+            "type": "current",
             "expressions": [
               {
-                "type": "plan",
+                "type": "want",
                 "expressions": [
                   {
-                    "type": "do",
+                    "type": "plan",
                     "expressions": [
-                      {"value": "moveDisk"},
-                      {"var": "disk"},
-                      {"var": "fromTower"},
-                      {"var": "toTower"}
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "disk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"}
+                        ]
+                      },
+                      {"var": "rest"}
                     ]
-                  },
-                  {"var": "rest!=done"}
+                  }
                 ]
               }
             ]
           },
           {
             "type": "rel",
+            "negative": true,
             "expressions": [
               {"value": "on"},
               {"var": "disk"},
-              {"var": "toTower"}
+              {"var": "fromTower"}
             ]
           }
         ]

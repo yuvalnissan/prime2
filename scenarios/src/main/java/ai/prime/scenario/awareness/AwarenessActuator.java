@@ -8,7 +8,6 @@ import ai.prime.knowledge.data.DataType;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.nodes.confidence.SenseConfidence;
-import ai.prime.knowledge.nodes.confidence.SenseMessage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,17 +31,12 @@ public class AwarenessActuator extends DiscreteActuator {
         return "now";
     }
 
-    private void sendMessage(Agent agent, Data data) {
-        SenseMessage message = new SenseMessage(data, data, SenseConfidence.SENSE_POSITIVE);
-        agent.sendMessageToNeuron(message);
-    }
-
     private void addSense(Expression last, Expression what) {
         Data was = new Data(new DataType("was"), new Expression[]{what});
         Data wasAfter = new Data(new DataType("wasAfter"), new Expression[]{what, last});
 
-        sendMessage(agent, was);
-        sendMessage(agent, wasAfter);
+        sendMessage(was, SenseConfidence.SENSE_POSITIVE);
+        sendMessage(wasAfter, SenseConfidence.SENSE_POSITIVE);
     }
 
     @Override
