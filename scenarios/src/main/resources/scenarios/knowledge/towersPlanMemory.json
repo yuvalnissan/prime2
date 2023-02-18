@@ -1,0 +1,784 @@
+{
+  "neurons": {
+    "onXNotOnY": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "tower"}
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "current"}
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "isa"},
+              {"var": "tower"},
+              {"value": "tower"}
+            ]
+          }
+        ]
+      }
+    },
+    "thePlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "thePlan",
+        "expressions": [
+          {
+            "type": "plan",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveDisk"},
+                  {"value": "d1"},
+                  {"value": "t1"},
+                  {"value": "t3"}
+                ]
+              },
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveDisk"},
+                      {"value": "d2"},
+                      {"value": "t1"},
+                      {"value": "t2"}
+                    ]
+                  },
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"value": "d1"},
+                          {"value": "t3"},
+                          {"value": "t2"}
+                        ]
+                      },
+                      {
+                        "type": "plan",
+                        "expressions": [
+                          {
+                            "type": "do",
+                            "expressions": [
+                              {"value": "moveDisk"},
+                              {"value": "d3"},
+                              {"value": "t1"},
+                              {"value": "t3"}
+                            ]
+                          },
+                          {
+                            "type": "plan",
+                            "expressions": [
+                              {
+                                "type": "do",
+                                "expressions": [
+                                  {"value": "moveDisk"},
+                                  {"value": "d1"},
+                                  {"value": "t2"},
+                                  {"value": "t1"}
+                                ]
+                              },
+                              {
+                                "type": "plan",
+                                "expressions": [
+                                  {
+                                    "type": "do",
+                                    "expressions": [
+                                      {"value": "moveDisk"},
+                                      {"value": "d2"},
+                                      {"value": "t2"},
+                                      {"value": "t3"}
+                                    ]
+                                  },
+                                  {
+                                    "type": "plan",
+                                    "expressions": [
+                                      {
+                                        "type": "do",
+                                        "expressions": [
+                                          {"value": "moveDisk"},
+                                          {"value": "d1"},
+                                          {"value": "t1"},
+                                          {"value": "t3"}
+                                        ]
+                                      },
+                                      {
+                                        "type": "plan",
+                                        "expressions": [
+                                          {
+                                            "type": "do",
+                                            "expressions": [
+                                              {"value": "moveDisk"},
+                                              {"value": "d4"},
+                                              {"value": "t1"},
+                                              {"value": "t2"}
+                                            ]
+                                          },
+                                          {
+                                            "type": "plan",
+                                            "expressions": [
+                                              {
+                                                "type": "do",
+                                                "expressions": [
+                                                  {"value": "moveDisk"},
+                                                  {"value": "d1"},
+                                                  {"value": "t3"},
+                                                  {"value": "t2"}
+                                                ]
+                                              },
+                                              {
+                                                "type": "plan",
+                                                "expressions": [
+                                                  {
+                                                    "type": "do",
+                                                    "expressions": [
+                                                      {"value": "moveDisk"},
+                                                      {"value": "d2"},
+                                                      {"value": "t3"},
+                                                      {"value": "t1"}
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "plan",
+                                                    "expressions": [
+                                                      {
+                                                        "type": "do",
+                                                        "expressions": [
+                                                          {"value": "moveDisk"},
+                                                          {"value": "d1"},
+                                                          {"value": "t2"},
+                                                          {"value": "t1"}
+                                                        ]
+                                                      },
+                                                      {
+                                                        "type": "plan",
+                                                        "expressions": [
+                                                          {
+                                                            "type": "do",
+                                                            "expressions": [
+                                                              {"value": "moveDisk"},
+                                                              {"value": "d3"},
+                                                              {"value": "t3"},
+                                                              {"value": "t2"}
+                                                            ]
+                                                          },
+                                                          {
+                                                            "type": "plan",
+                                                            "expressions": [
+                                                              {
+                                                                "type": "do",
+                                                                "expressions": [
+                                                                  {"value": "moveDisk"},
+                                                                  {"value": "d1"},
+                                                                  {"value": "t1"},
+                                                                  {"value": "t3"}
+                                                                ]
+                                                              },
+                                                              {
+                                                                "type": "plan",
+                                                                "expressions": [
+                                                                  {
+                                                                    "type": "do",
+                                                                    "expressions": [
+                                                                      {"value": "moveDisk"},
+                                                                      {"value": "d2"},
+                                                                      {"value": "t1"},
+                                                                      {"value": "t2"}
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "type": "plan",
+                                                                    "expressions": [
+                                                                      {
+                                                                        "type": "do",
+                                                                        "expressions": [
+                                                                          {"value": "moveDisk"},
+                                                                          {"value": "d1"},
+                                                                          {"value": "t3"},
+                                                                          {"value": "t2"}
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "type": "plan",
+                                                                        "expressions": [
+                                                                          {
+                                                                            "type": "do",
+                                                                            "expressions": [
+                                                                              {"value": "moveDisk"},
+                                                                              {"value": "d5"},
+                                                                              {"value": "t1"},
+                                                                              {"value": "t3"}
+                                                                            ]
+                                                                          },
+                                                                          {
+                                                                            "type": "plan",
+                                                                            "expressions": [
+                                                                              {
+                                                                                "type": "do",
+                                                                                "expressions": [
+                                                                                  {"value": "moveDisk"},
+                                                                                  {"value": "d1"},
+                                                                                  {"value": "t2"},
+                                                                                  {"value": "t1"}
+                                                                                ]
+                                                                              },
+                                                                              {
+                                                                                "type": "plan",
+                                                                                "expressions": [
+                                                                                  {
+                                                                                    "type": "do",
+                                                                                    "expressions": [
+                                                                                      {"value": "moveDisk"},
+                                                                                      {"value": "d2"},
+                                                                                      {"value": "t2"},
+                                                                                      {"value": "t3"}
+                                                                                    ]
+                                                                                  },
+                                                                                  {
+                                                                                    "type": "plan",
+                                                                                    "expressions": [
+                                                                                      {
+                                                                                        "type": "do",
+                                                                                        "expressions": [
+                                                                                          {"value": "moveDisk"},
+                                                                                          {"value": "d1"},
+                                                                                          {"value": "t1"},
+                                                                                          {"value": "t3"}
+                                                                                        ]
+                                                                                      },
+                                                                                      {
+                                                                                        "type": "plan",
+                                                                                        "expressions": [
+                                                                                          {
+                                                                                            "type": "do",
+                                                                                            "expressions": [
+                                                                                              {"value": "moveDisk"},
+                                                                                              {"value": "d3"},
+                                                                                              {"value": "t2"},
+                                                                                              {"value": "t1"}
+                                                                                            ]
+                                                                                          },
+                                                                                          {
+                                                                                            "type": "plan",
+                                                                                            "expressions": [
+                                                                                              {
+                                                                                                "type": "do",
+                                                                                                "expressions": [
+                                                                                                  {"value": "moveDisk"},
+                                                                                                  {"value": "d1"},
+                                                                                                  {"value": "t3"},
+                                                                                                  {"value": "t2"}
+                                                                                                ]
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "plan",
+                                                                                                "expressions": [
+                                                                                                  {
+                                                                                                    "type": "do",
+                                                                                                    "expressions": [
+                                                                                                      {"value": "moveDisk"},
+                                                                                                      {"value": "d2"},
+                                                                                                      {"value": "t3"},
+                                                                                                      {"value": "t1"}
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "type": "plan",
+                                                                                                    "expressions": [
+                                                                                                      {
+                                                                                                        "type": "do",
+                                                                                                        "expressions": [
+                                                                                                          {"value": "moveDisk"},
+                                                                                                          {"value": "d1"},
+                                                                                                          {"value": "t2"},
+                                                                                                          {"value": "t1"}
+                                                                                                        ]
+                                                                                                      },
+                                                                                                      {
+                                                                                                        "type": "plan",
+                                                                                                        "expressions": [
+                                                                                                          {
+                                                                                                            "type": "do",
+                                                                                                            "expressions": [
+                                                                                                              {"value": "moveDisk"},
+                                                                                                              {"value": "d4"},
+                                                                                                              {"value": "t2"},
+                                                                                                              {"value": "t3"}
+                                                                                                            ]
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "type": "plan",
+                                                                                                            "expressions": [
+                                                                                                              {
+                                                                                                                "type": "do",
+                                                                                                                "expressions": [
+                                                                                                                  {"value": "moveDisk"},
+                                                                                                                  {"value": "d1"},
+                                                                                                                  {"value": "t1"},
+                                                                                                                  {"value": "t3"}
+                                                                                                                ]
+                                                                                                              },
+                                                                                                              {
+                                                                                                                "type": "plan",
+                                                                                                                "expressions": [
+                                                                                                                  {
+                                                                                                                    "type": "do",
+                                                                                                                    "expressions": [
+                                                                                                                      {"value": "moveDisk"},
+                                                                                                                      {"value": "d2"},
+                                                                                                                      {"value": "t1"},
+                                                                                                                      {"value": "t2"}
+                                                                                                                    ]
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                    "type": "plan",
+                                                                                                                    "expressions": [
+                                                                                                                      {
+                                                                                                                        "type": "do",
+                                                                                                                        "expressions": [
+                                                                                                                          {"value": "moveDisk"},
+                                                                                                                          {"value": "d1"},
+                                                                                                                          {"value": "t3"},
+                                                                                                                          {"value": "t2"}
+                                                                                                                        ]
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                        "type": "plan",
+                                                                                                                        "expressions": [
+                                                                                                                          {
+                                                                                                                            "type": "do",
+                                                                                                                            "expressions": [
+                                                                                                                              {"value": "moveDisk"},
+                                                                                                                              {"value": "d3"},
+                                                                                                                              {"value": "t1"},
+                                                                                                                              {"value": "t3"}
+                                                                                                                            ]
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                            "type": "plan",
+                                                                                                                            "expressions": [
+                                                                                                                              {
+                                                                                                                                "type": "do",
+                                                                                                                                "expressions": [
+                                                                                                                                  {"value": "moveDisk"},
+                                                                                                                                  {"value": "d1"},
+                                                                                                                                  {"value": "t2"},
+                                                                                                                                  {"value": "t1"}
+                                                                                                                                ]
+                                                                                                                              },
+                                                                                                                              {
+                                                                                                                                "type": "plan",
+                                                                                                                                "expressions": [
+                                                                                                                                  {
+                                                                                                                                    "type": "do",
+                                                                                                                                    "expressions": [
+                                                                                                                                      {"value": "moveDisk"},
+                                                                                                                                      {"value": "d2"},
+                                                                                                                                      {"value": "t2"},
+                                                                                                                                      {"value": "t3"}
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                    "type": "plan",
+                                                                                                                                    "expressions": [
+                                                                                                                                      {
+                                                                                                                                        "type": "do",
+                                                                                                                                        "expressions": [
+                                                                                                                                          {"value": "moveDisk"},
+                                                                                                                                          {"value": "d1"},
+                                                                                                                                          {"value": "t1"},
+                                                                                                                                          {"value": "t3"}
+                                                                                                                                        ]
+                                                                                                                                      },
+                                                                                                                                      {"value": "done"}
+                                                                                                                                    ]
+                                                                                                                                  }
+                                                                                                                                ]
+                                                                                                                              }
+                                                                                                                            ]
+                                                                                                                          }
+                                                                                                                        ]
+                                                                                                                      }
+                                                                                                                    ]
+                                                                                                                  }
+                                                                                                                ]
+                                                                                                              }
+                                                                                                            ]
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  }
+                                                                                                ]
+                                                                                              }
+                                                                                            ]
+                                                                                          }
+                                                                                        ]
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "goalWonWantWon": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {"value": "won"}
+            ]
+          },
+          {
+            "type": "goal",
+            "expressions": [
+              {"value": "won"}
+            ]
+          }
+        ]
+      }
+    },
+    "wantWonThenFollowPlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "now"},
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {"value": "won"}
+            ]
+          },
+          {
+            "type": "thePlan",
+            "expressions": [
+              {"var": "plan"}
+            ]
+          }
+        ]
+      }
+    },
+    "current": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "current",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "notCurrent": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "current",
+            "negative": true,
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "wasAfter",
+            "expressions": [
+              {"var": "other"},
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "plan"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wantCurrentStep": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveDisk"},
+                  {"var": "disk"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "current",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "disk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"}
+                        ]
+                      },
+                      {"var": "rest"}
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wantNextStep": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "now"},
+              {
+                "type": "want",
+                "expressions": [
+                  {"var": "rest"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "current",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveDisk"},
+                          {"var": "disk"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"}
+                        ]
+                      },
+                      {"var": "rest"}
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "fromTower"}
+            ]
+          }
+        ]
+      }
+    },
+    "actIfWantDo": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromTower"},
+              {"var": "toTower"}
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveDisk"},
+                  {"var": "disk"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "fromTower"}
+            ]
+          }
+        ]
+      }
+    },
+    "notActIActing": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "negative": true,
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromTower"},
+              {"var": "toTower"}
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "do",
+                "expressions": [
+                  {"value": "moveDisk"},
+                  {"var": "disk"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "acting",
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromTower"},
+              {"var": "toTower"}
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+

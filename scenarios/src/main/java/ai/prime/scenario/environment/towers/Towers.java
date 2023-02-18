@@ -5,6 +5,7 @@ import ai.prime.agent.interaction.Actuator;
 import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Expression;
 import ai.prime.scenario.Environment;
+import ai.prime.scenario.awareness.AwarenessActuator;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -25,7 +26,8 @@ public class Towers extends Environment {
 
     @Override
     public Collection<Actuator> getActuators(Agent agent) {
-        return new HashSet<>(Collections.singletonList(new TowerActuator(agent, this)));
+        //TODO this is a temporary cheat until self awareness is detached from environments
+        return new HashSet<>(Arrays.asList(new AwarenessActuator(agent), new TowerActuator(agent, this)));
     }
 
     @Override

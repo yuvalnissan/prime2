@@ -41,9 +41,9 @@ public class Memory {
         }
     }
 
-    public Neuron getNeuron(Data data){
-        synchronized (data.getDisplayName()){
-            if (!neuralMap.hasNeuron(data)){
+    public Neuron getNeuron(Data data) {
+        synchronized (data.getDisplayName()) {
+            if (!neuralMap.hasNeuron(data)) {
                 addData(data);
             }
 

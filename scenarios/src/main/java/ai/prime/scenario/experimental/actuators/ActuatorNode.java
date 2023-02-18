@@ -18,8 +18,6 @@ public class ActuatorNode extends Node {
     public static final String NAME = "actuator";
     public static List<String> MESSAGE_TYPES = List.of(new String[]{});
 
-    private final static double DISCRETE_ACTION_THRESHOLD = 0.5;
-
     public ActuatorNode(Neuron neuron) {
         super(neuron);
     }
@@ -42,11 +40,7 @@ public class ActuatorNode extends Node {
             String action = actionData.getValue();
             Actuator actuator = getNeuron().getAgent().getActuator(action);
             Confidence confidence = confidenceUpdateEvent.getConfidence();
-            if (confidence.getStrength() > DISCRETE_ACTION_THRESHOLD) {
-                actuator.act(getData());
-            } else {
-                actuator.cancel(getData());
-            }
+            actuator.act(getData(), confidence);
         }
     }
 
