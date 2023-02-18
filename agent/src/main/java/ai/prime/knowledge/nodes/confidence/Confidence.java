@@ -84,7 +84,7 @@ public abstract class Confidence {
         return toString().hashCode();
     }
 
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         return obj.toString().equals(toString());
     }
 }

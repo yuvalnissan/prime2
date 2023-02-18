@@ -1,8 +1,11 @@
 //TODO general list
 
+- Deal with the max pull in exceptionNode, cancels the relax threshold
+- Why is balancing not giving any value to test when there is 2 against 1?
 - A fixed actuator able to capture thoughts. Act adds a mental state which is returned as a sense
 - Exception nodes optimization to prevent creating so many neurons
 - Balance rules and infers for learning
+- Allow freezing lines in the data list
 - Decide about AND nodes or if Infer should balance the resistance in case one side is locked
 - On UI selection, use up and down arrows to switch selected items
 - Receptor nodes should use connotation instead of their own links

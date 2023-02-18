@@ -38,6 +38,10 @@ public class ConfidenceNode extends Node {
         this.lastSentConfidence = new HashMap<>();
     }
 
+    public Confidence getConfidence() {
+        return this.confidence;
+    }
+
     @Override
     public String getName() {
         return NAME;
@@ -48,12 +52,18 @@ public class ConfidenceNode extends Node {
         return MESSAGE_TYPES;
     }
 
+    private boolean hasMeaningfulPull(PullMessage pullMessage) {
+        return pullMessage.getPullValues().stream().anyMatch(pullValue -> pullValue.getPull() > 0.0 || pullValue.getPotentialResistance() > 0.0);
+    }
+
     @Override
     public Map<String, String> getDisplayProps() {
         Map<String, String> props = new HashMap<>();
         props.put("confidence", confidence.toString());
         this.pullMessages.forEach((data, pullMessage) -> {
-            props.put(data.getDisplayName(), pullMessage.toString());
+            if (hasMeaningfulPull(pullMessage)) {
+                props.put(data.getDisplayName(), pullMessage.getPullValues().toString());
+            }
         });
 
         return props;
@@ -79,8 +89,16 @@ public class ConfidenceNode extends Node {
         messages.forEach(message -> {
             SenseMessage senseMessage = (SenseMessage) message;
             Confidence oldConfidence = confidence;
+            if (senseMessage.getConfidence().equals(SenseConfidence.SENSE_EMPTY)) {
+                isSense = false;
+                confidence = InferredConfidence.EMPTY;
+                getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));
+
+                return;
+            }
+
             confidence = senseMessage.getConfidence();
-            isSense = !confidence.equals(SenseConfidence.SENSE_EMPTY);
+            isSense = true;
 
             if (confidence.isSignificantlyDifferent(oldConfidence)){
                 Logger.info("confidenceNode", "Neuron " + getNeuron().getData().getDisplayName() + " set as sense: " + confidence.toString());

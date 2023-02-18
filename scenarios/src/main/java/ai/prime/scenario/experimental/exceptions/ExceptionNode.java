@@ -61,12 +61,17 @@ public class ExceptionNode extends FactorNode {
 
     @Override
     public Map<String, String> getDisplayProps() {
-        Map<String, String> props = super.getDisplayProps();
+        Map<String, String> props = new HashMap<>();
 
-        props.put("infer", getStatusConfidence(getData()).toString());
-        props.put(target.getData().getDisplayName(), getStatusConfidence(target.getData()).toString());
+        props.put("status-infer", getStatusConfidence(getData()).toString());
+        props.put("sent-infer", getLastSent(getData()).toString());
+
+        props.put("status-" + target.getData().getDisplayName(), getStatusConfidence(target.getData()).toString());
+        props.put("sent-" + target.getData().getDisplayName(), getLastSent(target.getData()).toString());
+
         for (Expression condition : conditions) {
-            props.put(condition.getData().getDisplayName(), getStatusConfidence(condition.getData()).toString());
+            props.put("status-" + condition.getData().getDisplayName(), getStatusConfidence(condition.getData()).toString());
+            props.put("sent-" + condition.getData().getDisplayName(), getLastSent(condition.getData()).toString());
         }
 
         return props;
@@ -83,7 +88,7 @@ public class ExceptionNode extends FactorNode {
 
     private Confidence getConditionsConfidence() {
         if (conditions.length == 0) {
-            return InferredConfidence.EMPTY;
+            return SenseConfidence.SENSE_POSITIVE;
         }
         double strength = 1.0;
         double positivePull = Double.MAX_VALUE;
@@ -98,11 +103,11 @@ public class ExceptionNode extends FactorNode {
         return new InferredConfidence(strength, positivePull, negativePull);
     }
 
-    private Confidence getConditionsWithException() {
-        Confidence conditionConfidence = getConditionsConfidence();
+    private Confidence getInferWithException() {
+        Confidence inferConfidence = getStatusConfidence(getData());
 
-        var factor = conditionConfidence.getResistance(true);
-        var changeSum = conditionConfidence.getStrength() * factor;
+        var factor = inferConfidence.getResistance(true);
+        var changeSum = inferConfidence.getStrength() * factor;
         var maxExceptionResistance = 0.0;
         for (PullValue exceptionPull : exceptions.values()) {
             factor += exceptionPull.getPotentialResistance();
@@ -110,16 +115,17 @@ public class ExceptionNode extends FactorNode {
             maxExceptionResistance = Math.max(maxExceptionResistance, exceptionPull.getPotentialResistance());
         }
 
+        //TODO broken
         var strength = factor > 0.0 ? changeSum / factor : 0.0;
-        var positivePull = Math.max(0.0, conditionConfidence.getResistance(true) - maxExceptionResistance);
+        var positivePull = Math.max(0.0, inferConfidence.getResistance(true) - maxExceptionResistance);
 
         return new InferredConfidence(strength, positivePull, 0.0);
     }
 
     private void addDirectionalCorrelationPull(SetMap<Data, PullValue> results, boolean isPositive) {
-        Confidence inferConfidence = getStatusConfidence(getData());
+        Confidence inferConfidence = getInferWithException();
 
-        Confidence conditionConfidence = getConditionsWithException();
+        Confidence conditionConfidence =  getConditionsConfidence();
         Confidence targetConfidence = getConditionConfidence(target);
 
         if (!isPositive) {
@@ -128,29 +134,31 @@ public class ExceptionNode extends FactorNode {
         }
 
         double conflict = Math.max(0.0, conditionConfidence.getStrength() - targetConfidence.getStrength());
-//        double expected = 1.0 - conflict;
-//        double effectConflict = inferConfidence.getStrength() - expected;
+
+        double expected = 1.0 - conflict;
+        double effectConflict = inferConfidence.getStrength() - expected;
+        //TODO the max cancels the relax check later, deal with it
 //        double pull = Math.max(0.0, effectConflict) * CONVERGENCE_FACTOR;
-
-        //TODO test this, different that general logic
-        var inferEffect = Math.max(inferConfidence.getStrength(), 0.0);
-        double pull = conflict * inferEffect * CONVERGENCE_FACTOR;
-
-        if (pull < RELAX_THRESHOLD) {
-            pull = 0.0;
-        }
+        double pull = effectConflict * CONVERGENCE_FACTOR;
 
         double effectResistance = Math.min(conditionConfidence.getResistance(true), targetConfidence.getResistance(false));
         double fromResistance = Math.min(targetConfidence.getResistance(false), inferConfidence.getResistance(true));
         double toResistance = Math.min(conditionConfidence.getResistance(true), inferConfidence.getResistance(true));
 
+        if (pull < RELAX_THRESHOLD) {
+            pull = 0.0;
+            toResistance = 0.0;
+            fromResistance = 0.0;
+            effectResistance = 0.0;
+        }
+
         PullValue inferPullValue = new PullValue(!isPositive, pull, effectResistance, getData());
         results.add(getData(), inferPullValue);
         Logger.debug("inferNode", "\t\t Sent pull " +  getData() + ": " + inferPullValue);
 
-
         boolean targetIsPositive = target.getModifier() == DataModifier.NEGATIVE ? !isPositive : isPositive;
         PullValue targetPullValue = new PullValue(targetIsPositive, pull, toResistance, getData());
+
         results.add(target.getData(), targetPullValue);
         Logger.debug("inferNode", "\t\t Sent pull " +  target.getData() + ": " + targetPullValue);
 
@@ -181,12 +189,12 @@ public class ExceptionNode extends FactorNode {
 
         Logger.debug("inferNode", getNeuron().getData() + " building pull values");
         Logger.debug("inferNode", "\t\t Status " +  getData() + ": " + getStatusConfidence(getData()));
+        Logger.debug("exceptionNode", "\t\t Status " +  getData() + " with exception: " + getInferWithException());
         Logger.debug("inferNode", "\t\t Status " +  target.getData() + ": " + getStatusConfidence(target.getData()));
         for (Expression condition : conditions) {
             Logger.debug("inferNode", "\t\t Status " +  condition.getData() + ": " + getStatusConfidence(condition.getData()));
         }
         Logger.debug("inferNode", "\t\t Status all conditions:" + getConditionsConfidence());
-        Logger.debug("exceptionNode", "\t\t Status all conditions with exception:" + getConditionsWithException());
 
         addDirectionalCorrelationPull(results, true);
         addDirectionalCorrelationPull(results, false);

@@ -21,6 +21,9 @@ public abstract class FactorNode extends Node {
     private Set<Data> statusMessageWaitingList;
     private Set<Data> shouldUpdate;
 
+    //TODO for debug, remove later
+    private Map<Data, Set<PullValue>> lastSent;
+
 
     public FactorNode(Neuron neuron) {
         super(neuron);
@@ -41,16 +44,26 @@ public abstract class FactorNode extends Node {
         if (statusMessageWaitingList.isEmpty() && !shouldUpdate.isEmpty()) {
             Logger.info("factorNode", getNeuron().getData().getDisplayName() + " is updating");
 
+            lastSent = new HashMap<>();
             SetMap<Data, PullValue> results = buildPullValues();
             results.getKeys().forEach(to -> {
                 Set<PullValue> values = adjustPullValues(results.getValues(to));
                 Data normalized = to.normalize();
                 PullMessage message = new PullMessage(getNeuron().getData(), normalized, values);
                 getNeuron().getAgent().sendMessageToNeuron(message);
+
+                lastSent.put(normalized, values);
                 statusMessageWaitingList.add(normalized);
                 shouldUpdate.remove(normalized);
             });
         }
+    }
+
+    protected Set<PullValue> getLastSent(Data data) {
+        if (!lastSent.containsKey(data)) {
+            return new HashSet<>();
+        }
+        return lastSent.get(data);
     }
 
     public void sendUpdateOnConnect(Data to) {
@@ -71,6 +84,7 @@ public abstract class FactorNode extends Node {
         statusMessages = new HashMap<>();
         statusMessageWaitingList = new HashSet<>();
         shouldUpdate = new HashSet<>();
+        lastSent = new HashMap<>();
 
         shouldUpdate.add(getNeuron().getData().normalize());
 

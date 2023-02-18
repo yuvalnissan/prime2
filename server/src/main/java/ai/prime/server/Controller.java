@@ -52,10 +52,15 @@ public class Controller {
     }
 
     @GetMapping("/scenario")
-    public AgentModel getScenario(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
+    public synchronized AgentModel getScenario(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
+        if (scenarioName == null) {
+            return null;
+        }
+
         if (!scenarios.containsKey(scenarioName)) {
             loadScenario(scenarioName);
         }
+
         Scenario scenario = scenarios.get(scenarioName);
         Agent agent = scenario.getAgent(agentName);
         if (agent == null) {

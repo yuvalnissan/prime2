@@ -35,7 +35,7 @@ public class SenseConfidence extends Confidence {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SenseMessage)) {
+        if (!(obj instanceof SenseConfidence)) {
             return false;
         }
 

@@ -1,9 +1,5 @@
 {
   "neurons": {
-    "win": {
-      "confidence": "POSITIVE",
-      "data": {"type": "goal", "expressions": [{"value": "won"}]}
-    },
     "wantAllDisksOnT3": {
       "confidence": "POSITIVE",
       "data": {
@@ -226,7 +222,8 @@
                       {"value": "moveSubTower"},
                       {"var": "TOWER"},
                       {"value": "t3"},
-                      {"var": "SIZE"}
+                      {"var": "SIZE"},
+                      {"value": "d1"}
                     ]
                   },
                   {"value": "done"}
@@ -270,7 +267,8 @@
                       {"value": "moveSubTower"},
                       {"var": "fromTower"},
                       {"var": "thirdTower"},
-                      {"var": "depthMinusOne"}
+                      {"var": "depthMinusOne"},
+                      {"var": "topDisk"}
                     ]
                   },
                   {
@@ -280,7 +278,7 @@
                         "type": "do",
                         "expressions": [
                           {"value": "moveDisk"},
-                          {"var": "depth"},
+                          {"var": "disk"},
                           {"var": "fromTower"},
                           {"var": "toTower"}
                         ]
@@ -294,7 +292,8 @@
                               {"value": "moveSubTower"},
                               {"var": "thirdTower"},
                               {"var": "toTower"},
-                              {"var": "depthMinusOne"}
+                              {"var": "depthMinusOne"},
+                              {"var": "topDisk"}
                             ]
                           },
                           {"var": "rest"}
@@ -318,7 +317,8 @@
                       {"value": "moveSubTower"},
                       {"var": "fromTower"},
                       {"var": "toTower"},
-                      {"var": "depth!=1"}
+                      {"var": "depth!=1"},
+                      {"var": "topDisk"}
                     ]
                   },
                   {"var": "rest"}
@@ -356,7 +356,7 @@
                     "type": "do",
                     "expressions": [
                       {"value": "moveDisk"},
-                      {"var": "disk"},
+                      {"var": "topDisk"},
                       {"var": "fromTower"},
                       {"var": "toTower"}
                     ]
@@ -378,7 +378,8 @@
                       {"value": "moveSubTower"},
                       {"var": "fromTower"},
                       {"var": "toTower"},
-                      {"value": "1"}
+                      {"value": "1"},
+                      {"var": "topDisk"}
                     ]
                   },
                   {"var": "rest"}
@@ -391,7 +392,147 @@
             "expressions": [
               {"value": "top"},
               {"var": "fromTower"},
-              {"var": "disk"}
+              {"var": "topDisk"}
+            ]
+          }
+        ]
+      }
+    },
+    "canDoPlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromTower"},
+              {"var": "toTower"}
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveDisk"},
+                      {"var": "disk"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"}
+                    ]
+                  },
+                  {"var": "rest"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "toTower"}
+            ]
+          }
+        ]
+      }
+    },
+    "canDoPlanException": {
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "negative": true,
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromTower"},
+              {"var": "toTower"}
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveDisk"},
+                      {"var": "disk"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"}
+                    ]
+                  },
+                  {"var": "rest"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "negative": true,
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "toTower"}
+            ]
+          },
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"var": "fromAnywhere!=var:fromTower"},
+              {"var": "toAnywhere!=var:fromTower"}
+            ]
+          }
+        ]
+      }
+    },
+    "doRestOfPlan": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "want",
+            "expressions": [
+              {"var": "rest"}
+            ]
+          },
+          {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveDisk"},
+                      {"var": "disk"},
+                      {"var": "fromTower"},
+                      {"var": "toTower"}
+                    ]
+                  },
+                  {"var": "rest!=done"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "on"},
+              {"var": "disk"},
+              {"var": "toTower"}
             ]
           }
         ]

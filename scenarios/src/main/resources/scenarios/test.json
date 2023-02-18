@@ -1,0 +1,188 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"]
+  },
+  "agents": {
+    "smith": {
+      "neurons": [
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rule",
+            "expressions": [
+              {
+                "type": "want",
+                "expressions": [
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveSubTower"},
+                          {"var": "fromTower"},
+                          {"var": "thirdTower"},
+                          {"var": "depthMinusOne"},
+                          {"var": "topDisk"}
+                        ]
+                      },
+                      {
+                        "type": "plan",
+                        "expressions": [
+                          {
+                            "type": "do",
+                            "expressions": [
+                              {"value": "moveDisk"},
+                              {"var": "disk"},
+                              {"var": "fromTower"},
+                              {"var": "toTower"}
+                            ]
+                          },
+                          {
+                            "type": "plan",
+                            "expressions": [
+                              {
+                                "type": "do",
+                                "expressions": [
+                                  {"value": "moveSubTower"},
+                                  {"var": "thirdTower"},
+                                  {"var": "toTower"},
+                                  {"var": "depthMinusOne"},
+                                  {"var": "topDisk"}
+                                ]
+                              },
+                              {"var": "rest"}
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "want",
+                "expressions": [
+                  {
+                    "type": "plan",
+                    "expressions": [
+                      {
+                        "type": "do",
+                        "expressions": [
+                          {"value": "moveSubTower"},
+                          {"var": "fromTower"},
+                          {"var": "toTower"},
+                          {"var": "depth!=1"},
+                          {"var": "topDisk"}
+                        ]
+                      },
+                      {"var": "rest"}
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "rel",
+                "expressions": [{"value": "nextAfter"}, {"var": "depth"}, {"var": "depthMinusOne!=0"}]
+              },
+              {
+                "type": "rel",
+                "expressions": [{"value": "isa"}, {"var": "thirdTower!=var:fromTower!=var:toTower"}, {"value": "tower"}]
+              },
+              {
+                "type": "rel",
+                "expressions": [{"value": "size"}, {"var": "disk"}, {"var": "depth"}]
+              }
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "want",
+            "expressions": [
+              {
+                "type": "plan",
+                "expressions": [
+                  {
+                    "type": "do",
+                    "expressions": [
+                      {"value": "moveSubTower"},
+                      {"value": "t2"},
+                      {"value": "t3"},
+                      {"value": "2"},
+                      {"value": "d1"}
+                    ]
+                  },
+                  {"value": "done"}
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value":  "isa"},
+              {"value":  "t1"},
+              {"value":  "tower"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value":  "isa"},
+              {"value":  "t2"},
+              {"value":  "tower"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [
+              {"value":  "isa"},
+              {"value":  "t3"},
+              {"value":  "tower"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [{"value": "nextAfter"}, {"value": "2"}, {"value": "1"}]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [{"value": "nextAfter"}, {"value": "1"}, {"value": "0"}]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {
+            "type": "rel",
+            "expressions": [{"value": "size"}, {"value": "d2"}, {"value": "2"}]
+          }
+        }
+      ]
+    }
+  }
+}
+

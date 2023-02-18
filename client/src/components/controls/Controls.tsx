@@ -51,6 +51,7 @@ export const Controls = ({
 }: ControlsProps) => {
 
     const [isPaused, setIsPaused] = React.useState<boolean>(false)
+    const [showEmpty, setShowEmpty] = React.useState<boolean>(false)
 
     const toggleRefresh = () => {
         setShouldRefresh(!shouldRefresh)
@@ -88,8 +89,18 @@ export const Controls = ({
         const matchesFilter = (id: string) => {
             const regexStr = filter.toLowerCase().replaceAll(' ', '.*').replaceAll('(', '\\(').replaceAll(')', '\\)')
             const re = new RegExp(regexStr)
-    
-            return !!id.toLowerCase().match(re)
+            const idMatch = !!id.toLowerCase().match(re)
+
+            if (idMatch && !showEmpty) {
+                const neuron = neurons[id]
+                const confidenceNode = neuron?.nodes['confidence']
+                const confidence = confidenceNode?.props['confidence'] || '0|0|0'
+                const strength = confidence.split('|')[0]
+
+                return strength != '0'
+            } else {
+                return idMatch
+            }
         }
 
         const newFiltered = Object.keys(neurons).filter(matchesFilter).sort(compareIds)
@@ -99,7 +110,7 @@ export const Controls = ({
             console.log('Removing selected')
             setSelectedExpressionId('')
         }
-    }, [neurons, filter, setFilteredIds, setSelectedExpressionId, selectedExpressionId])
+    }, [neurons, filter, setFilteredIds, setSelectedExpressionId, selectedExpressionId, showEmpty])
 
     const setFilterValue = (value: string) => {
         setFilter(value)
@@ -107,6 +118,10 @@ export const Controls = ({
 
     const toggleGraph = () => {
         setLoadGraph(!loadGraph)
+    }
+
+    const toggleShowEmpty = () => {
+        setShowEmpty(!showEmpty)
     }
 
     const filterBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,6 +174,9 @@ export const Controls = ({
             </Button>
             <Button onClick={toggleGraph}>
                 {!loadGraph ? 'Show Graph' : 'Hide Graph'}
+            </Button>
+            <Button onClick={toggleShowEmpty}>
+                {showEmpty ? 'Hide Empty' : 'Show Empty'}
             </Button>
         </Box>
     </Box>

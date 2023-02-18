@@ -95,7 +95,9 @@ export const Agent = ({ className }: AgentProps) => {
     const getCleanFilter = () => filter.replaceAll(' ', '')
 
     const addData = async (id: string) => {
-        await requestHandler.sendAddData(id)
+        if (id) {
+            await requestHandler.sendAddData(id)
+        }
     }
 
     const onSubmit = async () => {

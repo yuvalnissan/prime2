@@ -10,6 +10,9 @@ import ai.prime.knowledge.data.Unification;
 import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.nodes.Node;
+import ai.prime.knowledge.nodes.confidence.Confidence;
+import ai.prime.knowledge.nodes.confidence.ConfidenceNode;
+import ai.prime.knowledge.nodes.confidence.ConfidenceUpdateEvent;
 
 import java.util.*;
 
@@ -18,6 +21,7 @@ public class ReceptorNode extends Node {
     public static List<String> MESSAGE_TYPES = List.of(new String[]{ReceptorConnectMessage.TYPE, QueryMessage.TYPE, BindingMessage.TYPE});
 
     private SetMap<Data, Data> queries;
+    private SetMap<Data, Data> pendingCheckQueries;
     private Map<Data, Unification> matchingQueries;
     private Set<Data> nonMatchingQueries;
 
@@ -54,6 +58,7 @@ public class ReceptorNode extends Node {
     @Override
     public void init() {
         queries = new SetMap<>();
+        pendingCheckQueries = new SetMap<>();
         matchingQueries = new HashMap<>();
         nonMatchingQueries = new HashSet<>();
 
@@ -100,14 +105,29 @@ public class ReceptorNode extends Node {
         }
     }
 
+    private boolean isActive() {
+        ConfidenceNode confidenceNode = (ConfidenceNode)getNeuron().getNode(ConfidenceNode.NAME);
+        Confidence confidence = confidenceNode.getConfidence();
+
+        return confidence.getStrength() != 0.0;
+    }
+
+    private void updateOnMatch(Data query, Data source) {
+        Unification binding = matchingQueries.get(query);
+        BindingMatch bindingMatch = new BindingMatch(query, source, getData(), binding);
+        BindingMessage bindingMessage = new BindingMessage(getData(), source, bindingMatch);
+        getNeuron().getAgent().sendMessageToNeuron(bindingMessage);
+    }
+
     private void addQuery(Data query, Data source) {
         queries.add(query, source);
 
+        if (!isActive()) {
+            pendingCheckQueries.add(query, source);
+            return;
+        }
         if (isMatch(query)) {
-            Unification binding = matchingQueries.get(query);
-            BindingMatch bindingMatch = new BindingMatch(query, source, getData(), binding);
-            BindingMessage bindingMessage = new BindingMessage(getData(), source, bindingMatch);
-            getNeuron().getAgent().sendMessageToNeuron(bindingMessage);
+            updateOnMatch(query, source);
         }
     }
 
@@ -163,7 +183,17 @@ public class ReceptorNode extends Node {
 
     @Override
     public void handleEvent(NeuralEvent event) {
-
+        if (event.getType().equals(ConfidenceUpdateEvent.TYPE)) {
+            if (isActive()) {
+                pendingCheckQueries.getKeys().forEach(query -> {
+                    if (isMatch(query)) {
+                        Set<Data> sources = pendingCheckQueries.getValues(query);
+                        sources.forEach(source -> updateOnMatch(query, source));
+                    }
+                });
+                pendingCheckQueries = new SetMap<>();
+            }
+        }
     }
 
     public void query(Data query) {
