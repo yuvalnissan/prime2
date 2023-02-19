@@ -11,6 +11,9 @@
   },
   "agents": {
     "smith": {
+      "actuators": [
+        "ai.prime.scenario.awareness.AwarenessActuator"
+      ],
       "neurons": [
 
       ]

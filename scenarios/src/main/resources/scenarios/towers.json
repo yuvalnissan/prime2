@@ -13,6 +13,9 @@
   },
   "agents": {
     "smith": {
+      "actuators": [
+        "ai.prime.scenario.awareness.AwarenessActuator"
+      ],
       "knowledge": [
         "knowledge/basicMath.json",
         "knowledge/towersGeneral.json",

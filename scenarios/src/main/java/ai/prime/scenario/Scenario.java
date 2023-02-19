@@ -1,6 +1,7 @@
 package ai.prime.scenario;
 
 import ai.prime.agent.Agent;
+import ai.prime.agent.interaction.Actuator;
 import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.DataModifier;
@@ -111,10 +112,21 @@ public class Scenario {
 
     private static Environment loadEnvironment(String className) {
         try {
-            Class<Environment> environmentClass = (Class<Environment>) Class.forName(className);
-            Constructor<Environment> ctor = environmentClass.getConstructor();
+            Class<Environment> clazz = (Class<Environment>) Class.forName(className);
+            Constructor<Environment> ctor = clazz.getConstructor();
 
             return ctor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Actuator loadActuator(String className, Agent agent) {
+        try {
+            Class<Actuator> clazz = (Class<Actuator>) Class.forName(className);
+            Constructor<Actuator> ctor = clazz.getConstructor(Agent.class);
+
+            return ctor.newInstance(agent);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -193,16 +205,23 @@ public class Scenario {
 
             scenario.addAgent(agentName, agent);
 
-                List<NeuronModel> neurons = agentModel.getNeurons();
-                neurons.forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
+            List<NeuronModel> neurons = agentModel.getNeurons();
+            neurons.forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
 
-                if (agentModel.getKnowledge() != null) {
-                    agentModel.getKnowledge().forEach(knowledgePack -> {
-                        KnowledgeModel knowledge = readKnowledgePack(knowledgePack);
-                        knowledge.getNeurons().values().forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
-                    });
-                }
-            });
+            if (agentModel.getKnowledge() != null) {
+                agentModel.getKnowledge().forEach(knowledgePack -> {
+                    KnowledgeModel knowledge = readKnowledgePack(knowledgePack);
+                    knowledge.getNeurons().values().forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
+                });
+            }
+
+            if (agentModel.getActuators() != null) {
+                agentModel.getActuators().forEach(actuatorClassName -> {
+                    Actuator actuator = loadActuator(actuatorClassName, agent);
+                    agent.registerActuator(actuator);
+                });
+            }
+        });
 
         if (scenarioModel.getEnvironment() != null) {
             Environment environment = loadEnvironment(scenarioModel.getEnvironment());

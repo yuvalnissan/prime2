@@ -1,6 +1,8 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import CloseIcon from '@mui/icons-material/Close'
+import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import styles from './NeuronView.module.scss'
 import { Link, Neuron } from '../../businessLogic/neuron'
@@ -51,7 +53,11 @@ export const NeuronView = ({neuron, scenarioName, agentName, selectedExpressionI
         <Box className={styles['view']}>
             <Box>
                 <Box>
-                    <Button onClick={close} >X</Button>
+                    <IconButton onClick={close}  className={styles['rightButtons']}>
+                        <CloseIcon/>
+                    </IconButton>
+                </Box>
+                <Box>
                     <Button onClick={handleIgniteClick} >Ignite</Button>
                     <Button onClick={handlePositiveSenseClick} >Sense+</Button>
                     <Button onClick={handleNegativeSenseClick} >Sense-</Button>

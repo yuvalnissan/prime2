@@ -2,6 +2,11 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
+import Checkbox from '@mui/material/Checkbox'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
 import styles from './Controls.module.scss'
 import { Neuron } from '../../businessLogic/neuron'
 import { RequestHandler } from '../../communication/RequestHandler'
@@ -52,6 +57,8 @@ export const Controls = ({
 
     const [isPaused, setIsPaused] = React.useState<boolean>(false)
     const [showEmpty, setShowEmpty] = React.useState<boolean>(false)
+    const [showPositive, setShowPositive] = React.useState<boolean>(true)
+    const [showNegative, setShowNegative] = React.useState<boolean>(true)
 
     const toggleRefresh = () => {
         setShouldRefresh(!shouldRefresh)
@@ -90,17 +97,17 @@ export const Controls = ({
             const regexStr = filter.toLowerCase().replaceAll(' ', '.*').replaceAll('(', '\\(').replaceAll(')', '\\)')
             const re = new RegExp(regexStr)
             const idMatch = !!id.toLowerCase().match(re)
-
-            if (idMatch && !showEmpty) {
-                const neuron = neurons[id]
-                const confidenceNode = neuron?.nodes['confidence']
-                const confidence = confidenceNode?.props['confidence'] || '0|0|0'
-                const strength = confidence.split('|')[0]
-
-                return strength != '0'
-            } else {
-                return idMatch
+            
+            if (!idMatch) {
+                return false
             }
+
+            const neuron = neurons[id]
+            const confidenceNode = neuron?.nodes['confidence']
+            const confidence = confidenceNode?.props['confidence'] || '0|0|0'
+            const strength = parseFloat(confidence.split('|')[0])
+
+            return ((strength === 0.0 && showEmpty) || (strength > 0.0 && showPositive) || (strength < 0.0 && showNegative))
         }
 
         const newFiltered = Object.keys(neurons).filter(matchesFilter).sort(compareIds)
@@ -110,7 +117,7 @@ export const Controls = ({
             console.log('Removing selected')
             setSelectedExpressionId('')
         }
-    }, [neurons, filter, setFilteredIds, setSelectedExpressionId, selectedExpressionId, showEmpty])
+    }, [neurons, filter, setFilteredIds, setSelectedExpressionId, selectedExpressionId, showEmpty, showPositive, showNegative])
 
     const setFilterValue = (value: string) => {
         setFilter(value)
@@ -122,6 +129,14 @@ export const Controls = ({
 
     const toggleShowEmpty = () => {
         setShowEmpty(!showEmpty)
+    }
+
+    const toggleShowPositive = () => {
+        setShowPositive(!showPositive)
+    }
+
+    const toggleShowNegative = () => {
+        setShowNegative(!showNegative)
     }
 
     const filterBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,8 +176,6 @@ export const Controls = ({
             <Button onClick={handleIgniteClick}>
                 Ignite
             </Button>
-        </Box>
-        <Box>
             <Button onClick={resetScenario}>
                 Reset scenario
             </Button>
@@ -172,12 +185,44 @@ export const Controls = ({
             <Button onClick={togglePause}>
                 {isPaused ? 'Resume' : 'Pause'}
             </Button>
-            <Button onClick={toggleGraph}>
-                {!loadGraph ? 'Show Graph' : 'Hide Graph'}
-            </Button>
-            <Button onClick={toggleShowEmpty}>
-                {showEmpty ? 'Hide Empty' : 'Show Empty'}
-            </Button>
+        </Box>
+        <Box>
+            <FormControl component="fieldset">
+                <FormGroup aria-label="position" row>
+                    <FormControlLabel
+                        value="positive"
+                        checked={showPositive}
+                        control={<Checkbox />}
+                        onChange={toggleShowPositive}
+                        label="positive"
+                        labelPlacement="start"
+                    />
+                    <FormControlLabel
+                        value="negative"
+                        checked={showNegative}
+                        control={<Checkbox />}
+                        onChange={toggleShowNegative}
+                        label="negative"
+                        labelPlacement="start"
+                    />
+                    <FormControlLabel
+                        value="empty"
+                        checked={showEmpty}
+                        control={<Checkbox />}
+                        onChange={toggleShowEmpty}
+                        label="empty"
+                        labelPlacement="start"
+                    />
+                    <FormControlLabel
+                        value="graph"
+                        checked={loadGraph}
+                        control={<Checkbox />}
+                        onChange={toggleGraph}
+                        label="graph"
+                        labelPlacement="start"
+                    />
+                </FormGroup>
+            </FormControl>
         </Box>
     </Box>
 }
