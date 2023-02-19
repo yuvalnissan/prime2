@@ -186,7 +186,7 @@ export const Agent = ({ className }: AgentProps) => {
         <Box className={styles['left-panel']}>
             <Box>
                 <Typography variant="subtitle1" display="inline">
-                    <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName} ({isStable ? 'Stable' : 'Not stable'} messages: {messageCount} neurons: {Object.keys(neurons).length})
+                    <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName}
                 </Typography>
                 <Button onClick={resetScenario}>
                     Reset scenario
@@ -197,6 +197,9 @@ export const Agent = ({ className }: AgentProps) => {
                 <Button onClick={toggleRefresh}>
                     Refreshing: {shouldRefresh + ''}
                 </Button>
+                <Typography variant="subtitle1" display="inline">
+                    ({isStable ? 'Stable' : 'Not stable'} messages: {messageCount} neurons: {Object.keys(neurons).length})
+                </Typography>
             </Box>
             <Controls className={styles['data-list']}
                 scenarioName={scenarioName}
