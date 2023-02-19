@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import { NeuronView } from '../neuron/NeuronView'
 import styles from './Agent.module.scss'
 import { DataList } from '../dataList/DataList'
@@ -19,6 +20,7 @@ export const Agent = ({ className }: AgentProps) => {
     const shouldLoadGraph = searchParams.get('graph')
     document.title = scenarioName
 
+    const [isPaused, setIsPaused] = React.useState<boolean>(false)
     const [resetState, setResetState] = React.useState<number>(0)
     const [neurons, setNeurons] = React.useState<Record<string, Neuron>>({})
     const [shouldRefresh, setShouldRefresh] = React.useState<boolean>(true)
@@ -149,6 +151,36 @@ export const Agent = ({ className }: AgentProps) => {
         }
     }
 
+    const toggleRefresh = () => {
+        setShouldRefresh(!shouldRefresh)
+    }
+
+    const resetScenario = async () => {
+        setFocused(-1)
+        reset()
+        setIsPaused(false)
+    }
+
+    const pauseScenario = async () => {
+        await requestHandler.sendPause()
+        setShouldRefresh(false)
+        setIsPaused(true)
+    }
+
+    const resumeScenario = async () => {
+        await requestHandler.sendResume()
+        setShouldRefresh(true)
+        setIsPaused(false)
+    }
+
+    const togglePause = async () => {
+        if (isPaused) {
+            await resumeScenario()
+        } else {
+            await pauseScenario()
+        }
+    }
+
     return <Box onKeyDown={onFilterKey}
         className={`${styles.root} ${className} ${styles.all}`}>
         <Box className={styles['left-panel']}>
@@ -156,19 +188,24 @@ export const Agent = ({ className }: AgentProps) => {
                 <Typography variant="subtitle1" display="inline">
                     <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName} ({isStable ? 'Stable' : 'Not stable'} messages: {messageCount} neurons: {Object.keys(neurons).length})
                 </Typography>
+                <Button onClick={resetScenario}>
+                    Reset scenario
+                </Button>
+                <Button onClick={togglePause}>
+                    {isPaused ? 'Resume' : 'Pause'}
+                </Button>
+                <Button onClick={toggleRefresh}>
+                    Refreshing: {shouldRefresh + ''}
+                </Button>
             </Box>
             <Controls className={styles['data-list']}
                 scenarioName={scenarioName}
                 agentName={agentName}
-                setShouldRefresh={setShouldRefresh}
                 setSelectedExpressionId={setSelectedExpressionId}
                 setFilteredIds={setFilteredIds}
                 filteredIds={filteredIds}
-                reset={reset}
                 neurons={neurons}
-                shouldRefresh={shouldRefresh}
                 selectedExpressionId={selectedExpressionId}
-                focused={focused}
                 setFocused={setFocused}
                 filter={filter}
                 setFilter={setFilter}

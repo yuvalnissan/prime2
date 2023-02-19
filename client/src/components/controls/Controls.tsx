@@ -6,7 +6,6 @@ import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
 import styles from './Controls.module.scss'
 import { Neuron } from '../../businessLogic/neuron'
 import { RequestHandler } from '../../communication/RequestHandler'
@@ -15,15 +14,11 @@ export interface ControlsProps {
     className?: string
     scenarioName: string
     agentName: string
-    setShouldRefresh: Function
     setSelectedExpressionId: Function
     setFilteredIds: Function
     filteredIds: string[]
-    reset: Function
     neurons: Record<string, Neuron>
-    shouldRefresh: boolean
     selectedExpressionId: string
-    focused: number
     setFocused: Function
     filter: string
     setFilter: Function
@@ -37,15 +32,11 @@ export const Controls = ({
     className,
     scenarioName,
     agentName,
-    setShouldRefresh,
     setSelectedExpressionId,
     setFilteredIds,
     filteredIds,
-    reset,
     neurons,
-    shouldRefresh,
     selectedExpressionId,
-    focused,
     setFocused,
     filter,
     setFilter,
@@ -55,42 +46,11 @@ export const Controls = ({
     loadGraph
 }: ControlsProps) => {
 
-    const [isPaused, setIsPaused] = React.useState<boolean>(false)
     const [showEmpty, setShowEmpty] = React.useState<boolean>(false)
     const [showPositive, setShowPositive] = React.useState<boolean>(true)
     const [showNegative, setShowNegative] = React.useState<boolean>(true)
 
-    const toggleRefresh = () => {
-        setShouldRefresh(!shouldRefresh)
-    }
-
-    const resetScenario = async () => {
-        setFocused(-1)
-        reset()
-        setIsPaused(false)
-    }
-
-    const pauseScenario = async () => {
-        await requestHandler.sendPause()
-        setShouldRefresh(false)
-        setIsPaused(true)
-    }
-
-    const resumeScenario = async () => {
-        await requestHandler.sendResume()
-        setShouldRefresh(true)
-        setIsPaused(false)
-    }
-
     const addDataClick = () => requestHandler.sendAddData(filter)
-
-    const togglePause = async () => {
-        if (isPaused) {
-            await resumeScenario()
-        } else {
-            await pauseScenario()
-        }
-    }
 
     React.useEffect(() => {
         const matchesFilter = (id: string) => {
@@ -175,15 +135,6 @@ export const Controls = ({
             </Button>
             <Button onClick={handleIgniteClick}>
                 Ignite
-            </Button>
-            <Button onClick={resetScenario}>
-                Reset scenario
-            </Button>
-            <Button onClick={toggleRefresh}>
-                Refreshing: {shouldRefresh + ''}
-            </Button>
-            <Button onClick={togglePause}>
-                {isPaused ? 'Resume' : 'Pause'}
             </Button>
         </Box>
         <Box>
