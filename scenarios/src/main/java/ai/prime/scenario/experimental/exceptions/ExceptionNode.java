@@ -75,6 +75,10 @@ public class ExceptionNode extends FactorNode {
             props.put("sent-" + condition.getData().getDisplayName(), getLastSent(condition.getData()).toString());
         }
 
+        for (Expression override : overrides) {
+            props.put("override-" + override.getData().getDisplayName(), getStatusConfidence(override.getData()).toString());
+        }
+
         return props;
     }
 

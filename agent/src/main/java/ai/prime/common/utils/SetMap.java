@@ -2,7 +2,7 @@ package ai.prime.common.utils;
 
 import java.util.*;
 
-public class SetMap <K, V> {
+public class SetMap<K, V> {
     private Map<K, Set<V>> values;
 
     public SetMap() {
@@ -33,5 +33,16 @@ public class SetMap <K, V> {
         ensureKey(key);
 
         return new HashSet<>(values.get(key));
+    }
+
+    public SetMap<K, V> cloneDeep() {
+        SetMap<K, V> clone = new SetMap<>();
+        this.values.forEach((key, set) -> {
+            set.forEach(val -> {
+                clone.add(key, val);
+            });
+        });
+
+        return clone;
     }
 }

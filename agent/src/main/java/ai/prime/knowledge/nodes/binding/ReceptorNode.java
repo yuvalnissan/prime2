@@ -38,7 +38,7 @@ public class ReceptorNode extends Node {
     }
 
     private void sendQueriesToNeuron(Data target) {
-        QueryMessage message = new QueryMessage(this.getData(), target, this.queries);
+        QueryMessage message = new QueryMessage(this.getData(), target, this.queries.cloneDeep());
         getNeuron().getAgent().sendMessageToNeuron(message);
     }
 

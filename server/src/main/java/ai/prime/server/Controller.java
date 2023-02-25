@@ -1,6 +1,7 @@
 package ai.prime.server;
 
 import ai.prime.agent.Agent;
+import ai.prime.agent.Statistics;
 import ai.prime.common.utils.Logger;
 import ai.prime.knowledge.data.DataModifier;
 import ai.prime.knowledge.data.Expression;
@@ -69,6 +70,25 @@ public class Controller {
         AgentModel agentModel = modelConversion.getAgentModel(agent);
 
         return agentModel;
+    }
+
+    @GetMapping("/statistics")
+    public synchronized Statistics getStatistics(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
+        if (scenarioName == null) {
+            return null;
+        }
+
+        if (!scenarios.containsKey(scenarioName)) {
+            loadScenario(scenarioName);
+        }
+
+        Scenario scenario = scenarios.get(scenarioName);
+        Agent agent = scenario.getAgent(agentName);
+        if (agent == null) {
+            throw new RuntimeException("Agent " + agentName + " is not in scenario " + scenarioName);
+        }
+
+        return agent.getStatistics();
     }
 
     @PostMapping("/message")

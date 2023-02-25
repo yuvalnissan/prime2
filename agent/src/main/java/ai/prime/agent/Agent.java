@@ -11,12 +11,12 @@ import ai.prime.knowledge.memory.Memory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 public class Agent {
     private static final String FIRE_QUEUE = "fire";
     private static final int FIRE_QUEUE_SIZE = Settings.getIntProperty("neuron.fire.queue.size");
+    private static final boolean DEBUG = Settings.getBooleanProperty("mode.debug");
 
     private final String name;
     private final Memory memory;
@@ -25,7 +25,8 @@ public class Agent {
     private final NodeMapping nodeMapping;
     private final Map<String, Actuator> actuators;
 
-    private final AtomicLong fireCounter;
+    private final Statistics statistics;
+
 
 
     public Agent(String name) {
@@ -33,8 +34,9 @@ public class Agent {
         this.memory = new Memory(this);
         this.queueManager = new QueueManager();
         this.nodeMapping = new NodeMapping();
-        this.fireCounter = new AtomicLong(0);
         this.actuators = new HashMap<>();
+
+        this.statistics = new Statistics();
 
         MessageQueue<QueueMessage> neuronQueue = this.queueManager.addQueue(FIRE_QUEUE);
         IntStream.range(0, FIRE_QUEUE_SIZE).forEach(i -> neuronQueue.registerConsumer(message -> {
@@ -56,7 +58,11 @@ public class Agent {
     }
 
     public long getMessageCount() {
-        return fireCounter.get();
+        return statistics.getFireCount();
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
     }
 
     public void registerActuator(Actuator actuator) {
@@ -76,7 +82,11 @@ public class Agent {
         Data to = message.getTo().normalize();
         getMemory().getNeuron(to).addMessage(message);
         queueManager.getQueue(FIRE_QUEUE).add(new FireMessage(to));
-        fireCounter.incrementAndGet();
+
+        if (DEBUG) {
+            statistics.addFire();
+            statistics.addMessage(message);
+        }
     }
 
     public boolean isStable() {

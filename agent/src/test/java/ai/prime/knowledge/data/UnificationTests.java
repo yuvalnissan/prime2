@@ -174,6 +174,19 @@ public class UnificationTests {
         assertEquals(unify.getBound("var:1"), infer);
     }
 
+    @Test
+    public void testSelf() {
+        var infer = getInfer(
+                getValue("Target"),
+                getValue("A")
+        ).normalize();
+
+        Unification unify = infer.unify(infer);
+
+        assertNotNull(unify);
+        assertEquals(unify.getBoundedVariables().size(), 0);
+    }
+
 //    @Test
 //    public void testVariableConstraints() {
 //
