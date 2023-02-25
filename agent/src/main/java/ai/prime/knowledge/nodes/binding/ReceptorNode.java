@@ -20,10 +20,10 @@ public class ReceptorNode extends Node {
     public static final String NAME = "receptor";
     public static List<String> MESSAGE_TYPES = List.of(new String[]{ReceptorConnectMessage.TYPE, QueryMessage.TYPE, BindingMessage.TYPE});
 
-    private SetMap<Data, Data> queries;
-    private SetMap<Data, Data> pendingCheckQueries;
-    private Map<Data, Unification> matchingQueries;
-    private Set<Data> nonMatchingQueries;
+    private SetMap<Query, Data> queries;
+    private SetMap<Query, Data> pendingCheckQueries;
+    private Map<Query, Unification> matchingQueries;
+    private Set<Query> nonMatchingQueries;
 
     public ReceptorNode(Neuron neuron) {
         super(neuron);
@@ -81,7 +81,7 @@ public class ReceptorNode extends Node {
         return MESSAGE_TYPES;
     }
 
-    private boolean isMatch(Data query) {
+    private boolean isMatch(Query query) {
         if (matchingQueries.containsKey(query)) {
             return true;
         }
@@ -94,15 +94,19 @@ public class ReceptorNode extends Node {
             return false; //TODO think about it
         }
 
-        Unification unification = query.unify(getData());
-        if (unification != null) {
-            Logger.debug("receptorNode", "Neuron " + getData().getDisplayName() + " is matching query: " + query.getDisplayName());
-            matchingQueries.put(query, unification);
-            return true;
-        } else {
-            nonMatchingQueries.add(query);
-            return false;
+        if (query.getType() == QueryType.PATTERN_MATCH) {
+            Unification unification = query.getData().unify(getData());
+            if (unification != null) {
+                Logger.debug("receptorNode", "Neuron " + getData().getDisplayName() + " is matching query: " + query.getData().getDisplayName());
+                matchingQueries.put(query, unification);
+                return true;
+            } else {
+                nonMatchingQueries.add(query);
+                return false;
+            }
         }
+
+        throw new RuntimeException("Unknown query type matching: " + query.getType());
     }
 
     private boolean isActive() {
@@ -112,14 +116,14 @@ public class ReceptorNode extends Node {
         return confidence.getStrength() != 0.0;
     }
 
-    private void updateOnMatch(Data query, Data source) {
+    private void updateOnMatch(Query query, Data source) {
         Unification binding = matchingQueries.get(query);
         BindingMatch bindingMatch = new BindingMatch(query, source, getData(), binding);
         BindingMessage bindingMessage = new BindingMessage(getData(), source, bindingMatch);
         getNeuron().getAgent().sendMessageToNeuron(bindingMessage);
     }
 
-    private void addQuery(Data query, Data source) {
+    private void addQuery(Query query, Data source) {
         queries.add(query, source);
 
         if (!isActive()) {
@@ -144,7 +148,7 @@ public class ReceptorNode extends Node {
         for (NeuralMessage neuralMessage: messages) {
             QueryMessage message = (QueryMessage)neuralMessage;
             var queries = message.getQueries();
-            for (Data query: queries.getKeys()) {
+            for (Query query: queries.getKeys()) {
                 var sources = queries.getValues(query);
                 for(Data source: sources) {
                     if (!this.queries.getValues(query).contains(source)) {
@@ -196,7 +200,7 @@ public class ReceptorNode extends Node {
         }
     }
 
-    public void query(Data query) {
+    public void query(Query query) {
         addQuery(query, getData());
         sendQueries(); //TODO can send a smaller payload
     }

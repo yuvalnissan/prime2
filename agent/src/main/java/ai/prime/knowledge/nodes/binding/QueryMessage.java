@@ -8,14 +8,14 @@ import ai.prime.knowledge.data.Data;
 public class QueryMessage extends NeuralMessage {
     public static final String TYPE = "queryMessage";
 
-    private final SetMap<Data, Data> queries;
+    private final SetMap<Query, Data> queries;
 
-    public QueryMessage(Data from, Data to, SetMap<Data, Data> queries) {
+    public QueryMessage(Data from, Data to, SetMap<Query, Data> queries) {
         super(from, to);
         this.queries = queries;
     }
 
-    public SetMap<Data, Data> getQueries() {
+    public SetMap<Query, Data> getQueries() {
         return queries;
     }
 

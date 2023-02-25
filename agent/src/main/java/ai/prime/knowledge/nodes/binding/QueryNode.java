@@ -33,7 +33,7 @@ public class QueryNode extends Node {
 
     private void sendQuery(Data query) {
         ReceptorNode receptorNode = (ReceptorNode)getNeuron().getNode(ReceptorNode.NAME);
-        receptorNode.query(query);
+        receptorNode.query(new Query(QueryType.PATTERN_MATCH, query));
         sentQueries.add(query);
     }
 
@@ -78,7 +78,6 @@ public class QueryNode extends Node {
             if (!wasQuerySent(currentBinder)) {
                 sendQuery(currentBinder);
             } else {
-
                 for (Unification unification : matches.getValues(currentBinder)) {
                     setBindingMatch(bindingPath, unification);
                 }
@@ -106,10 +105,12 @@ public class QueryNode extends Node {
         if (event.getType().equals(BindingEvent.TYPE)) {
             BindingEvent bindingEvent = (BindingEvent)event;
             BindingMatch bindingMatch = bindingEvent.getMatch();
-            Logger.info("queryNode", getNeuron().getData() + " got a match from " + bindingMatch.getMatch());
+            if (bindingMatch.getQuery().getType() == QueryType.PATTERN_MATCH) {
+                Logger.info("queryNode", getNeuron().getData() + " got a match from " + bindingMatch.getMatch());
 
-            matches.add(bindingMatch.getQuery(), bindingMatch.getBinding());
-            setBindingMatch(bindingMatch.getQuery(), bindingMatch.getBinding());
+                matches.add(bindingMatch.getQuery().getData(), bindingMatch.getBinding());
+                setBindingMatch(bindingMatch.getQuery().getData(), bindingMatch.getBinding());
+            }
         }
     }
 
