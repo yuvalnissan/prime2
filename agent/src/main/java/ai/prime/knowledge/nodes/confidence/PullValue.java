@@ -46,12 +46,26 @@ public class PullValue {
     }
 
     @Override
-    public boolean equals(Object other){
-        return toString().equals(other.toString());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PullValue pullValue = (PullValue) o;
+
+        if (isPositive != pullValue.isPositive) return false;
+        if (Double.compare(pullValue.pull, pull) != 0) return false;
+        return Double.compare(pullValue.potentialResistance, potentialResistance) == 0;
     }
 
     @Override
-    public int hashCode(){
-        return toString().hashCode();
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (isPositive ? 1 : 0);
+        temp = Double.doubleToLongBits(pull);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(potentialResistance);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

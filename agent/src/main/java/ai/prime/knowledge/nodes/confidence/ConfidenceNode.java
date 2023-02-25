@@ -78,7 +78,7 @@ public class ConfidenceNode extends Node {
     private void processPullMessage(Collection<NeuralMessage> messages) {
         messages.forEach(message -> {
             PullMessage pullMessage = (PullMessage) message;
-            Logger.debug("confidenceNode", "Pull message: " + pullMessage);
+            Logger.debug("confidenceNode", () -> "Pull message: " + pullMessage);
             pullMessages.put(pullMessage.getFrom(), pullMessage);
             newSources.add(message.getFrom());
             pullMessageWaitingList.remove(message.getFrom());
@@ -101,7 +101,7 @@ public class ConfidenceNode extends Node {
             isSense = true;
 
             if (confidence.isSignificantlyDifferent(oldConfidence)){
-                Logger.info("confidenceNode", "Neuron " + getNeuron().getData().getDisplayName() + " set as sense: " + confidence.toString());
+                Logger.info("confidenceNode", () -> "Neuron " + getNeuron().getData().getDisplayName() + " set as sense: " + confidence.toString());
 
                 for (Data source : pullMessages.keySet()){
                     sendStatus(source);
@@ -190,9 +190,9 @@ public class ConfidenceNode extends Node {
             confidence = lowPullAdjustment(confidence);
 
             if (confidence.isSignificantlyDifferent(current)) {
-                Logger.info("confidenceNode", "Neuron " + getNeuron().getData().getDisplayName() + " changed from " + current.toString() + " to: " + confidence.toString());
+                Logger.info("confidenceNode", () -> "Neuron " + getNeuron().getData().getDisplayName() + " changed from " + current.toString() + " to: " + confidence.toString());
                 for (PullMessage message : pullMessages.values()){
-                    Logger.debug("confidenceNode", "\tPull " + message.getFrom() + ": " + message.getPullValues());
+                    Logger.debug("confidenceNode", () -> "\tPull " + message.getFrom() + ": " + message.getPullValues());
                 }
 
                 getNeuron().addEvent(new ConfidenceUpdateEvent(confidence));

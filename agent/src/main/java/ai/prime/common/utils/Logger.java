@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 public class Logger {
     private static final  String FILE = "/logKeys.properties";
@@ -40,23 +41,23 @@ public class Logger {
         return getTime() + "\t" + type.toUpperCase() + "\t" + key + ":\t" + message;
     }
 
-    private static void print(String key, String message, String type) {
+    private static void print(String key, Supplier<String> messageGetter, String type) {
         if (!keysToLog.containsKey(key)) {
             return;
         }
 
         if (keysToLog.getProperty(key).equals(type) ||
                 (type.equals(INFO) && keysToLog.getProperty(key).equals(DEBUG))) {
-            System.out.println(getFormattedMessage(key, message, type));
+            System.out.println(getFormattedMessage(key, messageGetter.get(), type));
         }
     }
 
-    public static void info(String key, String message) {
-        print(key, message, INFO);
+    public static void info(String key, Supplier<String> messageGetter) {
+        print(key, messageGetter, INFO);
     }
 
-    public static void debug(String key, String message) {
-        print(key, message, DEBUG);
+    public static void debug(String key, Supplier<String> messageGetter) {
+        print(key, messageGetter, DEBUG);
     }
 
     public static void error(String message) {

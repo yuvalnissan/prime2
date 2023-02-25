@@ -39,7 +39,7 @@ public class TowerActuator extends DiscreteActuator {
 
     @Override
     protected void start(Data data) {
-        Logger.debug("towersActuator", "Performing " + data);
+        Logger.debug("towersActuator", () -> "Performing " + data);
 
         int from = getIndexFromExpression(data.getExpressions()[1]);
         int to = getIndexFromExpression(data.getExpressions()[2]);
@@ -53,7 +53,7 @@ public class TowerActuator extends DiscreteActuator {
 
     @Override
     protected void stop(Data data) {
-        Logger.debug("towersActuator", "Canceling " + data);
+        Logger.debug("towersActuator", () -> "Canceling " + data);
 
         sendActing(data, false);
     }

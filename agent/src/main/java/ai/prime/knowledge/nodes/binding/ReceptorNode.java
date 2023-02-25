@@ -97,7 +97,7 @@ public class ReceptorNode extends Node {
         if (query.getType() == QueryType.PATTERN_MATCH) {
             Unification unification = query.getData().unify(getData());
             if (unification != null) {
-                Logger.debug("receptorNode", "Neuron " + getData().getDisplayName() + " is matching query: " + query.getData().getDisplayName());
+                Logger.debug("receptorNode", () -> "Neuron " + getData().getDisplayName() + " is matching query: " + query.getData().getDisplayName());
                 matchingQueries.put(query, unification);
                 return true;
             } else {
@@ -167,7 +167,7 @@ public class ReceptorNode extends Node {
     private void handleMatchMessage(Collection<NeuralMessage> messages) {
         messages.forEach(neuralMessage -> {
             BindingMessage message = (BindingMessage)neuralMessage;
-            Logger.debug("receptorNode", getData().getDisplayName() + " is raising match event");
+            Logger.debug("receptorNode", () -> getData().getDisplayName() + " is raising match event");
             getNeuron().addEvent(new BindingEvent(message.getBindingMatch()));
         });
     }

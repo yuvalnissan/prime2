@@ -159,20 +159,20 @@ public class ExceptionNode extends FactorNode {
 
         PullValue inferPullValue = new PullValue(!isPositive, pull, effectResistance, getData());
         results.add(getData(), inferPullValue);
-        Logger.debug("inferNode", "\t\t Sent pull " +  getData() + ": " + inferPullValue);
+        Logger.debug("inferNode", () -> "\t\t Sent pull " +  getData() + ": " + inferPullValue);
 
         boolean targetIsPositive = target.getModifier() == DataModifier.NEGATIVE ? !isPositive : isPositive;
         PullValue targetPullValue = new PullValue(targetIsPositive, pull, toResistance, getData());
 
         results.add(target.getData(), targetPullValue);
-        Logger.debug("inferNode", "\t\t Sent pull " +  target.getData() + ": " + targetPullValue);
+        Logger.debug("inferNode", () -> "\t\t Sent pull " +  target.getData() + ": " + targetPullValue);
 
         for (Expression condition : conditions) {
             //TODO this is not balancing the resistance as the AndNode used to do
             boolean conditionIsPositive = condition.getModifier() == DataModifier.NEGATIVE ? isPositive : !isPositive;
             PullValue conditionPullValue = new PullValue(conditionIsPositive, pull, fromResistance, getData());
             results.add(condition.getData(), conditionPullValue);
-            Logger.debug("inferNode", "\t\t Sent pull " +  condition.getData() + ": " + conditionPullValue);
+            Logger.debug("inferNode", () -> "\t\t Sent pull " +  condition.getData() + ": " + conditionPullValue);
         }
     }
 
@@ -192,14 +192,21 @@ public class ExceptionNode extends FactorNode {
     public SetMap<Data, PullValue> buildPullValues() {
         SetMap<Data, PullValue> results = new SetMap<>();
 
-        Logger.debug("inferNode", getNeuron().getData() + " building pull values");
-        Logger.debug("inferNode", "\t\t Status " +  getData() + ": " + getStatusConfidence(getData()));
-        Logger.debug("exceptionNode", "\t\t Status " +  getData() + " with exception: " + getInferWithException());
-        Logger.debug("inferNode", "\t\t Status " +  target.getData() + ": " + getStatusConfidence(target.getData()));
-        for (Expression condition : conditions) {
-            Logger.debug("inferNode", "\t\t Status " +  condition.getData() + ": " + getStatusConfidence(condition.getData()));
+        //TODO this is here to reduce the load of exception infers, but will break learning
+        if (getStatusConfidence(getData()).equals(InferredConfidence.EMPTY)) {
+            results.add(getData(), new PullValue(true, 0.0, 0.0, getData()));
+
+            return results;
         }
-        Logger.debug("inferNode", "\t\t Status all conditions:" + getConditionsConfidence());
+
+        Logger.debug("inferNode", () -> getNeuron().getData() + " building pull values");
+        Logger.debug("inferNode", () -> "\t\t Status " +  getData() + ": " + getStatusConfidence(getData()));
+        Logger.debug("exceptionNode", () -> "\t\t Status " +  getData() + " with exception: " + getInferWithException());
+        Logger.debug("inferNode", () -> "\t\t Status " +  target.getData() + ": " + getStatusConfidence(target.getData()));
+        for (Expression condition : conditions) {
+            Logger.debug("inferNode", () -> "\t\t Status " +  condition.getData() + ": " + getStatusConfidence(condition.getData()));
+        }
+        Logger.debug("inferNode", () -> "\t\t Status all conditions:" + getConditionsConfidence());
 
         addDirectionalCorrelationPull(results, true);
         addDirectionalCorrelationPull(results, false);
@@ -213,7 +220,7 @@ public class ExceptionNode extends FactorNode {
         messages.forEach(neuralMessage -> {
             ExceptionMessage exceptionMessage = (ExceptionMessage)neuralMessage;
             exceptions.put(exceptionMessage.getFrom(), exceptionMessage.getExceptionPull());
-            Logger.debug("exceptionNode", getData() + " got exception from " + exceptionMessage.getFrom() + ": " + exceptionMessage.getExceptionPull());
+            Logger.debug("exceptionNode", () -> getData() + " got exception from " + exceptionMessage.getFrom() + ": " + exceptionMessage.getExceptionPull());
         });
     }
 

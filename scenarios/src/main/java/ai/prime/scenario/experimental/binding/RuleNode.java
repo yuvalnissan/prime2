@@ -56,7 +56,7 @@ public class RuleNode extends FactorNode {
     }
 
     private void handleMatch(Data resolved) {
-        Logger.debug("ruleNode", getData().getDisplayName() + " match found: " + resolved);
+        Logger.debug("ruleNode", () -> getData().getDisplayName() + " match found: " + resolved);
 
         if (!resolved.hasVariables()) {
             matchingInfers.add(resolved);

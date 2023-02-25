@@ -42,7 +42,7 @@ public abstract class FactorNode extends Node {
 
     public void sendUpdates() {
         if (statusMessageWaitingList.isEmpty() && !shouldUpdate.isEmpty()) {
-            Logger.info("factorNode", getNeuron().getData().getDisplayName() + " is updating");
+            Logger.info("factorNode", () -> getNeuron().getData().getDisplayName() + " is updating");
 
             lastSent = new HashMap<>();
             SetMap<Data, PullValue> results = buildPullValues();
@@ -97,7 +97,7 @@ public abstract class FactorNode extends Node {
     }
 
     public void setMessage(StatusMessage statusMessage) {
-        Logger.debug("factorNode", getNeuron().getData().getDisplayName() + " got a status message: " + statusMessage);
+        Logger.debug("factorNode", () -> getNeuron().getData().getDisplayName() + " got a status message: " + statusMessage);
         StatusMessage oldMessage = statusMessages.get(statusMessage.getFrom());
         if (oldMessage == null || statusMessage.getConfidence().isSignificantlyDifferent(oldMessage.getConfidence())) {
             shouldUpdate.add(statusMessage.getFrom().normalize());

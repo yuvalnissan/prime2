@@ -137,7 +137,7 @@ public class Scenario {
             Gson gson = new Gson();
 
             String root = System.getenv("SCENARIOS");
-            Logger.debug("scenario", "root: " + root);
+            Logger.debug("scenario", () -> "root: " + root);
             Reader reader = root != null ?
                     new FileReader(root + "/" + name + ".json") :
                     new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + name + ".json")));
@@ -156,7 +156,7 @@ public class Scenario {
             Gson gson = new Gson();
 
             String root = System.getenv("SCENARIOS");
-            Logger.debug("knowledge", "root: " + root);
+            Logger.debug("knowledge", () -> "root: " + root);
             Reader reader = root != null ?
                     new FileReader(root + "/" + path) :
                     new InputStreamReader(Objects.requireNonNull(Scenario.class.getResourceAsStream("/scenarios/" + path)));
@@ -173,7 +173,7 @@ public class Scenario {
     private static void updateNeuronModel(Scenario scenario, String agentName, NeuronModel neuronModel) {
         Expression expression = getExpression(neuronModel.getData());
         var normalized = expression.getData().normalize();
-        Logger.debug("scenario", "Adding " + normalized.getDisplayName());
+        Logger.debug("scenario", () -> "Adding " + normalized.getDisplayName());
         scenario.addDataOnLoad(agentName, normalized);
 
         if (neuronModel.getConfidence() != null) {
@@ -184,7 +184,7 @@ public class Scenario {
     }
 
     public static Scenario loadScenario(String name) {
-        Logger.info("scenario", "*** loading scenario: " + name);
+        Logger.info("scenario", () -> "*** loading scenario: " + name);
         ScenarioModel scenarioModel = readScenarioModel(name);
 
         Scenario scenario = new Scenario(name);
@@ -193,7 +193,7 @@ public class Scenario {
         Map<String, List<String>> nodeMapping = scenarioModel.getNodeMapping();
 
         scenarioModel.getAgents().forEach((agentName, agentModel) -> {
-            Logger.info("scenarioLoaded", "*** loading agent: " + agentName);
+            Logger.info("scenarioLoaded", () -> "*** loading agent: " + agentName);
             Agent agent = new Agent(agentName);
 
             defaultNodes.forEach(nodeClassName -> agent.getNodeMapping().registerDefaultNode(nodeClassName));

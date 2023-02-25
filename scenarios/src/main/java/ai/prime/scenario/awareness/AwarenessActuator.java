@@ -42,7 +42,7 @@ public class AwarenessActuator extends DiscreteActuator {
     @Override
     protected void start(Data data) {
         var what = data.getExpressions()[1];
-        Logger.debug("awarenessActuator", "Starting " + what.getDisplayName());
+        Logger.debug("awarenessActuator", () -> "Starting " + what.getDisplayName());
         var last = happened.get(0);
         happened.add(0, what);
 

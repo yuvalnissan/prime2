@@ -46,7 +46,7 @@ public class QueryNode extends Node {
         Data pattern = target;
         Data bound = pattern.bind(unification, true);
         if (bound != null) {
-            Logger.info("queryNode", getData().getDisplayName() + " resolved pattern: " + bound);
+            Logger.info("queryNode", () -> getData().getDisplayName() + " resolved pattern: " + bound);
             getNeuron().addEvent(new ResolvedPatternEvent(bound.normalize()));
         }
     }
@@ -106,7 +106,7 @@ public class QueryNode extends Node {
             BindingEvent bindingEvent = (BindingEvent)event;
             BindingMatch bindingMatch = bindingEvent.getMatch();
             if (bindingMatch.getQuery().getType() == QueryType.PATTERN_MATCH) {
-                Logger.info("queryNode", getNeuron().getData() + " got a match from " + bindingMatch.getMatch());
+                Logger.info("queryNode", () -> getNeuron().getData() + " got a match from " + bindingMatch.getMatch());
 
                 matches.add(bindingMatch.getQuery().getData(), bindingMatch.getBinding());
                 setBindingMatch(bindingMatch.getQuery().getData(), bindingMatch.getBinding());

@@ -18,7 +18,7 @@ public class Settings {
             Logger.error("Failed loading settings", e);
         }
 
-        Logger.info("settings", "Finished loading settings");
+        Logger.info("settings", () -> "Finished loading settings");
     }
 
     static{
