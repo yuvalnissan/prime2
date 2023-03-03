@@ -53,7 +53,20 @@ export const Controls = ({
     const addDataClick = () => requestHandler.sendAddData(filter)
 
     React.useEffect(() => {
+        const firstFilterPart = () => {
+            const separatorIndex = filter.indexOf(' ')
+            if (separatorIndex === -1) {
+                return filter
+            }
+
+            return filter.substring(0, separatorIndex)
+        }
+
         const matchesFilter = (id: string) => {
+            if (!filter.startsWith(' ') && !id.startsWith(firstFilterPart())) {
+                return false
+            }
+
             const regexStr = filter.toLowerCase().replaceAll(' ', '.*').replaceAll('(', '\\(').replaceAll(')', '\\)')
             const re = new RegExp(regexStr)
             const idMatch = !!id.toLowerCase().match(re)

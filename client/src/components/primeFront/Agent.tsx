@@ -72,7 +72,6 @@ export const Agent = ({ className }: AgentProps) => {
 
     React.useEffect(() => {
         refreshData()
-        refreshData()
         const interval = setInterval(() => {
             refreshData()
         },1000)
@@ -91,6 +90,17 @@ export const Agent = ({ className }: AgentProps) => {
         } catch (err) {
           console.error(err)
           window.alert('Failed resetting scenario')
+        }   
+    }
+
+    const resetEnvironment = async () => {
+        console.log(`Resetting environment ${scenarioName}`)
+        try {
+            await requestHandler.sendResetEnvironment()
+            setShouldRefresh(true)
+        } catch (err) {
+          console.error(err)
+          window.alert('Failed resetting environment')
         }   
     }
 
@@ -188,9 +198,6 @@ export const Agent = ({ className }: AgentProps) => {
                 <Typography variant="subtitle1" display="inline">
                     <b>Scenario:</b> {scenarioName}  <b>Agent:</b> {agentName}
                 </Typography>
-                <Button onClick={resetScenario}>
-                    Reset scenario
-                </Button>
                 <Button onClick={togglePause}>
                     {isPaused ? 'Resume' : 'Pause'}
                 </Button>
@@ -200,6 +207,14 @@ export const Agent = ({ className }: AgentProps) => {
                 <Typography variant="subtitle1" display="inline">
                     ({isStable ? 'Stable' : 'Not stable'} messages: {messageCount} neurons: {Object.keys(neurons).length})
                 </Typography>
+            </Box>
+                <Button onClick={resetScenario}>
+                    Reset scenario
+                </Button>
+                <Button onClick={resetEnvironment}>
+                    Reset environment
+                </Button>
+            <Box>
             </Box>
             <Controls className={styles['data-list']}
                 scenarioName={scenarioName}

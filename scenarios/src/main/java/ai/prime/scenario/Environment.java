@@ -73,6 +73,7 @@ public abstract class Environment {
         agents.values().forEach(agent -> clear(agent, sent.getValues(agent.getName())));
         sent = new SetMap<>();
         innerReset();
+        sendState();
     }
 
     protected abstract Set<Expression> getState();

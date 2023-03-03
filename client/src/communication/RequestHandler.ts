@@ -1,4 +1,4 @@
-import { getScenarioURL, getPauseURL, getResumeURL, getMessageURL, getResetURL } from './urls'
+import { getScenarioURL, getPauseURL, getResumeURL, getMessageURL, getResetURL, getResetEnvironmentURL } from './urls'
 
 const postToUrl = async (url: string, body: any) => {
     const response = await fetch(url, {
@@ -81,6 +81,10 @@ export class RequestHandler {
 
     async sendReset() {
         await postToUrl(getResetURL(this.scenarioName), {})
+    }
+
+    async sendResetEnvironment() {
+        await postToUrl(getResetEnvironmentURL(this.scenarioName), {})
     }
 
     async getScenario() {

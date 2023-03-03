@@ -110,6 +110,10 @@ public class Scenario {
         agent.sendMessageToNeuron(message);
     }
 
+    public void resetEnvironment() {
+        environment.reset();
+    }
+
     private static Environment loadEnvironment(String className) {
         try {
             Class<Environment> clazz = (Class<Environment>) Class.forName(className);

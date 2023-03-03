@@ -52,9 +52,17 @@ public class Controller {
         scenarios.put(scenarioName, Scenario.loadScenario(scenarioName));
     }
 
+    public boolean validScenarioName(String scenarioName) {
+        if (scenarioName == null || scenarioName.equals("null")) {
+            return false;
+        }
+
+        return true;
+    }
+
     @GetMapping("/scenario")
     public synchronized AgentModel getScenario(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
-        if (scenarioName == null) {
+        if (!validScenarioName(scenarioName)) {
             return null;
         }
 
@@ -74,7 +82,7 @@ public class Controller {
 
     @GetMapping("/statistics")
     public synchronized Statistics getStatistics(@RequestParam(value = "name") String scenarioName, @RequestParam(value = "agent") String agentName){
-        if (scenarioName == null) {
+        if (!validScenarioName(scenarioName)) {
             return null;
         }
 
@@ -113,9 +121,15 @@ public class Controller {
         }
     }
 
-    @PostMapping("/reset")
+    @PostMapping("/resetScenario")
     public void resetScenario(@RequestParam(value = "name")  String scenarioName, @RequestBody ScenarioStateBody scenarioStateBody) {
         loadScenario(scenarioName);
+    }
+
+    @PostMapping("/resetEnvironment")
+    public void resetEnvironment(@RequestParam(value = "name")  String scenarioName, @RequestBody ScenarioStateBody scenarioStateBody) {
+        Scenario scenario = scenarios.get(scenarioName);
+        scenario.resetEnvironment();
     }
 
     @PostMapping("/pause")

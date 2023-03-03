@@ -1,0 +1,96 @@
+{
+  "environment": "ai.prime.scenario.environment.towers.Towers",
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"],
+    "act": ["ai.prime.scenario.experimental.actuators.ActuatorNode"]
+  },
+  "agents": {
+    "smith": {
+      "actuators": [
+        "ai.prime.scenario.awareness.AwarenessActuator"
+      ],
+      "knowledge": [
+        "knowledge/basicMath.json",
+        "knowledge/towersGeneral.json"
+      ],
+      "neurons": [
+        {
+          "confidence": "POSITIVE",
+          "data": {"type": "goal", "expressions": [{"value": "won"}]}
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t1"},
+              {"value": "t2"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t1"},
+              {"value": "t3"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t2"},
+              {"value": "t1"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t2"},
+              {"value": "t3"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t3"},
+              {"value": "t1"}
+            ]
+          }
+        },
+        {
+          "data": {
+            "type": "act",
+            "expressions": [
+              {"value": "move"},
+              {"value": "t3"},
+              {"value": "t2"}
+            ]
+          }
+        },
+        {
+          "confidence": "POSITIVE",
+          "data": {"value": "doNext"}
+        }
+      ]
+    }
+  }
+}
+
