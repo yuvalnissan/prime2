@@ -17,79 +17,14 @@
         "ai.prime.scenario.awareness.AwarenessActuator"
       ],
       "knowledge": [
-        "knowledge/basicMath.json",
-        "knowledge/towersGeneral.json"
+        "knowledge/towers/towersBaseKnowledge.json"
       ],
-      "neurons": [
-        {
+      "neurons": {
+        "goal": {
           "confidence": "POSITIVE",
           "data": {"type": "goal", "expressions": [{"value": "won"}]}
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t1"},
-              {"value": "t2"}
-            ]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t1"},
-              {"value": "t3"}
-            ]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t2"},
-              {"value": "t1"}
-            ]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t2"},
-              {"value": "t3"}
-            ]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t3"},
-              {"value": "t1"}
-            ]
-          }
-        },
-        {
-          "data": {
-            "type": "act",
-            "expressions": [
-              {"value": "move"},
-              {"value": "t3"},
-              {"value": "t2"}
-            ]
-          }
-        },
-        {
-          "confidence": "POSITIVE",
-          "data": {"value": "doNext"}
         }
-      ]
+      }
     }
   }
 }

@@ -9,12 +9,12 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "root": {
           "confidence": "0|0|0",
           "data": {"value": "root", "negative": true}
         },
-        {
+        "rootThenA": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -24,7 +24,7 @@
             ]
           }
         },
-        {
+        "AThenB": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -34,7 +34,7 @@
             ]
           }
         },
-        {
+        "BThenC": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -44,7 +44,7 @@
             ]
           }
         },
-        {
+        "CThenA": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -54,7 +54,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

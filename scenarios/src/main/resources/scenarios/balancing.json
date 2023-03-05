@@ -12,8 +12,8 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "P1isTheQuestion": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -24,7 +24,7 @@
             ]
           }
         },
-        {
+        "P2isTheQuestion": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -35,7 +35,7 @@
             ]
           }
         },
-        {
+        "P3isTheQuestion": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -46,7 +46,7 @@
             ]
           }
         },
-        {
+        "testIsTheQuestion": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -57,7 +57,7 @@
             ]
           }
         },
-        {
+        "P1isTheAnswer": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -68,7 +68,7 @@
             ]
           }
         },
-        {
+        "P2isTheAnswer": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -79,7 +79,7 @@
             ]
           }
         },
-        {
+        "P3isTheAnswer": {
           "confidence": "NEGATIVE",
           "data": {
             "type": "rel",
@@ -90,7 +90,7 @@
             ]
           }
         },
-        {
+        "xIsQuestionThenIsAnswer": {
           "data": {
             "type": "rule",
             "expressions": [
@@ -113,7 +113,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

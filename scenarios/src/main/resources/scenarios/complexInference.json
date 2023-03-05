@@ -9,39 +9,39 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "rootA": {
           "confidence": "POSITIVE",
           "data": {"value": "rootA"}
         },
-        {
+        "A": {
           "data": {"value": "A"}
         },
-        {
+        "rootB": {
           "confidence": "POSITIVE",
           "data": {"value": "rootB"}
         },
-        {
+        "B": {
           "data": {"value": "B"}
         },
-        {
+        "rootC": {
           "confidence": "POSITIVE",
           "data": {"value": "rootC"}
         },
-        {
+        "C": {
           "data": {"value": "C"}
         },
-        {
+        "rootD": {
           "confidence": "POSITIVE",
           "data": {"value": "rootD"}
         },
-        {
+        "D": {
           "data": {"value": "D"}
         },
-        {
+        "target": {
           "data": {"value": "Target"}
         },
-        {
+        "rootAThenA": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -51,7 +51,7 @@
             ]
           }
         },
-        {
+        "rootBThenNotB": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -61,7 +61,7 @@
             ]
           }
         },
-        {
+        "rootCThenC": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -71,7 +71,7 @@
             ]
           }
         },
-        {
+        "rootDThenD": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -81,7 +81,7 @@
             ]
           }
         },
-        {
+        "ANotBThenAB": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -92,7 +92,7 @@
             ]
           }
         },
-        {
+        "notABThenGodMode": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -102,7 +102,7 @@
             ]
           }
         },
-        {
+        "CDThenCD": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -113,7 +113,7 @@
             ]
           }
         },
-        {
+        "CDNotABThenTarget": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -124,7 +124,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

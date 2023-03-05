@@ -9,16 +9,16 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "A": {
           "confidence": "POSITIVE",
           "data":  {"value": "A"}
         },
-        {
+        "B": {
           "confidence": "POSITIVE",
           "data":  {"value": "B"}
         },
-        {
+        "AThenB": {
           "data": {
             "type": "infer",
             "expressions": [
@@ -27,7 +27,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

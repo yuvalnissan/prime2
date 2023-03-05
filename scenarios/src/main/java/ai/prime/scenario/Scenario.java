@@ -209,7 +209,7 @@ public class Scenario {
 
             scenario.addAgent(agentName, agent);
 
-            List<NeuronModel> neurons = agentModel.getNeurons();
+            Collection<NeuronModel> neurons = agentModel.getNeurons().values();
             neurons.forEach(neuronModel -> updateNeuronModel(scenario, agentName, neuronModel));
 
             if (agentModel.getKnowledge() != null) {

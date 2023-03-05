@@ -11,8 +11,8 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "fordIsaCar": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rel",
@@ -23,7 +23,7 @@
             ]
           }
         },
-        {
+        "notFordIsaCarThenVehicle": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
@@ -47,7 +47,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

@@ -12,11 +12,11 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "A": {
           "data": {"value": "A"}
         },
-        {
+        "XThenSomething": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
@@ -38,7 +38,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

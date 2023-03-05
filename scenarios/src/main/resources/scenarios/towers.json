@@ -17,20 +17,20 @@
         "ai.prime.scenario.awareness.AwarenessActuator"
       ],
       "knowledge": [
-        "knowledge/basicMath.json",
-        "knowledge/towersGeneral.json",
-        "knowledge/towersPlanning.json"
+        "knowledge/common/basicMath.json",
+        "knowledge/towers/towersGeneral.json",
+        "knowledge/towers/towersPlanning.json"
       ],
-      "neurons": [
-        {
+      "neurons": {
+        "goal": {
           "confidence": "POSITIVE",
           "data": {"type": "goal", "expressions": [{"value": "won"}]}
         },
-        {
+        "allowProgress": {
           "confidence": "POSITIVE",
           "data": {"value": "doNext"}
         }
-      ]
+      }
     }
   }
 }

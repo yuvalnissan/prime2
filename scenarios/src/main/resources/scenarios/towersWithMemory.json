@@ -14,14 +14,17 @@
   "agents": {
     "smith": {
       "knowledge": [
-        "knowledge/towersPlanMemory.json"
+        "knowledge/towers/towersPlanMemory.json"
       ],
-      "neurons": [
-        {
+      "actuators": [
+        "ai.prime.scenario.awareness.AwarenessActuator"
+      ],
+      "neurons": {
+        "goal": {
           "confidence": "POSITIVE",
           "data": {"type": "goal", "expressions": [{"value": "won"}]}
         }
-      ]
+      }
     }
   }
 }

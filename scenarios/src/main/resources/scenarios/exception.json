@@ -11,12 +11,12 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "A": {
           "confidence": "POSITIVE",
           "data": {"value": "A"}
         },
-        {
+        "AThenTarget": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
@@ -26,7 +26,7 @@
             ]
           }
         },
-        {
+        "ABThenNotTarget": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
@@ -37,7 +37,7 @@
             ]
           }
         },
-        {
+        "ABCThenTarget": {
           "confidence": "POSITIVE",
           "data": {
             "type": "rule",
@@ -49,11 +49,11 @@
             ]
           }
         },
-        {
+        "source": {
           "confidence": "POSITIVE",
           "data": {"value": "source"}
         },
-        {
+        "sourceThenTest": {
           "confidence": "0|100000|100000",
           "data": {
             "type": "infer",
@@ -63,7 +63,7 @@
             ]
           }
         },
-        {
+        "sourceTheNotTest": {
           "confidence": "POSITIVE",
           "data": {
             "type": "infer",
@@ -73,7 +73,7 @@
             ]
           }
         }
-      ]
+      }
     }
   }
 }

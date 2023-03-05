@@ -5,12 +5,12 @@
   },
   "agents": {
     "smith": {
-      "neurons": [
-        {
+      "neurons": {
+        "something": {
           "confidence": "0|0|0",
           "data": {"value": "Something"}
         }
-      ]
+      }
     }
   }
 }
