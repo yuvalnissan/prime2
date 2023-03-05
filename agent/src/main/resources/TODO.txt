@@ -1,5 +1,6 @@
 //TODO general list
 
+- Should discrete action prevent others from running?
 - Deal with the max pull in exceptionNode, cancels the relax threshold
 - Why is balancing not giving any value to test when there is 2 against 1?
 - A fixed actuator able to capture thoughts. Act adds a mental state which is returned as a sense

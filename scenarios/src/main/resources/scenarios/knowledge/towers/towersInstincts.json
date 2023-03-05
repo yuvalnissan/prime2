@@ -1,0 +1,160 @@
+{
+  "neurons": {
+    "possibleMoves": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "possibleMove",
+            "expressions": [
+              {
+                "type": "act",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "isa"},
+              {"var": "fromTower"},
+              {"value": "tower"}
+            ]
+          },
+          {
+            "type": "rel",
+            "expressions": [
+              {"value": "isa"},
+              {"var": "toTower!=var:fromTower"},
+              {"value": "tower"}
+            ]
+          }
+        ]
+      }
+    },
+    "assumePossibleCanDo": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "canDo",
+            "expressions": [
+              {
+                "type": "act",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "possibleMove",
+            "expressions": [
+              {
+                "type": "act",
+                "expressions": [
+                  {"value": "move"},
+                  {"var": "fromTower"},
+                  {"var": "toTower"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "bestDefault": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "type": "act",
+            "expressions": [
+              {"value": "now"},
+              {
+                "type": "best",
+                "expressions": [
+                  {"var": "canDoAct"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "canDo",
+            "expressions": [
+              {"var": "canDoAct"}
+            ]
+          }
+        ]
+      }
+    },
+    "bestUnlessOther": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "negative": true,
+            "type": "act",
+            "expressions": [
+              {"value": "now"},
+              {
+                "type": "best",
+                "expressions": [
+                  {"var": "canDoAct"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "canDo",
+            "expressions": [
+              {"var": "canDoAct"}
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "best",
+                "expressions": [
+                  {"var": "otherAct!=var:canDoAct"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "doBest": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"var": "canDoAct"},
+          {
+            "type": "was",
+            "expressions": [
+              {
+                "type": "best",
+                "expressions": [
+                  {"var": "canDoAct"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+

@@ -17,7 +17,7 @@
         "ai.prime.scenario.awareness.AwarenessActuator"
       ],
       "knowledge": [
-        "knowledge/towers/towersBaseKnowledge.json"
+        "knowledge/towers/towersInstincts.json"
       ],
       "neurons": {
         "goal": {

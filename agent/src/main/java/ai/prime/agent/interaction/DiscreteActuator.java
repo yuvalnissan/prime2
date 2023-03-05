@@ -25,7 +25,7 @@ public abstract class DiscreteActuator extends Actuator {
 
     @Override
     public void act(Data data, Confidence confidence) {
-        if (confidence.getStrength() > DISCRETE_START_THRESHOLD && !performing.contains(data)) {
+        if (confidence.getStrength() > DISCRETE_START_THRESHOLD && !performing.contains(data) && performing.isEmpty()) {
             performing.add(data);
             start(data);
         }

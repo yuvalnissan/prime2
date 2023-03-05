@@ -349,6 +349,28 @@
           }
         ]
       }
+    },
+    "disableActNowIfWas": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {
+            "negative": true,
+            "type": "act",
+            "expressions": [
+              {"value": "now"},
+              {"var": "op"}
+            ]
+          },
+          {
+            "type": "was",
+            "expressions": [
+              {"var": "op"}
+            ]
+          }
+        ]
+      }
     }
   }
 }

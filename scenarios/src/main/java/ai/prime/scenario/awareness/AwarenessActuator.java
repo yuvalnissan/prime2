@@ -51,6 +51,7 @@ public class AwarenessActuator extends DiscreteActuator {
 
     @Override
     protected void stop(Data data) {
-
+        var what = data.getExpressions()[1];
+        Logger.debug("awarenessActuator", () -> "Ending " + what.getDisplayName());
     }
 }
