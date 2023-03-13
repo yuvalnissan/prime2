@@ -71,29 +71,26 @@
         ]
       }
     },
-    "bestDefault": {
+    "currentBest": {
       "confidence": "POSITIVE",
       "data": {
         "type": "rule",
         "expressions": [
-          {
-            "type": "act",
-            "expressions": [
-              {"value": "now"},
-              {
-                "type": "best",
-                "expressions": [
-                  {"var": "canDoAct"}
-                ]
-              }
-            ]
-          },
-          {
-            "type": "canDo",
-            "expressions": [
-              {"var": "canDoAct"}
-            ]
-          }
+          {"expression": "current(best(var:canDoAct))"},
+          {"expression": "was(best(var:canDoAct))"},
+          {"expression": "canDo(var:canDoAct)"}
+        ]
+      }
+    },
+    "currentBestUnlessOther": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"expression": "not(current(best(var:canDoAct)))"},
+          {"expression": "was(best(var:canDoAct))"},
+          {"expression": "canDo(var:canDoAct)"},
+          {"expression": "current(best(var:other!=var:canDoAct))"}
         ]
       }
     },
@@ -102,36 +99,19 @@
       "data": {
         "type": "rule",
         "expressions": [
-          {
-            "negative": true,
-            "type": "act",
-            "expressions": [
-              {"value": "now"},
-              {
-                "type": "best",
-                "expressions": [
-                  {"var": "canDoAct"}
-                ]
-              }
-            ]
-          },
-          {
-            "type": "canDo",
-            "expressions": [
-              {"var": "canDoAct"}
-            ]
-          },
-          {
-            "type": "was",
-            "expressions": [
-              {
-                "type": "best",
-                "expressions": [
-                  {"var": "otherAct!=var:canDoAct"}
-                ]
-              }
-            ]
-          }
+          {"expression": "not(act(now, best(var:canDoAct)))"},
+          {"expression": "canDo(var:canDoAct)"},
+          {"expression": "current(best(var:other!=var:canDoAct))"}
+        ]
+      }
+    },
+    "bestDefault": {
+      "confidence": "POSITIVE",
+      "data": {
+        "type": "rule",
+        "expressions": [
+          {"expression": "act(now, best(var:canDoAct))"},
+          {"expression": "canDo(var:canDoAct)"}
         ]
       }
     },
@@ -142,7 +122,7 @@
         "expressions": [
           {"var": "canDoAct"},
           {
-            "type": "was",
+            "type": "current",
             "expressions": [
               {
                 "type": "best",

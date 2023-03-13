@@ -7,7 +7,12 @@ public class DataModel {
     private List<DataModel> expressions;
     private String value;
     private String var;
-    private final boolean negative;
+    private boolean negative;
+    private String expression;
+
+    public DataModel(String expression) {
+        this.expression = expression;
+    }
 
     public DataModel(boolean negative, String value) {
         this.negative = negative;
@@ -38,5 +43,13 @@ public class DataModel {
 
     public String getVar() {
         return var;
+    }
+
+    public boolean hasExpression() {
+        return expression != null;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

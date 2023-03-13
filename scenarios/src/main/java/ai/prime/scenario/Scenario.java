@@ -64,6 +64,10 @@ public class Scenario {
     }
 
     private static Expression getExpression(DataModel dataModel) {
+        if (dataModel.hasExpression()) {
+            return Expression.fromString(dataModel.getExpression());
+        }
+
         Data data;
         if (dataModel.getValue() != null) {
             data = new ValueData(dataModel.getValue());
