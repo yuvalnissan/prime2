@@ -9,8 +9,7 @@ import ai.prime.scenario.Environment;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Towers extends Environment {
-    private static final int NUMBER_OF_DISKS = 5;
+public abstract class Towers extends Environment {
     private static final int NUMBER_OF_TOWERS = 3;
     private static final int MID_TOWER = 2;
     private static final int INITIAL_TOWER = 1;
@@ -18,8 +17,8 @@ public class Towers extends Environment {
     private final int numberOfDisks;
     private Map<Integer, Stack<Integer>> towers;
 
-    public Towers() {
-        this.numberOfDisks = NUMBER_OF_DISKS;
+    public Towers(int numberOfDisks) {
+        this.numberOfDisks = numberOfDisks;
         this.innerReset();
     }
 

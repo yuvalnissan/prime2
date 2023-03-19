@@ -37,6 +37,13 @@ public class TowerActuator extends DiscreteActuator {
         getAgent().sendMessageToNeuron(message);
     }
 
+    private void sendCan(Data data, boolean active) {
+        Confidence confidence = active ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
+        Data acting = new Data(new DataType("canDo"), new Expression[]{new Expression(data)});
+        SenseMessage message = new SenseMessage(acting, acting, confidence);
+        getAgent().sendMessageToNeuron(message);
+    }
+
     @Override
     protected void start(Data data) {
         Logger.debug("towersActuator", () -> "Performing " + data);
@@ -46,6 +53,8 @@ public class TowerActuator extends DiscreteActuator {
         var moved = towers.move(from, to);
         if (moved) {
             sendActing(data, true);
+        } else {
+            sendCan(data, false);
         }
 
         towers.sendState();

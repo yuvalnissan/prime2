@@ -1,5 +1,5 @@
 {
-  "environment": "ai.prime.scenario.environment.towers.Towers",
+  "environment": "ai.prime.scenario.environment.towers.Towers5",
   "defaultNodes": [
     "ai.prime.knowledge.nodes.connotation.ConnotationNode",
     "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
