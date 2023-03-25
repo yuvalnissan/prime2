@@ -65,7 +65,6 @@ export const Agent = ({ className }: AgentProps) => {
                 const data = await requestHandler.getScenario()
                 setData(data)
             } catch (err) {
-                window.alert("Failed to fetch")
                 console.error('Failed to fetch', err)
                 setShouldRefresh(false)
             }
