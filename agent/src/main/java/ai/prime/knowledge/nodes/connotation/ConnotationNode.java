@@ -4,15 +4,18 @@ import ai.prime.agent.NeuralEvent;
 import ai.prime.agent.NeuralMessage;
 import ai.prime.knowledge.data.Data;
 import ai.prime.knowledge.data.Expression;
+import ai.prime.knowledge.data.base.ValueData;
 import ai.prime.knowledge.neuron.Neuron;
 import ai.prime.knowledge.nodes.Node;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class ConnotationNode extends Node {
     public static final String NAME = "connotation";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{ConnotationConnectMessage.TYPE, IgniteMessage.TYPE});
     private static final double DEFAULT_LINK_STRENGTH = 0.5;
 
     private double strength = 0;
@@ -47,6 +50,9 @@ public class ConnotationNode extends Node {
         for (Expression expression : expressions) {
             connectWith(expression.getData());
         }
+
+        //TODO this is a bit of a hack
+        connectWith(new ValueData(getData().getType().getPredicate()));
     }
 
     private void handleConnectMessages(Collection<NeuralMessage> messages) {
@@ -69,8 +75,6 @@ public class ConnotationNode extends Node {
             handleConnectMessages(messages);
         } else if (Objects.equals(messageType, IgniteMessage.TYPE)) {
             handleIgniteMessages(messages);
-        } else {
-            throw new RuntimeException("Wrong message type " + messageType);
         }
     }
 
@@ -82,11 +86,6 @@ public class ConnotationNode extends Node {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public List<String> getMessageTypes() {
-        return MESSAGE_TYPES;
     }
 
     @Override

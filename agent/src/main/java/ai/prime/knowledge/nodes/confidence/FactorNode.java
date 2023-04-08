@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 public abstract class FactorNode extends Node {
     private static final double RESISTANCE_DECAY = Settings.getDoubleProperty("factor.decay.resistance");
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{StatusMessage.TYPE});
     protected static final double RELAX_THRESHOLD = Settings.getDoubleProperty("confidence.relax.threshold");
 
     private Map<Data, StatusMessage> statusMessages;
@@ -91,11 +90,6 @@ public abstract class FactorNode extends Node {
         sendUpdates();
     }
 
-    @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
-    }
-
     public void setMessage(StatusMessage statusMessage) {
         Logger.debug("factorNode", () -> getNeuron().getData().getDisplayName() + " got a status message: " + statusMessage);
         StatusMessage oldMessage = statusMessages.get(statusMessage.getFrom());
@@ -112,7 +106,7 @@ public abstract class FactorNode extends Node {
     @Override
     public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
         if (!messageType.equals(StatusMessage.TYPE)) {
-            throw new RuntimeException("Unknown message type");
+            return;
         }
 
         messages.forEach(message -> {

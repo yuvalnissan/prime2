@@ -15,7 +15,6 @@ public enum DataModifier {
 	}
 
 	public DataModifier applyModifier(DataModifier other){
-		
 		if (this.equals(POSITIVE) && other.equals(POSITIVE)){
 			return POSITIVE;
 		}else if (this.equals(POSITIVE) && other.equals(NEGATIVE)){
@@ -27,8 +26,5 @@ public enum DataModifier {
 		}else{
 			throw new RuntimeException("Should not happen");
 		}
-		
 	}
-	
-	
 }

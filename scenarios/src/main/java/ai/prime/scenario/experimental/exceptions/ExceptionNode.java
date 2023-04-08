@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 
 public class ExceptionNode extends FactorNode {
     public static final String NAME = "inferWithExceptions";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{StatusMessage.TYPE, ExceptionMessage.TYPE});
     private static final double CONVERGENCE_FACTOR = Settings.getDoubleProperty("factor.convergence.factor");
 
     private final Expression target;
@@ -46,12 +45,6 @@ public class ExceptionNode extends FactorNode {
 
             return new Expression(partialInfer);
         }).collect(Collectors.toCollection(HashSet::new));
-    }
-
-    @Override
-    public Collection<String> getMessageTypes() {
-        //TODO this is a nasty hack, need to organize the messages the instance deal vs the super
-        return MESSAGE_TYPES;
     }
 
     @Override

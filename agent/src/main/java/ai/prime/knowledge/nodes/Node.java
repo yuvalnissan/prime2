@@ -33,7 +33,5 @@ public abstract class Node {
 
     public abstract String getName();
 
-    public abstract Collection<String> getMessageTypes();
-
     public abstract Map<String, String> getDisplayProps();
 }

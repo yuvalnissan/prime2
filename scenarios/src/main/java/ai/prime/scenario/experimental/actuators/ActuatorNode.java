@@ -11,12 +11,10 @@ import ai.prime.knowledge.nodes.confidence.ConfidenceUpdateEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ActuatorNode extends Node {
     public static final String NAME = "actuator";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{});
 
     public ActuatorNode(Neuron neuron) {
         super(neuron);
@@ -50,12 +48,7 @@ public class ActuatorNode extends Node {
     }
 
     @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
-    }
-
-    @Override
     public Map<String, String> getDisplayProps() {
-        return new HashMap<>();
+            return new HashMap<>();
     }
 }

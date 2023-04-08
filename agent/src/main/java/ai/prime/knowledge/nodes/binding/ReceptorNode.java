@@ -18,7 +18,6 @@ import java.util.*;
 
 public class ReceptorNode extends Node {
     public static final String NAME = "receptor";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{ReceptorConnectMessage.TYPE, QueryMessage.TYPE, BindingMessage.TYPE});
 
     private SetMap<Query, Data> queries;
     private SetMap<Query, Data> pendingCheckQueries;
@@ -62,6 +61,7 @@ public class ReceptorNode extends Node {
         matchingQueries = new HashMap<>();
         nonMatchingQueries = new HashSet<>();
 
+        //TODO use connotations instead
         Expression[] expressions = getData().getExpressions();
         for (Expression expression : expressions) {
             connectWith(expression.getData());
@@ -74,11 +74,6 @@ public class ReceptorNode extends Node {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
     }
 
     private boolean isMatch(Query query) {
@@ -94,10 +89,10 @@ public class ReceptorNode extends Node {
             return false; //TODO think about it
         }
 
-        if (query.getType() == QueryType.PATTERN_MATCH) {
-            Unification unification = query.getData().unify(getData());
+        if (query.type() == QueryType.PATTERN_MATCH) {
+            Unification unification = query.data().unify(getData());
             if (unification != null) {
-                Logger.debug("receptorNode", () -> "Neuron " + getData().getDisplayName() + " is matching query: " + query.getData().getDisplayName());
+                Logger.debug("receptorNode", () -> "Neuron " + getData().getDisplayName() + " is matching query: " + query.data().getDisplayName());
                 matchingQueries.put(query, unification);
                 return true;
             } else {
@@ -106,7 +101,7 @@ public class ReceptorNode extends Node {
             }
         }
 
-        throw new RuntimeException("Unknown query type matching: " + query.getType());
+        throw new RuntimeException("Unknown query type matching: " + query.type());
     }
 
     private boolean isActive() {
@@ -180,8 +175,6 @@ public class ReceptorNode extends Node {
             handleQueryMessages(messages);
         } else if (Objects.equals(messageType, BindingMessage.TYPE)) {
             handleMatchMessage(messages);
-        } else {
-            throw new RuntimeException("Wrong message type " + messageType);
         }
     }
 

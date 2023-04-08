@@ -14,7 +14,6 @@ import ai.prime.knowledge.nodes.confidence.FactorNode;
 import ai.prime.knowledge.nodes.confidence.PullValue;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -75,11 +74,6 @@ public class RuleNode extends FactorNode {
         if (event.getType().equals(ResolvedPatternEvent.TYPE)) {
             handleMatch(((ResolvedPatternEvent)event).getResolved());
         }
-    }
-
-    @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
     }
 
     private void addDirectionalPull(SetMap<Data, PullValue> results, Data inferData, boolean isPositive) {

@@ -3,7 +3,8 @@
   "defaultNodes": [
     "ai.prime.knowledge.nodes.connotation.ConnotationNode",
     "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
-    "ai.prime.knowledge.nodes.binding.ReceptorNode"
+    "ai.prime.knowledge.nodes.binding.ReceptorNode",
+    "ai.prime.scenario.experimental.learning.EvidenceNode"
   ],
   "nodeMapping": {
     "rel": [],

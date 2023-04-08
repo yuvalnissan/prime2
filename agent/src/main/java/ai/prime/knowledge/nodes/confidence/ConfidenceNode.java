@@ -12,7 +12,6 @@ import java.util.*;
 
 public class ConfidenceNode extends Node {
     public static final String NAME = "confidence";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{PullMessage.TYPE, SenseMessage.TYPE});
     private static final double CONVERGENCE_FACTOR_STRENGTH = Settings.getDoubleProperty("confidence.convergence.factor.strength");
     private static final double CONVERGENCE_FACTOR_RESISTANCE = Settings.getDoubleProperty("confidence.convergence.factor.resistance");
 
@@ -45,11 +44,6 @@ public class ConfidenceNode extends Node {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
     }
 
     private boolean hasMeaningfulPull(PullMessage pullMessage) {
@@ -220,8 +214,6 @@ public class ConfidenceNode extends Node {
             processPullMessage(messages);
         } else if (Objects.equals(messageType, SenseMessage.TYPE)) {
             processSenseMessage(messages);
-        } else {
-            throw new RuntimeException("Wrong message type " + messageType);
         }
 
         update();

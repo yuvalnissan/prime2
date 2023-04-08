@@ -114,12 +114,7 @@ public class Neuron {
         messageLock.unlock();
 
         nodes.values().forEach(node -> {
-            node.getMessageTypes().forEach(messageType -> {
-                var messagesForType = currentMessages.getValues(messageType);
-                if (messagesForType.size() > 0) {
-                    node.handleMessage(messageType, messagesForType);
-                }
-            });
+            currentMessages.getKeys().forEach(messageType -> node.handleMessage(messageType, currentMessages.getValues(messageType)));
         });
 
         handleEvents();

@@ -13,7 +13,6 @@ import java.util.*;
 
 public class QueryNode extends Node {
     public static final String NAME = "query";
-    public static List<String> MESSAGE_TYPES = List.of(new String[]{});
 
     private Data target;
     private List<Data> binders;
@@ -105,11 +104,11 @@ public class QueryNode extends Node {
         if (event.getType().equals(BindingEvent.TYPE)) {
             BindingEvent bindingEvent = (BindingEvent)event;
             BindingMatch bindingMatch = bindingEvent.getMatch();
-            if (bindingMatch.getQuery().getType() == QueryType.PATTERN_MATCH) {
+            if (bindingMatch.getQuery().type() == QueryType.PATTERN_MATCH) {
                 Logger.info("queryNode", () -> getNeuron().getData() + " got a match from " + bindingMatch.getMatch());
 
-                matches.add(bindingMatch.getQuery().getData(), bindingMatch.getBinding());
-                setBindingMatch(bindingMatch.getQuery().getData(), bindingMatch.getBinding());
+                matches.add(bindingMatch.getQuery().data(), bindingMatch.getBinding());
+                setBindingMatch(bindingMatch.getQuery().data(), bindingMatch.getBinding());
             }
         }
     }
@@ -117,11 +116,6 @@ public class QueryNode extends Node {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public Collection<String> getMessageTypes() {
-        return MESSAGE_TYPES;
     }
 
     @Override
