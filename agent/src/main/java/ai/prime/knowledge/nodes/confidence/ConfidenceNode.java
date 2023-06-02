@@ -210,13 +210,18 @@ public class ConfidenceNode extends Node {
 
     @Override
     public void handleMessage(String messageType, Collection<NeuralMessage> messages) {
+        boolean updated = false;
         if (Objects.equals(messageType, PullMessage.TYPE)) {
             processPullMessage(messages);
+            updated = true;
         } else if (Objects.equals(messageType, SenseMessage.TYPE)) {
             processSenseMessage(messages);
+            updated = true;
         }
 
-        update();
+        if (updated) {
+            update();
+        }
     }
 
     @Override

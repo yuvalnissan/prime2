@@ -26,6 +26,8 @@ public abstract class FactorNode extends Node {
 
     public FactorNode(Neuron neuron) {
         super(neuron);
+
+        statusMessages = new HashMap<>();
     }
 
     public abstract SetMap<Data, PullValue> buildPullValues();
@@ -125,7 +127,7 @@ public abstract class FactorNode extends Node {
     @Override
     public Map<String, String> getDisplayProps() {
         Map<String, String> props = new HashMap<>();
-        props.put("status", statusMessages.toString());
+        statusMessages.forEach((data, statusMessage) -> props.put(data.getDisplayName(), statusMessage.getConfidence().toString()));
         return props;
     }
 }

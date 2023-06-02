@@ -19,4 +19,11 @@ public class BindingEvent extends NeuralEvent {
     public String getType() {
         return TYPE;
     }
+
+    @Override
+    public String toString() {
+        return "BindingEvent{" +
+                "match=" + match +
+                '}';
+    }
 }

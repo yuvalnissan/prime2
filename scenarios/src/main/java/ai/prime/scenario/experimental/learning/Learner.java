@@ -1,9 +1,6 @@
 package ai.prime.scenario.experimental.learning;
 
-import ai.prime.knowledge.data.Data;
-import ai.prime.knowledge.data.DataModifier;
-import ai.prime.knowledge.data.Expression;
-import ai.prime.knowledge.data.Unification;
+import ai.prime.knowledge.data.*;
 import ai.prime.knowledge.data.base.VariableData;
 import ai.prime.knowledge.nodes.confidence.Confidence;
 
@@ -11,18 +8,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class Learner {
     private final Data pattern;
     private final Set<Evidence> evidences;
     private final Set<Rule> leafs;
     private final Set<Rule> rules;
+    private final Consumer<Data> addedRuleCallback;
 
-    public Learner(Data pattern) {
+    public Learner(Data pattern, Consumer<Data> addedRuleCallback) {
         this.pattern = pattern;
         this.evidences = new HashSet<>();
         this.leafs = new HashSet<>();
         this.rules = new HashSet<>();
+        this.addedRuleCallback = addedRuleCallback;
     }
 
     private DataModifier getModifierFromConfidence(Confidence confidence) {
@@ -89,8 +89,21 @@ public class Learner {
         return new Rule(rule.modifier(), conditions);
     }
 
+    private Data buildRuleData(Rule rule) {
+        Expression target = new Expression(pattern, rule.modifier());
+        Expression[] conditions = rule.conditions().toArray(new Expression[rule.conditions().size()]);
+
+        Expression[] expressions = new Expression[rule.conditions().size() + 1];
+        expressions[0] = target;
+        System.arraycopy(conditions, 0, expressions, 1, conditions.length);
+        Data ruleData = new Data(new DataType("rule"), expressions);
+
+        return  ruleData;
+    }
+
     private void reportNew(Rule match) {
-        System.out.println(match);
+        Data ruleData = buildRuleData(match);
+        addedRuleCallback.accept(ruleData);
     }
 
     private void createMatches(Rule rule) {

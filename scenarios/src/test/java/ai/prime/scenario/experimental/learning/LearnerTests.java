@@ -14,7 +14,7 @@ public class LearnerTests {
     @Test
     public void testSimplerCase() {
         var pattern = Expression.fromString("canDo(act(move, var:from, var:to))").getData();
-        var learner = new Learner(pattern);
+        var learner = new Learner(pattern, System.out::println);
 
         var evidence1Data = Expression.fromString("canDo(act(move, T1, T3))").getData();
         Map<Data, Confidence> evidence1conditions = new HashMap<>();

@@ -1,0 +1,47 @@
+{
+  "defaultNodes": [
+    "ai.prime.knowledge.nodes.connotation.ConnotationNode",
+    "ai.prime.knowledge.nodes.confidence.ConfidenceNode",
+    "ai.prime.knowledge.nodes.binding.ReceptorNode",
+    "ai.prime.scenario.experimental.learning.EvidenceNode"
+  ],
+  "nodeMapping": {
+    "rel": [],
+    "infer": ["ai.prime.scenario.experimental.exceptions.ExceptionNode"],
+    "rule": ["ai.prime.knowledge.nodes.binding.QueryNode", "ai.prime.scenario.experimental.binding.RuleNode"],
+    "pattern": ["ai.prime.scenario.experimental.learning.PatternNode"]
+  },
+  "agents": {
+    "smith": {
+      "actuators": [
+        "ai.prime.scenario.awareness.AwarenessActuator"
+      ],
+      "neurons": {
+        "won": {
+          "confidence": "NEGATIVE",
+          "data":  {"expression": "won"}
+        },
+        "d1Location": {
+          "confidence": "POSITIVE",
+          "data":  {"expression": "rel(on, D1, T1)"}
+        },
+        "canDoT1T2": {
+          "confidence": "POSITIVE",
+          "data":  {"expression": "canDo(act(move, T1, T2))"}
+        },
+        "canDoT2T1": {
+          "confidence": "NEGATIVE",
+          "data":  {"expression": "canDo(act(move, T2, T1))"}
+        },
+        "canDoT2T2": {
+          "confidence": "NEGATIVE",
+          "data":  {"expression": "canDo(act(move, T2, T2))"}
+        },
+        "infer": {
+          "data":  {"expression": "infer(NOT(canDo(act(move,T1,T2))),NOT(canDo(act(move,T2,T2))),NOT(canDo(act(move,T2,T1))),NOT(won))"}
+        }
+      }
+    }
+  }
+}
+
