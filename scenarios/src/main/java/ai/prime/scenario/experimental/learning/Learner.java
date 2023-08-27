@@ -12,14 +12,12 @@ import java.util.function.Consumer;
 
 public class Learner {
     private final Data pattern;
-    private final Set<Evidence> evidences;
     private final Set<Rule> leafs;
     private final Set<Rule> rules;
     private final Consumer<Data> addedRuleCallback;
 
     public Learner(Data pattern, Consumer<Data> addedRuleCallback) {
         this.pattern = pattern;
-        this.evidences = new HashSet<>();
         this.leafs = new HashSet<>();
         this.rules = new HashSet<>();
         this.addedRuleCallback = addedRuleCallback;
@@ -126,7 +124,6 @@ public class Learner {
     }
 
     public void addEvidence(Evidence evidence) {
-        evidences.add(evidence);
         Rule rule = getRuleFromEvidence(evidence);
 
         createMatches(rule);
