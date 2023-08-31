@@ -8,8 +8,8 @@ public class SenseMessage extends NeuralMessage {
 
     private final Confidence confidence;
 
-    public SenseMessage(Data from, Data to, Confidence confidence) {
-        super(from, to);
+    public SenseMessage(Data to, Confidence confidence) {
+        super(to, to);
         this.confidence = confidence;
     }
 

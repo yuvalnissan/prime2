@@ -33,14 +33,14 @@ public class TowerActuator extends DiscreteActuator {
     private void sendActing(Data data, boolean active) {
         Confidence confidence = active ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
         Data acting = new Data(new DataType("acting"), data.getExpressions());
-        SenseMessage message = new SenseMessage(acting, acting, confidence);
+        SenseMessage message = new SenseMessage(acting, confidence);
         getAgent().sendMessageToNeuron(message);
     }
 
     private void sendCan(Data data, boolean active) {
         Confidence confidence = active ? SenseConfidence.SENSE_POSITIVE : SenseConfidence.SENSE_NEGATIVE;
         Data acting = new Data(new DataType("canDo"), new Expression[]{new Expression(data)});
-        SenseMessage message = new SenseMessage(acting, acting, confidence);
+        SenseMessage message = new SenseMessage(acting, confidence);
         getAgent().sendMessageToNeuron(message);
     }
 

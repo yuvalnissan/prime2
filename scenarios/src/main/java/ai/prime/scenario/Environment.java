@@ -37,7 +37,7 @@ public abstract class Environment {
         actuators.forEach(agent::registerActuator);
     }
     private void sendMessage(Agent agent, Data data, Confidence confidence) {
-        SenseMessage message = new SenseMessage(data, data, confidence);
+        SenseMessage message = new SenseMessage(data, confidence);
         agent.sendMessageToNeuron(message);
     }
 

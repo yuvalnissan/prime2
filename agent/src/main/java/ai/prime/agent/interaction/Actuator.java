@@ -21,7 +21,7 @@ public abstract class Actuator {
     public abstract void act(Data data, Confidence confidence);
 
     protected void sendMessage(Data data, Confidence confidence) {
-        SenseMessage message = new SenseMessage(data, data, confidence);
+        SenseMessage message = new SenseMessage(data, confidence);
         agent.sendMessageToNeuron(message);
     }
 }

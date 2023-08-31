@@ -109,7 +109,7 @@ public class Scenario {
     }
 
     public void setSense(String agentName, Data data, Confidence confidence) {
-        SenseMessage message = new SenseMessage(data, data, confidence);
+        SenseMessage message = new SenseMessage(data, confidence);
         Agent agent = getAgent(agentName);
         agent.sendMessageToNeuron(message);
     }
