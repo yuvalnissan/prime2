@@ -113,6 +113,13 @@ export const Agent = ({ className }: AgentProps) => {
         }
     }
 
+    const removeData = async (id: string) => {
+        console.log('Removing', id)
+        if (id) {
+            await addData(`not(${id})`)
+        }
+    }
+
     const onSubmit = async () => {
         const cleanId = getCleanFilter()
         if (selectedExpressionId === filteredIds[focused]) {
@@ -135,6 +142,13 @@ export const Agent = ({ className }: AgentProps) => {
             console.log('Submit')
             focusOnInput()
             inputRef?.current?.select()
+        }
+
+        if (event.key === 'Backspace') {
+            if (selectedExpressionId === filteredIds[focused]) {
+                event.preventDefault()
+                await removeData(filteredIds[focused])
+            }
         }
 
         if (event.key === 'Escape') {
